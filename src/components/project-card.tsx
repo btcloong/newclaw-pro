@@ -22,7 +22,7 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({
-  id,
+  id: _id,
   name,
   description,
   logo,

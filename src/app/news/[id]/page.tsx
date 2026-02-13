@@ -30,7 +30,7 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
     notFound();
   }
 
-  const tags = news.tags ? JSON.parse(news.tags) : [];
+  const tags = Array.isArray(news.tags) ? news.tags : [];
 
   return (
     <div className="min-h-screen">

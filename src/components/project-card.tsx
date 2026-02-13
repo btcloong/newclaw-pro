@@ -22,7 +22,7 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({
-  id: _id,
+  id,
   name,
   description,
   logo,
@@ -50,6 +50,9 @@ export function ProjectCard({
         className
       )}
     >
+      <Link href={`/project/${id}`} className="absolute inset-0 z-10">
+        <span className="sr-only">查看详情</span>
+      </Link>
       <div className="flex items-start gap-4">
         <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-muted flex-shrink-0">
           {logo ? (
@@ -63,7 +66,7 @@ export function ProjectCard({
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="font-semibold text-lg truncate">{name}</h3>
+            <h3 className="font-semibold text-lg truncate group-hover:text-brand-500 transition-colors">{name}</h3>
             {isNew && <Badge variant="success" className="text-xs">NEW</Badge>}
             {isTrending && <Badge variant="warning" className="text-xs">🔥 趋势</Badge>}
           </div>
@@ -119,14 +122,15 @@ export function ProjectCard({
           </div>
         </div>
 
-        <Link
+        <a
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex-shrink-0 p-2 rounded-lg hover:bg-accent transition-colors"
+          className="relative z-20 flex-shrink-0 p-2 rounded-lg hover:bg-accent transition-colors"
+          onClick={(e) => e.stopPropagation()}
         >
           <ExternalLink className="w-5 h-5 text-muted-foreground" />
-        </Link>
+        </a>
       </div>
     </div>
   );

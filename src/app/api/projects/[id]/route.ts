@@ -1,18 +1,15 @@
 import { NextResponse } from "next/server";
-import { db, projects } from "@/lib/db";
-import { eq } from "drizzle-orm";
+import { db } from "@/lib/db";
 
-// GET /api/projects/[id] - 获取项目详情
+// GET /api/projects/[id] - 获取单个项目
 export async function GET(
   request: Request,
   { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = params;
+    const project = db.projects.findById(params.id);
 
-    const result = await db.select().from(projects).where(eq(projects.id, id));
-
-    if (result.length === 0) {
+    if (!project) {
       return NextResponse.json(
         { success: false, error: "Project not found" },
         { status: 404 }
@@ -21,12 +18,12 @@ export async function GET(
 
     return NextResponse.json({
       success: true,
-      data: result[0],
+      data: project,
     });
   } catch (error) {
-    console.error("Error fetching project detail:", error);
+    console.error("Error fetching project:", error);
     return NextResponse.json(
-      { success: false, error: "Failed to fetch project detail" },
+      { success: false, error: "Failed to fetch project" },
       { status: 500 }
     );
   }

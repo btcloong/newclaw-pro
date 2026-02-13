@@ -137,15 +137,12 @@ export default async function HomePage() {
                       <CardContent className="p-4">
                         <div className="flex items-start justify-between mb-2">
                           <h3 className="font-semibold">{project.name}</h3>
-                          <a 
-                            href={project.url} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
+                          <Link 
+                            href={project.url}
                             className="text-muted-foreground hover:text-brand-500"
-                            onClick={(e) => e.stopPropagation()}
                           >
                             <ExternalLink className="w-4 h-4" />
-                          </a>
+                          </Link>
                         </div>
                         <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{project.description}</p>
                         <div className="flex items-center gap-2">

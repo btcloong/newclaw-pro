@@ -1,39 +1,20 @@
 import { NextResponse } from "next/server";
-import { crawlAll, crawlRSS, crawlGitHub, crawlProductHunt } from "@/lib/crawler";
+import { db } from "@/lib/db";
 
-// POST /api/crawl - 手动触发抓取
-export async function POST(request: Request) {
+// POST /api/crawl - 手动触发抓取（重新加载示例数据）
+export async function POST() {
   try {
-    const { searchParams } = new URL(request.url);
-    const source = searchParams.get("source");
-
-    let result;
-
-    switch (source) {
-      case "rss":
-        result = await crawlRSS();
-        break;
-      case "github":
-        result = await crawlGitHub();
-        break;
-      case "producthunt":
-        result = await crawlProductHunt();
-        break;
-      case "all":
-      default:
-        result = await crawlAll();
-        break;
-    }
+    const result = db.recrawl();
 
     return NextResponse.json({
       success: true,
-      message: `Crawl completed for source: ${source || "all"}`,
+      message: "Data reloaded successfully",
       result,
     });
   } catch (error) {
     console.error("Error during crawl:", error);
     return NextResponse.json(
-      { success: false, error: "Failed to crawl" },
+      { success: false, error: "Failed to reload data" },
       { status: 500 }
     );
   }
@@ -41,9 +22,11 @@ export async function POST(request: Request) {
 
 // GET /api/crawl - 获取抓取状态
 export async function GET() {
+  const stats = db.getStats();
+  
   return NextResponse.json({
     success: true,
-    message: "Use POST to trigger crawl",
-    sources: ["rss", "github", "producthunt", "all"],
+    stats,
+    message: "Use POST to reload data",
   });
 }

@@ -38,9 +38,11 @@ export function HotTopicsList({ topics, className }: HotTopicsListProps) {
               <span className="font-medium truncate group-hover:text-brand-500 transition-colors">
                 {topic.title}
               </span>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground flex-shrink-0">
-                {topic.category}
-              </span>
+              {topic.category && (
+                <span className="text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground flex-shrink-0">
+                  {topic.category}
+                </span>
+              )}
             </div>
 
             <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">

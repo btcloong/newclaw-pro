@@ -237,7 +237,7 @@ export default function HomePage() {
                       key={project.id} 
                       {...project}
                       id={project.id}
-                      tags={project.tags ? JSON.parse(project.tags) : []}
+                      tags={Array.isArray(project.tags) ? project.tags : []}
                     />
                   ))
                 ) : (

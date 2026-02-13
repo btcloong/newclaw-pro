@@ -9,14 +9,9 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  env: {
-    DATABASE_URL: process.env.DATABASE_URL || "file:./data/newclaw.db",
-    GITHUB_TOKEN: process.env.GITHUB_TOKEN,
-  },
-  experimental: {
-    workerThreads: false,
-    cpus: 1,
-  },
+  output: 'export',
+  distDir: 'dist',
+  trailingSlash: true,
 };
 
 export default nextConfig;

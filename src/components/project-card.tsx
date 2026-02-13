@@ -122,15 +122,14 @@ export function ProjectCard({
           </div>
         </div>
 
-        <a
+        <Link
           href={url}
           target="_blank"
           rel="noopener noreferrer"
           className="relative z-20 flex-shrink-0 p-2 rounded-lg hover:bg-accent transition-colors"
-          onClick={(e) => e.stopPropagation()}
         >
           <ExternalLink className="w-5 h-5 text-muted-foreground" />
-        </a>
+        </Link>
       </div>
     </div>
   );

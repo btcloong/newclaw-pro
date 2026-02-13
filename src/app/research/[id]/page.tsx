@@ -3,30 +3,18 @@ import Link from "next/link";
 import { ArrowLeft, Clock, User, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { db, research } from "@/lib/db";
-import { eq } from "drizzle-orm";
+import { db } from "@/lib/db";
 
 interface ResearchDetailPageProps {
   params: { id: string };
 }
 
-async function getResearchDetail(id: string) {
-  try {
-    const result = await db.select().from(research).where(eq(research.id, id));
-    return result.length > 0 ? result[0] : null;
-  } catch {
-    return null;
-  }
-}
-
 export default async function ResearchDetailPage({ params }: ResearchDetailPageProps) {
-  const report = await getResearchDetail(params.id);
+  const report = await db.research.findById(params.id);
 
   if (!report) {
     notFound();
   }
-
-  const tags = report.tags ? JSON.parse(report.tags) : [];
 
   return (
     <div className="min-h-screen">
@@ -91,9 +79,9 @@ export default async function ResearchDetailPage({ params }: ResearchDetailPageP
           </article>
 
           {/* Tags */}
-          {tags.length > 0 && (
+          {report.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-8">
-              {tags.map((tag: string) => (
+              {report.tags.map((tag: string) => (
                 <span
                   key={tag}
                   className="px-3 py-1 rounded-full bg-muted text-sm"

@@ -1,4 +1,5 @@
 import { crawlAll } from "../src/lib/crawler";
+import { crawlTwitter } from "../src/lib/twitter-crawler";
 
 async function main() {
   const args = process.argv.slice(2);
@@ -23,6 +24,9 @@ async function main() {
         const { crawlProductHunt } = await import("../src/lib/crawler");
         result = await crawlProductHunt();
         break;
+      case "twitter":
+        result = await crawlTwitter();
+        break;
       case "news":
         const { generateHotTopics, generateFundingData, generateResearchReports } = await import("../src/lib/crawler");
         await generateHotTopics();
@@ -31,7 +35,15 @@ async function main() {
         result = { success: true, count: 3 };
         break;
       default:
-        result = await crawlAll();
+        // 运行所有爬虫
+        const results = await Promise.all([
+          crawlAll(),
+          crawlTwitter(),
+        ]);
+        result = {
+          main: results[0],
+          twitter: results[1],
+        };
     }
 
     console.log("\n✨ Crawl complete!");

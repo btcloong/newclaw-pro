@@ -12,10 +12,11 @@
     "db:studio": "drizzle-kit studio",
     "crawl": "tsx scripts/crawler.ts",
     "crawl:news": "tsx scripts/crawler.ts --source=news",
-    "crawl:twitter": "tsx scripts/crawler.ts --source=twitter",
+    "crawl:rss": "tsx scripts/crawler.ts --source=rss",
     "crawl:producthunt": "tsx scripts/crawler.ts --source=producthunt",
     "crawl:github": "tsx scripts/crawler.ts --source=github",
-    "analyze": "tsx scripts/analyzer.ts"
+    "crawl:twitter": "tsx scripts/crawler.ts --source=twitter",
+    "db:push": "echo 'Using memory storage, no database migration needed'"
   },
   "dependencies": {
     "@libsql/client": "^0.14.0",

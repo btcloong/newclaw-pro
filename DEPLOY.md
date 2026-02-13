@@ -2,8 +2,6 @@
 
 专业的 AI 新闻聚合、投研分析与创意孵化平台。追踪全球 AI 热点，发现下一个独角兽项目。
 
-![NewClaw Pro](https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200)
-
 ## 功能特性
 
 ### 首页
@@ -38,7 +36,8 @@
 - **框架**: Next.js 14 (App Router)
 - **语言**: TypeScript
 - **样式**: Tailwind CSS + shadcn/ui
-- **存储**: 内存存储（可扩展至 SQLite/PostgreSQL）
+- **数据库**: SQLite (服务器本地文件)
+- **爬虫**: Node.js + RSS Parser
 - **部署**: PM2 + Nginx
 
 ## 数据源
@@ -61,7 +60,7 @@
 - **磁盘**: 20GB SSD 或以上
 - **带宽**: 3Mbps 或以上
 
-### 快速部署（一键脚本）
+### 快速部署
 
 #### 1. 购买阿里云服务器
 
@@ -76,41 +75,77 @@
    - 80 (HTTP)
    - 443 (HTTPS)
 
-#### 2. 连接服务器并执行部署
+#### 2. 连接服务器
 
 ```bash
 ssh root@your-server-ip
-
-# 下载部署脚本
-curl -fsSL https://raw.githubusercontent.com/your-username/newclaw-pro/main/deploy/setup-server.sh -o setup-server.sh
-chmod +x setup-server.sh
-
-# 运行环境配置
-./setup-server.sh
 ```
 
-#### 3. 上传项目代码
+#### 3. 下载部署脚本
 
 ```bash
+# 克隆项目
+git clone https://github.com/your-username/newclaw-pro.git /tmp/newclaw-pro
+cd /tmp/newclaw-pro
+
+# 或者下载压缩包
+wget https://github.com/your-username/newclaw-pro/archive/main.zip
+unzip main.zip
+cd newclaw-pro-main
+```
+
+#### 4. 运行服务器环境配置
+
+```bash
+chmod +x deploy/*.sh
+sudo ./deploy/setup-server.sh
+```
+
+此脚本会自动安装：
+- Node.js 20
+- Nginx
+- PM2
+- SQLite3
+- Certbot (SSL)
+- 防火墙配置
+- 定时任务
+
+#### 5. 上传项目代码
+
+**方式一: 使用 SCP**
+```bash
 # 在本地执行
+scp -r ./* root@your-server-ip:/var/www/newclaw-pro/
+```
+
+**方式二: 使用 Git**
+```bash
+# 在服务器上
+cd /var/www/newclaw-pro
+git clone https://github.com/your-username/newclaw-pro.git .
+```
+
+**方式三: 使用 rsync**
+```bash
 rsync -avz --exclude 'node_modules' --exclude '.git' ./ root@your-server-ip:/var/www/newclaw-pro/
 ```
 
-#### 4. 部署应用
+#### 6. 部署应用
 
 ```bash
-ssh root@your-server-ip
-cd /var/www/newclaw-pro
-./deploy/deploy-app.sh
+sudo ./deploy/deploy-app.sh
 ```
 
-#### 5. 配置域名和 SSL
+#### 7. 配置域名和 SSL (可选但推荐)
 
 ```bash
-./deploy/setup-ssl.sh your-domain.com your-email@example.com
+# 先确保域名解析到服务器IP
+sudo ./deploy/setup-ssl.sh your-domain.com your-email@example.com
 ```
 
 ### 手动部署步骤
+
+如果自动脚本无法满足需求，可以手动部署：
 
 #### 安装 Node.js
 
@@ -184,6 +219,21 @@ sudo apt-get install -y certbot python3-certbot-nginx
 sudo certbot --nginx -d your-domain.com
 ```
 
+### 配置 GitHub Token (可选)
+
+为了抓取 GitHub Trending 数据，建议配置 GitHub Token：
+
+1. 访问 https://github.com/settings/tokens
+2. 生成新的 Personal Access Token (不需要特殊权限)
+3. 在服务器上设置环境变量：
+
+```bash
+echo 'export GITHUB_TOKEN=your_token_here' | sudo tee /etc/profile.d/github.sh
+source /etc/profile.d/github.sh
+```
+
+4. 更新 PM2 配置以使用环境变量
+
 ## 项目结构
 
 ```
@@ -194,27 +244,26 @@ newclaw-pro/
 │   │   ├── hot/             # 热点页
 │   │   ├── research/        # 投研页
 │   │   ├── incubator/       # 孵化页
-│   │   ├── news/[id]/       # 新闻详情页
-│   │   ├── project/[id]/    # 项目详情页
 │   │   └── layout.tsx       # 根布局
 │   ├── components/          # React 组件
 │   │   ├── ui/              # shadcn/ui 组件
 │   │   ├── layout/          # 布局组件
 │   │   └── *.tsx            # 业务组件
 │   └── lib/
-│       ├── db.ts            # 数据存储
-│       └── utils.ts         # 工具函数
+│       ├── db.ts            # 数据库配置
+│       ├── schema.ts        # 数据库表结构
+│       └── crawler.ts       # 爬虫逻辑
 ├── scripts/
 │   └── crawler.ts           # 爬虫脚本入口
 ├── deploy/
 │   ├── setup-server.sh      # 服务器环境配置
 │   ├── deploy-app.sh        # 应用部署脚本
 │   └── setup-ssl.sh         # SSL 配置脚本
+├── data/                    # SQLite 数据库目录
 ├── public/                  # 静态资源
 ├── next.config.mjs          # Next.js 配置
 ├── tailwind.config.ts       # Tailwind 配置
 ├── package.json
-├── ecosystem.config.js      # PM2 配置
 └── README.md
 ```
 
@@ -230,6 +279,9 @@ npm run build
 # 启动生产服务器
 npm start
 
+# 运行爬虫
+npm run crawl
+
 # 查看 PM2 状态
 pm2 status
 pm2 logs
@@ -242,6 +294,9 @@ pm2 reload newclaw-pro
 
 # 手动触发数据更新
 npm run crawl
+npm run crawl:news
+npm run crawl:github
+npm run crawl:producthunt
 ```
 
 ## 定时任务
@@ -264,7 +319,7 @@ crontab -l
 2. **Nginx 静态缓存**: 30天缓存期
 3. **Gzip 压缩**: 减少传输大小
 4. **请求限流**: 防止过载
-5. **内存存储**: 无需数据库连接开销
+5. **数据库**: 本地 SQLite，无网络开销
 
 ## 监控和维护
 
@@ -284,8 +339,11 @@ sudo tail -f /var/log/newclaw/crawl.log
 ### 备份数据
 
 ```bash
-# 备份数据库（如使用 SQLite）
+# 备份数据库
 sudo cp /var/www/newclaw-pro/data/newclaw.db /backup/newclaw-$(date +%Y%m%d).db
+
+# 自动备份脚本
+echo '0 2 * * * root cp /var/www/newclaw-pro/data/newclaw.db /backup/newclaw-$(date +\%Y\%m\%d).db' | sudo tee /etc/cron.d/newclaw-backup
 ```
 
 ### 更新应用
@@ -326,6 +384,14 @@ sudo nginx -t
 sudo systemctl restart nginx
 ```
 
+### 数据库权限问题
+
+```bash
+# 修复权限
+sudo chown -R www-data:www-data /var/www/newclaw-pro/data
+sudo chmod 755 /var/www/newclaw-pro/data
+```
+
 ## 安全建议
 
 1. **修改默认端口**: 将 SSH 端口改为非 22 端口
@@ -333,13 +399,6 @@ sudo systemctl restart nginx
 3. **配置防火墙**: 仅开放必要端口
 4. **定期更新**: 保持系统和依赖更新
 5. **使用密钥登录**: 禁用密码登录，使用 SSH 密钥
-
-## 访问地址
-
-部署完成后，可通过以下地址访问：
-
-- **HTTP**: http://your-server-ip
-- **HTTPS**: https://your-domain.com (配置 SSL 后)
 
 ## 许可证
 

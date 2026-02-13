@@ -13,7 +13,8 @@ import {
   TrendingUp,
   Sparkles,
   Lightbulb,
-  Newspaper
+  Newspaper,
+  Twitter
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -21,6 +22,7 @@ import { cn } from "@/lib/utils";
 const navItems = [
   { href: "/", label: "首页", icon: Newspaper },
   { href: "/hot", label: "热点", icon: TrendingUp },
+  { href: "/twitter", label: "推特", icon: Twitter },
   { href: "/research", label: "投研", icon: Sparkles },
   { href: "/incubator", label: "孵化", icon: Lightbulb },
 ];

@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, ExternalLink, Star, GitFork, Users } from "lucide-react";
@@ -5,26 +8,46 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatDate, formatNumber } from "@/lib/utils";
 
-interface ProjectDetailPageProps {
-  params: { id: string };
+interface Project {
+  id: string;
+  name: string;
+  description: string;
+  url: string;
+  logo?: string;
+  category: string;
+  tags: string[];
+  source: "github" | "producthunt" | "other";
+  stars?: number;
+  forks?: number;
+  upvotes?: number;
+  createdAt: string;
+  isNew?: boolean;
+  isTrending?: boolean;
 }
 
-async function getProjectDetail(id: string) {
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-    const res = await fetch(`${baseUrl}/api/projects/${id}`, {
-      cache: "no-store",
-    });
-    if (!res.ok) return null;
-    const data = await res.json();
-    return data.success ? data.data : null;
-  } catch {
-    return null;
+export default function ProjectDetailPage({ params }: { params: { id: string } }) {
+  const [project, setProject] = useState<Project | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`/api/projects/${params.id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setProject(data.data);
+        }
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, [params.id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-500"></div>
+      </div>
+    );
   }
-}
-
-export default async function ProjectDetailPage({ params }: ProjectDetailPageProps) {
-  const project = await getProjectDetail(params.id);
 
   if (!project) {
     notFound();
@@ -35,7 +58,6 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
   return (
     <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
-        {/* Back Button */}
         <Link
           href="/"
           className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-6"
@@ -45,7 +67,6 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
         </Link>
 
         <div className="max-w-4xl mx-auto">
-          {/* Header */}
           <div className="flex items-start gap-6 mb-8">
             <div className="w-20 h-20 rounded-2xl bg-brand-500/10 flex items-center justify-center flex-shrink-0">
               {project.logo ? (
@@ -78,7 +99,6 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
             </div>
           </div>
 
-          {/* Stats */}
           <div className="grid grid-cols-3 gap-4 mb-8">
             {project.stars !== undefined && (
               <div className="p-4 rounded-xl bg-card border text-center">
@@ -103,16 +123,12 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
             )}
           </div>
 
-          {/* Tags */}
           {tags.length > 0 && (
             <div className="mb-8">
               <h3 className="font-semibold mb-3">标签</h3>
               <div className="flex flex-wrap gap-2">
                 {tags.map((tag: string) => (
-                  <span
-                    key={tag}
-                    className="px-3 py-1 rounded-full bg-muted text-sm"
-                  >
+                  <span key={tag} className="px-3 py-1 rounded-full bg-muted text-sm">
                     {tag}
                   </span>
                 ))}
@@ -120,7 +136,6 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
             </div>
           )}
 
-          {/* Actions */}
           <div className="flex flex-wrap items-center gap-4 pt-8 border-t">
             <a href={project.url} target="_blank" rel="noopener noreferrer">
               <Button className="gap-2">

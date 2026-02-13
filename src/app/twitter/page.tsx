@@ -84,7 +84,7 @@ export default async function TwitterPage() {
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="all">全部推文</TabsTrigger>
                 <TabsTrigger value="hot" className="gap-2">
-                  <Flame className="w-4 h-4" /
+                  <Flame className="w-4 h-4" />
                   热门推文
                 </TabsTrigger>
               </TabsList>

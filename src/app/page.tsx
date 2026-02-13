@@ -1,6 +1,3 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { 
   TrendingUp, 
@@ -11,154 +8,95 @@ import {
   Zap,
   Lightbulb,
   Target,
-  Loader2,
-  AlertCircle
+  ExternalLink
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { NewsCard } from "@/components/news-card";
-import { FlashNewsItem } from "@/components/flash-news-item";
-import { ProjectCard } from "@/components/project-card";
-import { HotTopicsList } from "@/components/hot-topics-list";
-import { TrendingTags } from "@/components/trending-tags";
-import { StatsCard } from "@/components/stats-card";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-interface News {
-  id: string;
-  title: string;
-  summary: string | null;
-  image: string | null;
-  source: string;
-  publishedAt: string;
-  category: string | null;
-  isHot: boolean | null;
-  isFeatured: boolean | null;
-  viewCount: number | null;
-}
+// 静态数据
+const news = [
+  {
+    id: "1",
+    title: "OpenAI 发布 GPT-5 预览版：多模态能力大幅提升",
+    summary: "OpenAI 在今日凌晨 surprise 发布了 GPT-5 的预览版本，新模型在代码生成、数学推理和创意写作方面都有显著提升。",
+    source: "OpenAI Blog",
+    category: "大模型",
+    isHot: true,
+    isFeatured: true,
+    viewCount: 125000,
+  },
+  {
+    id: "2",
+    title: "Anthropic 完成 35 亿美元融资，估值突破 600 亿美元",
+    source: "TechCrunch",
+    category: "融资",
+    isHot: true,
+    viewCount: 89000,
+  },
+  {
+    id: "3",
+    title: "Google DeepMind 发布 Gemini 2.0：原生多模态",
+    source: "Google Blog",
+    category: "大模型",
+    viewCount: 67000,
+  },
+];
 
-interface Project {
-  id: string;
-  name: string;
-  description: string;
-  category: string;
-  tags: string | null;
-  stars: number | null;
-  forks: number | null;
-  upvotes: number | null;
-  source: string;
-  sourceUrl: string;
-  isNew: boolean | null;
-  isTrending: boolean | null;
-}
+const projects = [
+  {
+    id: "p1",
+    name: "Cursor",
+    description: "AI 驱动的代码编辑器，基于 VS Code，内置 GPT-4 代码补全和聊天功能",
+    category: "开发工具",
+    source: "github",
+    stars: 125000,
+    url: "https://cursor.sh",
+  },
+  {
+    id: "p2",
+    name: "Pika 2.0",
+    description: "下一代 AI 视频生成平台，支持文本到视频、图像到视频转换",
+    category: "视频生成",
+    source: "producthunt",
+    upvotes: 8500,
+    url: "https://pika.art",
+  },
+];
 
-interface HotTopic {
-  rank: number;
-  title: string;
-  heat: number;
-  change: number;
-  category: string | null;
-}
+const hotTopics = [
+  { rank: 1, title: "GPT-5 发布", heat: 985000, change: 125 },
+  { rank: 2, title: "AI Agent 爆发", heat: 756000, change: 89 },
+  { rank: 3, title: "具身智能", heat: 642000, change: 67 },
+];
 
 export default function HomePage() {
-  const [news, setNews] = useState<News[]>([]);
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [hotTopics, setHotTopics] = useState<HotTopic[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        setLoading(true);
-        
-        // 并行获取数据
-        const [newsRes, projectsRes, topicsRes] = await Promise.all([
-          fetch("/api/news?limit=10"),
-          fetch("/api/projects?limit=8"),
-          fetch("/api/hot-topics"),
-        ]);
-
-        const newsData = await newsRes.json();
-        const projectsData = await projectsRes.json();
-        const topicsData = await topicsRes.json();
-
-        if (newsData.success) setNews(newsData.data);
-        if (projectsData.success) setProjects(projectsData.data);
-        if (topicsData.success) setHotTopics(topicsData.data);
-
-        setError(null);
-      } catch (err) {
-        setError("数据加载失败，请稍后重试");
-        console.error("Error fetching data:", err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchData();
-  }, []);
-
-  const featuredNews = news.find(n => n.isFeatured) || news[0];
-  const newsList = news.filter(n => n.id !== featuredNews?.id).slice(0, 5);
-  
-  const stats = [
-    { title: "今日新闻", value: news.length.toString(), change: 12.5, icon: <Zap className="w-5 h-5" /> },
-    { title: "热门项目", value: projects.length.toString(), change: 8.3, icon: <Target className="w-5 h-5" /> },
-    { title: "创意灵感", value: "234", change: 23.1, icon: <Lightbulb className="w-5 h-5" /> },
-    { title: "融资动态", value: "12", change: -5.2, icon: <TrendingUp className="w-5 h-5" /> },
-  ];
-
-  const trendingTags = [
-    { name: "GPT-5", count: 12500, trend: "up" as const },
-    { name: "Claude", count: 8900, trend: "up" as const },
-    { name: "AI Agent", count: 7600, trend: "up" as const },
-    { name: "开源模型", count: 5400, trend: "neutral" as const },
-    { name: "视频生成", count: 4800, trend: "down" as const },
-    { name: "具身智能", count: 4200, trend: "up" as const },
-    { name: "AI 编程", count: 3800, trend: "up" as const },
-    { name: "多模态", count: 3200, trend: "neutral" as const },
-  ];
-
-  const flashNews = [
-    {
-      id: "f1",
-      title: "AI 行业动态持续更新中...",
-      publishedAt: new Date().toISOString(),
-      isImportant: true,
-    },
-  ];
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <Loader2 className="w-8 h-8 animate-spin text-brand-500" />
-          <p className="text-muted-foreground">加载中...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <AlertCircle className="w-8 h-8 text-red-500" />
-          <p className="text-muted-foreground">{error}</p>
-          <Button onClick={() => window.location.reload()}>重试</Button>
-        </div>
-      </div>
-    );
-  }
+  const featuredNews = news[0];
+  const newsList = news.slice(1);
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section with Stats */}
+      {/* Stats */}
       <section className="border-b bg-muted/30">
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {stats.map((stat) => (
-              <StatsCard key={stat.title} {...stat} />
+            {[
+              { title: "今日新闻", value: "1,247", icon: Zap },
+              { title: "热门项目", value: "86", icon: Target },
+              { title: "创意灵感", value: "234", icon: Lightbulb },
+              { title: "融资动态", value: "12", icon: TrendingUp },
+            ].map((stat) => (
+              <Card key={stat.title}>
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-3">
+                    <stat.icon className="w-5 h-5 text-brand-500" />
+                    <div>
+                      <p className="text-sm text-muted-foreground">{stat.title}</p>
+                      <p className="text-xl font-bold">{stat.value}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
@@ -169,148 +107,134 @@ export default function HomePage() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
             {/* Featured News */}
-            {featuredNews && (
-              <section>
-                <NewsCard {...featuredNews} isFeatured={true} />
-              </section>
-            )}
-
-            {/* News Tabs */}
-            <section>
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <Clock className="w-5 h-5 text-brand-500" />
-                  <h2 className="text-xl font-bold">最新资讯</h2>
+            <Card className="overflow-hidden">
+              <div className="aspect-video bg-gradient-to-br from-brand-500/20 to-brand-700/20 flex items-center justify-center">
+                <span className="text-6xl font-bold text-brand-500/30">N</span>
+              </div>
+              <CardContent className="p-6">
+                <div className="flex items-center gap-2 mb-3">
+                  {featuredNews.isHot && <Badge variant="destructive">热门</Badge>}
+                  <Badge variant="secondary">{featuredNews.category}</Badge>
                 </div>
-                <Tabs defaultValue="all">
-                  <TabsList>
-                    <TabsTrigger value="all">全部</TabsTrigger>
-                    <TabsTrigger value="news">新闻</TabsTrigger>
-                    <TabsTrigger value="twitter">推特</TabsTrigger>
-                    <TabsTrigger value="github">GitHub</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <h2 className="text-2xl font-bold mb-3">{featuredNews.title}</h2>
+                <p className="text-muted-foreground mb-4">{featuredNews.summary}</p>
+                <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                  <span>{featuredNews.source}</span>
+                  <span>{featuredNews.viewCount} 阅读</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* News List */}
+            <section>
+              <div className="flex items-center gap-2 mb-4">
+                <Clock className="w-5 h-5 text-brand-500" />
+                <h2 className="text-xl font-bold">最新资讯</h2>
               </div>
 
               <div className="space-y-4">
-                {newsList.length > 0 ? (
-                  newsList.map((item) => (
-                    <NewsCard key={item.id} {...item} />
-                  ))
-                ) : (
-                  <p className="text-muted-foreground text-center py-8">
-                    暂无新闻数据
-                  </p>
-                )}
-              </div>
-
-              <div className="mt-6 text-center">
-                <Button variant="outline" className="gap-2" asChild>
-                  <Link href="/hot">
-                    查看更多
-                    <ChevronRight className="w-4 h-4" />
-                  </Link>
-                </Button>
+                {newsList.map((item) => (
+                  <Card key={item.id} className="hover:shadow-md transition-shadow">
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        {item.isHot && <Badge variant="destructive" className="text-xs">热门</Badge>}
+                        <Badge variant="secondary" className="text-xs">{item.category}</Badge>
+                      </div>
+                      <h3 className="font-semibold mb-2">{item.title}</h3>
+                      <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                        <span>{item.source}</span>
+                        <span>{item.viewCount} 阅读</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
             </section>
 
-            {/* New Projects */}
+            {/* Projects */}
             <section>
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-brand-500" />
                   <h2 className="text-xl font-bold">新项目发现</h2>
                 </div>
-                <Link 
-                  href="/projects" 
-                  className="text-sm text-brand-500 hover:underline flex items-center gap-1"
-                >
-                  全部项目
-                  <ChevronRight className="w-4 h-4" />
-                </Link>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {projects.length > 0 ? (
-                  projects.slice(0, 4).map((project) => (
-                    <ProjectCard 
-                      key={project.id} 
-                      {...project}
-                      id={project.id}
-                      tags={Array.isArray(project.tags) ? project.tags : []}
-                    />
-                  ))
-                ) : (
-                  <p className="text-muted-foreground text-center py-8 col-span-2">
-                    暂无项目数据
-                  </p>
-                )}
+                {projects.map((project) => (
+                  <Card key={project.id} className="hover:shadow-md transition-shadow">
+                    <CardContent className="p-4">
+                      <div className="flex items-start justify-between mb-2">
+                        <h3 className="font-semibold">{project.name}</h3>
+                        <a 
+                          href={project.url} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-muted-foreground hover:text-brand-500"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                        </a>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-3">{project.description}</p>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="secondary" className="text-xs">{project.category}</Badge>
+                        {project.stars && <span className="text-xs text-muted-foreground">⭐ {project.stars}</span>}
+                        {project.upvotes && <span className="text-xs text-muted-foreground">👍 {project.upvotes}</span>}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
             </section>
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-8">
-            {/* Flash News */}
-            <section className="p-5 rounded-xl bg-card border">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <Zap className="w-5 h-5 text-brand-500" />
-                  <h3 className="font-bold">快讯</h3>
-                </div>
-                <Link href="/flash" className="text-sm text-brand-500 hover:underline">
-                  更多
-                </Link>
-              </div>
-
-              <div className="space-y-0">
-                {flashNews.map((item) => (
-                  <FlashNewsItem key={item.id} {...item} />
-                ))}
-              </div>
-            </section>
-
+          <div className="space-y-6">
             {/* Hot Topics */}
-            <section className="p-5 rounded-xl bg-card border">
-              <div className="flex items-center gap-2 mb-4">
-                <Flame className="w-5 h-5 text-orange-500" />
-                <h3 className="font-bold">热搜榜单</h3>
-              </div>
-
-              {hotTopics.length > 0 ? (
-                <HotTopicsList topics={hotTopics} />
-              ) : (
-                <p className="text-muted-foreground text-center py-4">
-                  暂无热搜数据
-                </p>
-              )}
-            </section>
-
-            {/* Trending Tags */}
-            <section className="p-5 rounded-xl bg-card border">
-              <div className="flex items-center gap-2 mb-4">
-                <TrendingUp className="w-5 h-5 text-green-500" />
-                <h3 className="font-bold">热门标签</h3>
-              </div>
-
-              <TrendingTags tags={trendingTags} />
-            </section>
+            <Card>
+              <CardHeader>
+                <div className="flex items-center gap-2">
+                  <Flame className="w-5 h-5 text-orange-500" />
+                  <CardTitle className="text-lg">热搜榜单</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {hotTopics.map((topic) => (
+                    <div key={topic.rank} className="flex items-center gap-3">
+                      <span className={`w-6 h-6 rounded flex items-center justify-center text-sm font-bold ${
+                        topic.rank <= 3 ? 'bg-brand-500 text-white' : 'bg-muted text-muted-foreground'
+                      }`}>
+                        {topic.rank}
+                      </span>
+                      <div className="flex-1">
+                        <p className="font-medium text-sm">{topic.title}</p>
+                        <p className="text-xs text-muted-foreground">{topic.heat.toLocaleString()} 热度</p>
+                      </div>
+                      <span className={`text-xs ${topic.change > 0 ? 'text-green-500' : 'text-red-500'}`}>
+                        {topic.change > 0 ? '+' : ''}{topic.change}%
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
 
             {/* Newsletter */}
-            <section className="p-5 rounded-xl bg-gradient-to-br from-brand-500/10 to-brand-700/10 border border-brand-500/20">
-              <h3 className="font-bold mb-2">订阅 AI 日报</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                每日精选 AI 行业重要资讯，直接发送到您的邮箱
-              </p>
-              <div className="space-y-2">
+            <Card className="bg-gradient-to-br from-brand-500/10 to-brand-700/10">
+              <CardContent className="p-5">
+                <h3 className="font-bold mb-2">订阅 AI 日报</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  每日精选 AI 行业重要资讯
+                </p>
                 <input
                   type="email"
                   placeholder="输入邮箱地址"
-                  className="w-full px-3 py-2 rounded-lg border bg-background text-sm"
+                  className="w-full px-3 py-2 rounded-lg border bg-background text-sm mb-2"
                 />
                 <Button className="w-full">立即订阅</Button>
-              </div>
-            </section>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>

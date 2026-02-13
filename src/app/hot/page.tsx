@@ -113,15 +113,15 @@ export default function HotPage() {
                 <Tabs defaultValue="24h">
                   <TabsList className="grid w-full grid-cols-3">
                     <TabsTrigger value="24h" className="gap-2">
-                      <Clock className="w-4 h-4" /
+                      <Clock className="w-4 h-4" />
                       24小时
                     </TabsTrigger>
                     <TabsTrigger value="7d" className="gap-2">
-                      <Calendar className="w-4 h-4" /
+                      <Calendar className="w-4 h-4" />
                       7天
                     </TabsTrigger>
                     <TabsTrigger value="30d" className="gap-2">
-                      <TrendingUp className="w-4 h-4" /
+                      <TrendingUp className="w-4 h-4" />
                       30天
                     </TabsTrigger>
                   </TabsList>

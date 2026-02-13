@@ -9,10 +9,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  swcMinify: true,
-  experimental: {
-    optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
-  },
+  staticPageGenerationTimeout: 180,
 };
 
 export default nextConfig;

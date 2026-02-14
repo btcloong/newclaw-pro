@@ -34,8 +34,8 @@ jobs:
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          mkdir -p ~/newclaw-pro
-          cd ~/newclaw-pro
+          mkdir -p /home/admin/newclaw-pro
+          cd /home/admin/newclaw-pro
           # 清理旧文件
           rm -rf .next public
           # 解压上传的文件
@@ -48,7 +48,7 @@ jobs:
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: ".next/,package.json,ecosystem.config.js,public/"
-        target: "~/newclaw-pro"
+        target: "/home/admin/newclaw-pro"
         strip_components: 0
     
     - name: Restart application
@@ -58,7 +58,7 @@ jobs:
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          cd ~/newclaw-pro
+          cd /home/admin/newclaw-pro
           npm install --production
           npm install -g pm2
           pm2 reload newclaw-pro || pm2 start ecosystem.config.js

@@ -1,8 +1,8 @@
 module.exports = {
   apps: [{
     name: 'newclaw-pro',
-    script: './node_modules/next/dist/bin/next',
-    args: 'start',
+    script: 'npx',
+    args: 'next start',
     cwd: '/home/admin/newclaw-pro',
     instances: 1,
     exec_mode: 'fork',

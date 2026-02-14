@@ -3,7 +3,7 @@ module.exports = {
     name: 'newclaw-pro',
     script: './node_modules/next/dist/bin/next',
     args: 'start',
-    cwd: '/var/www/newclaw-pro',
+    cwd: '/root/newclaw-pro',
     instances: 1,
     exec_mode: 'fork',
     env: {

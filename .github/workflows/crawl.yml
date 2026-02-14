@@ -1,0 +1,40 @@
+name: Auto Crawl Data
+
+on:
+  schedule:
+    # 每30分钟运行一次
+    - cron: '*/30 * * * *'
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run crawler
+      run: npx tsx src/lib/crawler.ts
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PRODUCT_HUNT_TOKEN: ${{ secrets.PRODUCT_HUNT_TOKEN }}
+    
+    - name: Deploy to server (trigger restart)
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /home/admin/newclaw-pro
+          git pull
+          pm2 restart newclaw-pro

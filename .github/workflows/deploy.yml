@@ -27,17 +27,28 @@ jobs:
     - name: Build application
       run: npm run build
     
+    - name: Setup server directory
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          mkdir -p /var/www/newclaw-pro
+          chown -R $USER:$USER /var/www/newclaw-pro
+    
     - name: Deploy to server
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.SERVER_HOST }}
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        source: ".next,package.json,ecosystem.config.js,public"
+        source: "dist/,package.json,ecosystem.config.js,public/"
         target: "/var/www/newclaw-pro"
         strip_components: 0
+        rm: true
     
-    - name: Restart application
+    - name: Install dependencies and restart
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.SERVER_HOST }}
@@ -46,8 +57,10 @@ jobs:
         script: |
           cd /var/www/newclaw-pro
           npm install --production
+          npm install -g pm2
           pm2 reload newclaw-pro || pm2 start ecosystem.config.js
           pm2 save
+          pm2 startup
 
   crawl:
     runs-on: ubuntu-latest

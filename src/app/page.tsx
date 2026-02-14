@@ -12,7 +12,8 @@ import {
   MessageCircle,
   Heart,
   Repeat2,
-  Hash
+  Hash,
+  Send
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -65,12 +66,48 @@ export default async function HomePage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
+            {/* Hero Banner */}
+            <Card className="overflow-hidden relative">
+              <div 
+                className="aspect-[21/9] bg-cover bg-center relative"
+                style={{
+                  backgroundImage: `url('https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1920&q=80')`,
+                }}
+              >
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
+                
+                {/* Content */}
+                <div className="absolute inset-0 flex flex-col justify-center px-8 md:px-12">
+                  <div className="max-w-xl">
+                    <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight">
+                      New Claw
+                      <br />
+                      <span className="text-brand-400">New World</span>
+                    </h1>
+                    <p className="text-white/80 text-sm md:text-base mb-6">
+                      探索 AI 的无限可能，发现下一个改变世界的机会
+                    </p>
+                    <div className="flex gap-3">
+                      <Link href="http://t.me/newclaw" target="_blank" rel="noopener noreferrer">
+                        <Button className="bg-brand-500 hover:bg-brand-600 text-white">
+                          加入社区
+                        </Button>
+                      </Link>
+                      <Link href="/hot">
+                        <Button variant="outline" className="border-white/30 text-white hover:bg-white/10">
+                          探索热点
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Card>
+
             {/* Featured News */}
             {featuredNews && (
               <Card className="overflow-hidden">
-                <div className="aspect-video bg-gradient-to-br from-brand-500/20 to-brand-700/20 flex items-center justify-center">
-                  <span className="text-6xl font-bold text-brand-500/30">N</span>
-                </div>
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2 mb-3">
                     {featuredNews.isHot && <Badge variant="destructive">热门</Badge>}

@@ -5,7 +5,7 @@
 
 echo "🚀 开始部署 NewClaw..."
 
-cd /root
+cd /home/admin
 
 # 清理旧项目
 echo "📁 清理旧项目..."

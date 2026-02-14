@@ -32,14 +32,14 @@ jobs:
         password: ${{ secrets.SERVER_PASSWORD }}
         script: |
           # 如果目录不存在或是空的，重新克隆
-          if [ ! -d "/root/newclaw-pro/.git" ]; then
+          if [ ! -d "/home/admin/newclaw-pro/.git" ]; then
             echo "Directory not a git repo, recreating..."
-            rm -rf /root/newclaw-pro
-            cd /root
+            rm -rf /home/admin/newclaw-pro
+            cd /home/admin
             git clone https://github.com/btcloong/newclaw-pro.git
           fi
           
-          cd /root/newclaw-pro
+          cd /home/admin/newclaw-pro
           
           # 拉取最新代码
           git fetch origin

@@ -177,9 +177,9 @@ function initSampleData() {
     },
     {
       id: "5",
-      title: "xAI 发布 Grok 3：马斯克称是"地球上最聪明的AI"",
+      title: "xAI 发布 Grok 3：马斯克称是'地球上最聪明的AI'",
       summary: "埃隆·马斯克的 xAI 公司发布 Grok 3 模型，声称在数学、科学和编程基准测试中超越所有竞争对手。",
-      content: "xAI 于 2025 年 2 月发布 Grok 3 模型。马斯克声称这是"地球上最聪明的 AI"，在 AIME 数学测试、GPQA 科学测试和 LCB 编程测试中均获得最高分数。Grok 3 还引入了 DeepSearch 智能体功能，用于深度网络搜索和分析。",
+      content: "xAI 于 2025 年 2 月发布 Grok 3 模型。马斯克声称这是'地球上最聪明的 AI'，在 AIME 数学测试、GPQA 科学测试和 LCB 编程测试中均获得最高分数。Grok 3 还引入了 DeepSearch 智能体功能，用于深度网络搜索和分析。",
       url: "https://x.ai/blog/grok-3",
       source: "xAI 官方博客",
       sourceUrl: "https://x.ai/blog/grok-3",

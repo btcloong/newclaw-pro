@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { processArticleWithAI, batchProcessArticles, testGeminiConnection } from "@/lib/ai-processor";
-import { db } from "@/lib/db";
+import { processArticleWithAI, batchProcessArticles, testGeminiConnection } from "../../../lib/ai-processor";
+import { db } from "../../../lib/db";
 
 export async function POST(request: NextRequest) {
   try {

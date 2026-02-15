@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Twitter, Heart, Repeat2, MessageCircle, Eye, BadgeCheck } from "lucide-react";
-import { cn, formatNumber, formatDate } from "@/lib/utils";
-import type { Tweet } from "@/lib/db";
+import { cn, formatNumber, formatDate } from "../../lib/utils";
+import type { Tweet } from "../../lib/db";
 
 interface TweetCardProps {
   tweet: Tweet;

@@ -1,6 +1,6 @@
-import { cn } from "@/lib/utils";
+import { cn } from "../../lib/utils";
 import { Zap, Lightbulb, Wrench, BookOpen, ArrowRight } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "../../components/ui/badge";
 
 interface IdeaCardProps {
   id: string;

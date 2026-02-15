@@ -1,6 +1,6 @@
 import { TrendingUp, Hash } from "lucide-react";
-import { cn, formatNumber } from "@/lib/utils";
-import type { TwitterTrend } from "@/lib/db";
+import { cn, formatNumber } from "../../lib/utils";
+import type { TwitterTrend } from "../../lib/db";
 
 interface TwitterTrendsListProps {
   trends: TwitterTrend[];

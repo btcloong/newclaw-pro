@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Clock, Eye, ArrowUpRight } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { cn, formatDate, truncate } from "@/lib/utils";
+import { Badge } from "../../components/ui/badge";
+import { cn, formatDate, truncate } from "../../lib/utils";
 
 interface NewsCardProps {
   id: string;

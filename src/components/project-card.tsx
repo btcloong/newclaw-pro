@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ExternalLink, TrendingUp, Users, Star } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { cn, formatNumber } from "@/lib/utils";
+import { Badge } from "../../components/ui/badge";
+import { cn, formatNumber } from "../../lib/utils";
 
 interface ProjectCardProps {
   id: string;

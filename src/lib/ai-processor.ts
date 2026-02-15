@@ -440,3 +440,58 @@ export async function testGeminiConnection(apiKey?: string): Promise<{ success: 
 export function getCategoryMeta(category: AICategory) {
   return CATEGORY_META[category] || { emoji: "📝", description: "其他" };
 }
+
+// ============ 通用文本生成 ============
+interface GenerateTextOptions {
+  temperature?: number;
+  maxTokens?: number;
+  apiKey?: string;
+}
+
+export async function generateText(
+  prompt: string,
+  options: GenerateTextOptions = {}
+): Promise<string> {
+  const key = options.apiKey || process.env.GEMINI_API_KEY;
+  
+  if (!key) {
+    throw new Error("未配置 GEMINI_API_KEY");
+  }
+
+  await rateLimiter.waitForAvailable();
+
+  try {
+    const response = await fetch(`${GEMINI_API_URL}?key=${key}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: {
+          temperature: options.temperature ?? 0.7,
+          topP: 0.8,
+          topK: 40,
+          maxOutputTokens: options.maxTokens ?? 2048,
+        },
+        safetySettings,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text().catch(() => "Unknown error");
+      throw new Error(`Gemini API error (${response.status}): ${errorText}`);
+    }
+
+    const data = await response.json() as { 
+      candidates?: Array<{ 
+        content?: { 
+          parts?: Array<{ text?: string }> 
+        } 
+      }> 
+    };
+    
+    return data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+  } catch (error) {
+    console.error("[AI] Text generation error:", error);
+    throw error;
+  }
+}

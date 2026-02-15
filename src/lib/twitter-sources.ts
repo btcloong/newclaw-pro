@@ -1,0 +1,506 @@
+/**
+ * 高质量 AI 相关 Twitter/X 账号数据源
+ * 分类：大企业官方 + 大KOL + 行业大佬 + AI文章爆款账号
+ */
+
+export interface TwitterSource {
+  id: string;
+  username: string;
+  name: string;
+  category: "official" | "kol" | "expert" | "media" | "developer";
+  description: string;
+  priority: "high" | "medium" | "low";
+  rssUrl: string; // RSSHub 或 Nitter 地址
+  isActive: boolean;
+}
+
+// ============ 1. 大企业官方账号 ============
+export const OFFICIAL_SOURCES: TwitterSource[] = [
+  {
+    id: "openai",
+    username: "OpenAI",
+    name: "OpenAI",
+    category: "official",
+    description: "OpenAI 官方账号，发布 GPT、o3 等模型更新",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/OpenAI",
+    isActive: true,
+  },
+  {
+    id: "anthropic",
+    username: "AnthropicAI",
+    name: "Anthropic",
+    category: "official",
+    description: "Anthropic 官方，Claude 模型更新",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/AnthropicAI",
+    isActive: true,
+  },
+  {
+    id: "google-deepmind",
+    username: "GoogleDeepMind",
+    name: "Google DeepMind",
+    category: "official",
+    description: "Google DeepMind 官方，Gemini 更新",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/GoogleDeepMind",
+    isActive: true,
+  },
+  {
+    id: "meta-ai",
+    username: "MetaAI",
+    name: "Meta AI",
+    category: "official",
+    description: "Meta AI 官方，Llama 模型更新",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/MetaAI",
+    isActive: true,
+  },
+  {
+    id: "xai",
+    username: "xAI",
+    name: "xAI",
+    category: "official",
+    description: "xAI 官方，Grok 模型更新",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/xAI",
+    isActive: true,
+  },
+  {
+    id: "mistral-ai",
+    username: "MistralAI",
+    name: "Mistral AI",
+    category: "official",
+    description: "Mistral AI 官方，欧洲开源模型",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/MistralAI",
+    isActive: true,
+  },
+  {
+    id: "cohere",
+    username: "Cohere",
+    name: "Cohere",
+    category: "official",
+    description: "Cohere 官方，企业级 LLM",
+    priority: "medium",
+    rssUrl: "https://rsshub.app/twitter/user/Cohere",
+    isActive: true,
+  },
+  {
+    id: "stability-ai",
+    username: "StabilityAI",
+    name: "Stability AI",
+    category: "official",
+    description: "Stability AI 官方，图像生成模型",
+    priority: "medium",
+    rssUrl: "https://rsshub.app/twitter/user/StabilityAI",
+    isActive: true,
+  },
+  {
+    id: "huggingface",
+    username: "huggingface",
+    name: "Hugging Face",
+    category: "official",
+    description: "Hugging Face 官方，开源模型平台",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/huggingface",
+    isActive: true,
+  },
+  {
+    id: "nvidia",
+    username: "nvidia",
+    name: "NVIDIA",
+    category: "official",
+    description: "NVIDIA 官方，AI 芯片和计算",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/nvidia",
+    isActive: true,
+  },
+];
+
+// ============ 2. 大KOL / 行业大佬 ============
+export const KOL_SOURCES: TwitterSource[] = [
+  {
+    id: "karpathy",
+    username: "karpathy",
+    name: "Andrej Karpathy",
+    category: "expert",
+    description: "前 Tesla AI 总监，OpenAI 创始成员，AI 教育大神",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/karpathy",
+    isActive: true,
+  },
+  {
+    id: "ylecun",
+    username: "ylecun",
+    name: "Yann LeCun",
+    category: "expert",
+    description: "Meta Chief AI Scientist，图灵奖得主，深度学习三巨头之一",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/ylecun",
+    isActive: true,
+  },
+  {
+    id: "geoffreyhinton",
+    username: "geoffreyhinton",
+    name: "Geoffrey Hinton",
+    category: "expert",
+    description: "图灵奖得主，深度学习之父",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/geoffreyhinton",
+    isActive: true,
+  },
+  {
+    id: "drfeifei",
+    username: "drfeifei",
+    name: "李飞飞",
+    category: "expert",
+    description: "斯坦福教授，ImageNet 创始人，AI4ALL 联合创始人",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/drfeifei",
+    isActive: true,
+  },
+  {
+    id: "andrewyng",
+    username: "AndrewYNg",
+    name: "Andrew Ng",
+    category: "expert",
+    description: "Coursera 联合创始人，DeepLearning.AI 创始人",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/AndrewYNg",
+    isActive: true,
+  },
+  {
+    id: "sama",
+    username: "sama",
+    name: "Sam Altman",
+    category: "expert",
+    description: "OpenAI CEO，YC 前总裁",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/sama",
+    isActive: true,
+  },
+  {
+    id: "elonmusk",
+    username: "elonmusk",
+    name: "Elon Musk",
+    category: "expert",
+    description: "xAI 创始人，关注 AI 相关推文",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/elonmusk",
+    isActive: true,
+  },
+  {
+    id: "demishassabis",
+    username: "demishassabis",
+    name: "Demis Hassabis",
+    category: "expert",
+    description: "Google DeepMind CEO，诺贝尔化学奖得主",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/demishassabis",
+    isActive: true,
+  },
+  {
+    id: "goodside",
+    username: "goodside",
+    name: "Riley Goodside",
+    category: "expert",
+    description: "提示工程专家，Scale AI 提示工程师",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/goodside",
+    isActive: true,
+  },
+  {
+    id: "bindureddy",
+    username: "bindureddy",
+    name: "Bindu Reddy",
+    category: "expert",
+    description: "Abacus.AI CEO，AI 产品专家",
+    priority: "medium",
+    rssUrl: "https://rsshub.app/twitter/user/bindureddy",
+    isActive: true,
+  },
+  {
+    id: "hardmaru",
+    username: "hardmaru",
+    name: "David Ha",
+    category: "expert",
+    description: "Sakana AI 联合创始人，Google Brain 前研究员",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/hardmaru",
+    isActive: true,
+  },
+  {
+    id: "jeremyphoward",
+    username: "jeremyphoward",
+    name: "Jeremy Howard",
+    category: "expert",
+    description: "fast.ai 创始人，Kaggle 首席科学家",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/jeremyphoward",
+    isActive: true,
+  },
+  {
+    id: "emilymbender",
+    username: "emilymbender",
+    name: "Emily M. Bender",
+    category: "expert",
+    description: "华盛顿大学教授，语言学专家，AI 伦理研究者",
+    priority: "medium",
+    rssUrl: "https://rsshub.app/twitter/user/emilymbender",
+    isActive: true,
+  },
+  {
+    id: "timnitgebru",
+    username: "timnitgebru",
+    name: "Timnit Gebru",
+    category: "expert",
+    description: "DAIR 研究所创始人，AI 伦理专家",
+    priority: "medium",
+    rssUrl: "https://rsshub.app/twitter/user/timnitgebru",
+    isActive: true,
+  },
+];
+
+// ============ 3. AI 文章爆款 / 技术博主 ============
+export const MEDIA_SOURCES: TwitterSource[] = [
+  {
+    id: "simonw",
+    username: "simonw",
+    name: "Simon Willison",
+    category: "developer",
+    description: "Datasette 创始人，AI 工具开发者，技术博主",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/simonw",
+    isActive: true,
+  },
+  {
+    id: "swyx",
+    username: "swyx",
+    name: "swyx",
+    category: "developer",
+    description: "Latent Space 播客主持人，AI 工程师",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/swyx",
+    isActive: true,
+  },
+  {
+    id: "paulg",
+    username: "paulg",
+    name: "Paul Graham",
+    category: "expert",
+    description: "Y Combinator 联合创始人，创业导师",
+    priority: "medium",
+    rssUrl: "https://rsshub.app/twitter/user/paulg",
+    isActive: true,
+  },
+  {
+    id: "lexfridman",
+    username: "lexfridman",
+    name: "Lex Fridman",
+    category: "media",
+    description: "MIT 研究员，AI 播客主持人",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/lexfridman",
+    isActive: true,
+  },
+  {
+    id: "mkbhd",
+    username: "MKBHD",
+    name: "Marques Brownlee",
+    category: "media",
+    description: "顶级科技 YouTuber，AI 产品评测",
+    priority: "medium",
+    rssUrl: "https://rsshub.app/twitter/user/MKBHD",
+    isActive: true,
+  },
+  {
+    id: "techcrunch",
+    username: "TechCrunch",
+    name: "TechCrunch",
+    category: "media",
+    description: "科技新闻媒体，AI 行业报道",
+    priority: "medium",
+    rssUrl: "https://rsshub.app/twitter/user/TechCrunch",
+    isActive: true,
+  },
+  {
+    id: "verge",
+    username: "verge",
+    name: "The Verge",
+    category: "media",
+    description: "科技新闻媒体",
+    priority: "medium",
+    rssUrl: "https://rsshub.app/twitter/user/verge",
+    isActive: true,
+  },
+  {
+    id: "wired",
+    username: "WIRED",
+    name: "WIRED",
+    category: "media",
+    description: "科技杂志，AI 深度报道",
+    priority: "medium",
+    rssUrl: "https://rsshub.app/twitter/user/WIRED",
+    isActive: true,
+  },
+  {
+    id: "mittechreview",
+    username: "techreview",
+    name: "MIT Technology Review",
+    category: "media",
+    description: "MIT 科技评论，AI 研究报道",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/techreview",
+    isActive: true,
+  },
+  {
+    id: "venturebeat",
+    username: "VentureBeat",
+    name: "VentureBeat",
+    category: "media",
+    description: "科技媒体，AI 行业分析",
+    priority: "medium",
+    rssUrl: "https://rsshub.app/twitter/user/VentureBeat",
+    isActive: true,
+  },
+];
+
+// ============ 4. 开发者 / 技术专家 ============
+export const DEVELOPER_SOURCES: TwitterSource[] = [
+  {
+    id: "sharifshameem",
+    username: "sharifshameem",
+    name: "Sharif Shameem",
+    category: "developer",
+    description: "Zapier AI 产品负责人，AI 产品专家",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/sharifshameem",
+    isActive: true,
+  },
+  {
+    id: "amasad",
+    username: "amasad",
+    name: "Amjad Masad",
+    category: "developer",
+    description: "Replit CEO，AI 编程工具",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/amasad",
+    isActive: true,
+  },
+  {
+    id: "gdb",
+    username: "gdb",
+    name: "Greg Brockman",
+    category: "expert",
+    description: "OpenAI 联合创始人兼总裁",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/gdb",
+    isActive: true,
+  },
+  {
+    id: "ilyasut",
+    username: "ilyasut",
+    name: "Ilya Sutskever",
+    category: "expert",
+    description: "OpenAI 联合创始人，SSI 创始人，Transformer 作者之一",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/ilyasut",
+    isActive: true,
+  },
+  {
+    id: "lilianweng",
+    username: "lilianweng",
+    name: "Lilian Weng",
+    category: "expert",
+    description: "OpenAI 安全团队负责人，AI 安全研究",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/lilianweng",
+    isActive: true,
+  },
+  {
+    id: "nathanbenaich",
+    username: "nathanbenaich",
+    name: "Nathan Benaich",
+    category: "expert",
+    description: "Air Street Capital 合伙人，State of AI Report 作者",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/nathanbenaich",
+    isActive: true,
+  },
+  {
+    id: "jackclark",
+    username: "jackclark",
+    name: "Jack Clark",
+    category: "expert",
+    description: "Anthropic 政策总监，Import AI 作者",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/jackclark",
+    isActive: true,
+  },
+  {
+    id: "fchollet",
+    username: "fchollet",
+    name: "François Chollet",
+    category: "expert",
+    description: "Keras 作者，Google 研究员，ARC 基准测试作者",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/fchollet",
+    isActive: true,
+  },
+  {
+    id: "peterdeng",
+    username: "peterdeng",
+    name: "Peter Deng",
+    category: "expert",
+    description: "OpenAI CPO，前 Meta、Uber 产品负责人",
+    priority: "medium",
+    rssUrl: "https://rsshub.app/twitter/user/peterdeng",
+    isActive: true,
+  },
+  {
+    id: "mustafasuleyman",
+    username: "mustafasuleyman",
+    name: "Mustafa Suleyman",
+    category: "expert",
+    description: "Microsoft AI CEO，DeepMind 联合创始人",
+    priority: "high",
+    rssUrl: "https://rsshub.app/twitter/user/mustafasuleyman",
+    isActive: true,
+  },
+];
+
+// ============ 所有数据源汇总 ============
+export const ALL_TWITTER_SOURCES: TwitterSource[] = [
+  ...OFFICIAL_SOURCES,
+  ...KOL_SOURCES,
+  ...MEDIA_SOURCES,
+  ...DEVELOPER_SOURCES,
+];
+
+// 按优先级获取数据源
+export function getHighPrioritySources(): TwitterSource[] {
+  return ALL_TWITTER_SOURCES.filter(s => s.priority === "high" && s.isActive);
+}
+
+// 按分类获取数据源
+export function getSourcesByCategory(category: TwitterSource["category"]): TwitterSource[] {
+  return ALL_TWITTER_SOURCES.filter(s => s.category === category && s.isActive);
+}
+
+// 获取活跃数据源
+export function getActiveSources(): TwitterSource[] {
+  return ALL_TWITTER_SOURCES.filter(s => s.isActive);
+}
+
+// 获取数据源统计
+export function getSourcesStats() {
+  return {
+    total: ALL_TWITTER_SOURCES.length,
+    official: OFFICIAL_SOURCES.length,
+    kol: KOL_SOURCES.length,
+    media: MEDIA_SOURCES.length,
+    developer: DEVELOPER_SOURCES.length,
+    highPriority: getHighPrioritySources().length,
+  };
+}

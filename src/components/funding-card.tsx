@@ -1,6 +1,6 @@
-import { cn } from "@/lib/utils";
+import { cn } from "../../lib/utils";
 import { Building2, DollarSign, Calendar, Users } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "../../components/ui/badge";
 
 interface FundingCardProps {
   id: string;

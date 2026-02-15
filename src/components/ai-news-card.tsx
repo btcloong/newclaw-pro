@@ -4,12 +4,12 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Star, TrendingUp, Sparkles, ArrowRight, Clock, Bookmark, ExternalLink } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { cn, formatDate } from "@/lib/utils";
-import type { NewsItem } from "@/lib/db";
+import { Badge } from "../../components/ui/badge";
+import { Button } from "../../components/ui/button";
+import { Card, CardContent } from "../../components/ui/card";
+import { Progress } from "../../components/ui/progress";
+import { cn, formatDate } from "../../lib/utils";
+import type { NewsItem } from "../../lib/db";
 
 interface AINewsCardProps {
   article: NewsItem;

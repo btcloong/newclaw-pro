@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "../../lib/utils";
 import { TrendingUp, ArrowRight } from "lucide-react";
 
 interface HotTopic {

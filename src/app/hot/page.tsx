@@ -1,6 +1,6 @@
 import { Flame, Clock, Calendar, TrendingUp } from "lucide-react";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { db } from "@/lib/db";
 import { formatDate } from "@/lib/utils";
 

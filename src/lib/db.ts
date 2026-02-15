@@ -114,6 +114,13 @@ export interface Tweet {
   urls: string[];
   isHot?: boolean;
   sentiment?: "positive" | "neutral" | "negative";
+  // AI 解读字段
+  aiAnalysis?: {
+    chineseSummary: string;
+    keyPoints: string[];
+    importance: "high" | "medium" | "low";
+    category: string;
+  };
 }
 
 // Twitter 话题趋势
@@ -143,8 +150,8 @@ let projectsStore: Project[] = [];
 let researchStore: ResearchReport[] = [];
 let hotTopicsStore: HotTopic[] = [];
 let fundingStore: Funding[] = [];
-let tweetsStore: Tweet[] = [];
-let twitterTrendsStore: TwitterTrend[] = [];
+export let tweetsStore: Tweet[] = [];
+export let twitterTrendsStore: TwitterTrend[] = [];
 let trendSummaryStore: DailyTrendSummary | null = null;
 let lastCrawlTime: string | null = null;
 let lastAIProcessingTime: string | null = null;
@@ -545,6 +552,136 @@ function initSampleData() {
     { id: "tt8", name: "AI编程", query: "AICoding", tweetVolume: 398000, rank: 8, category: "开发工具" },
   ];
 
+  // 初始化推文数据
+  tweetsStore = [
+    {
+      id: "tw_init_1",
+      content: "GPT-5 的推理能力简直令人惊叹。刚刚测试了它在复杂数学问题上的表现，准确率比 GPT-4 提升了 40% 以上。AI 的发展速度真的超出了所有人的预期。🚀",
+      author: { name: "Andrej Karpathy", username: "karpathy", verified: true },
+      publishedAt: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
+      likes: 15420,
+      retweets: 3421,
+      replies: 892,
+      views: 456000,
+      hashtags: ["AI", "GPT5", "OpenAI"],
+      mentions: [],
+      urls: ["https://twitter.com/karpathy/status/1"],
+      isHot: true,
+      sentiment: "positive" as const,
+      aiAnalysis: {
+        chineseSummary: "Andrej Karpathy 分享 GPT-5 测试结果，在复杂数学问题上准确率比 GPT-4 提升 40% 以上。",
+        keyPoints: ["提及模型: GPT-5, GPT-4", "关键数据: 40%", "AI 行业动态分享"],
+        importance: "high",
+        category: "模型发布"
+      }
+    },
+    {
+      id: "tw_init_2",
+      content: "刚刚体验了 Claude 3.5 的新功能，代码生成质量有了质的飞跃。特别是对于复杂架构设计，它的理解能力让我印象深刻。",
+      author: { name: "吴恩达", username: "AndrewYNg", verified: true },
+      publishedAt: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
+      likes: 12300,
+      retweets: 2800,
+      replies: 650,
+      views: 320000,
+      hashtags: ["Claude", "AI", "Coding"],
+      mentions: [],
+      urls: ["https://twitter.com/AndrewYNg/status/2"],
+      isHot: true,
+      sentiment: "positive" as const,
+      aiAnalysis: {
+        chineseSummary: "吴恩达体验 Claude 3.5 新功能，称赞代码生成质量和复杂架构理解能力。",
+        keyPoints: ["提及模型: Claude", "产品更新体验分享"],
+        importance: "high",
+        category: "产品更新"
+      }
+    },
+    {
+      id: "tw_init_3",
+      content: "AI Agent 赛道今年融资额已经突破 50 亿美元。从自主浏览器到编程助手，这个领域的创新速度令人瞩目。",
+      author: { name: "Elad Gil", username: "eladgil", verified: true },
+      publishedAt: new Date(Date.now() - 1000 * 60 * 60 * 4).toISOString(),
+      likes: 8900,
+      retweets: 2100,
+      replies: 420,
+      views: 280000,
+      hashtags: ["AIAgent", "VentureCapital", "Startup"],
+      mentions: [],
+      urls: ["https://twitter.com/eladgil/status/3"],
+      isHot: false,
+      sentiment: "positive" as const,
+      aiAnalysis: {
+        chineseSummary: "Elad Gil 分享 AI Agent 赛道融资数据，今年已突破 50 亿美元。",
+        keyPoints: ["关键数据: 50亿美元", "行业投资趋势分析"],
+        importance: "medium",
+        category: "行业动态"
+      }
+    },
+    {
+      id: "tw_init_4",
+      content: "具身智能的突破正在加速。Figure AI 的最新演示显示，他们的机器人已经能够完成复杂的装配任务。这比我们预期的要快得多。",
+      author: { name: "李飞飞", username: "drfeifei", verified: true },
+      publishedAt: new Date(Date.now() - 1000 * 60 * 60 * 6).toISOString(),
+      likes: 15600,
+      retweets: 3800,
+      replies: 920,
+      views: 520000,
+      hashtags: ["Robotics", "EmbodiedAI", "FigureAI"],
+      mentions: [],
+      urls: ["https://twitter.com/drfeifei/status/4"],
+      isHot: true,
+      sentiment: "positive" as const,
+      aiAnalysis: {
+        chineseSummary: "李飞飞评论 Figure AI 机器人演示，具身智能发展速度超出预期。",
+        keyPoints: ["提及公司: Figure AI", "技术突破: 复杂装配任务"],
+        importance: "high",
+        category: "研究突破"
+      }
+    },
+    {
+      id: "tw_init_5",
+      content: "Midjourney V7 的 3D 场景生成能力让我震惊。输入一段文字描述，几秒钟就能生成可用于游戏开发的 3D 场景。创意产业的变革正在加速。",
+      author: { name: "Sam Altman", username: "sama", verified: true },
+      publishedAt: new Date(Date.now() - 1000 * 60 * 60 * 8).toISOString(),
+      likes: 22100,
+      retweets: 5600,
+      replies: 1200,
+      views: 780000,
+      hashtags: ["Midjourney", "AI", "3D"],
+      mentions: [],
+      urls: ["https://twitter.com/sama/status/5"],
+      isHot: true,
+      sentiment: "positive" as const,
+      aiAnalysis: {
+        chineseSummary: "Sam Altman 称赞 Midjourney V7 的 3D 场景生成能力，认为将加速创意产业变革。",
+        keyPoints: ["提及产品: Midjourney V7", "应用场景: 游戏开发"],
+        importance: "high",
+        category: "产品更新"
+      }
+    },
+    {
+      id: "tw_init_6",
+      content: "开源模型正在迎头赶上。Llama 4 的性能在某些基准测试上已经超过了 GPT-4，这对于整个 AI 生态系统来说是一个巨大的胜利。",
+      author: { name: "Yann LeCun", username: "ylecun", verified: true },
+      publishedAt: new Date(Date.now() - 1000 * 60 * 60 * 12).toISOString(),
+      likes: 18900,
+      retweets: 4300,
+      replies: 1100,
+      views: 650000,
+      hashtags: ["Llama", "OpenSource", "AI"],
+      mentions: [],
+      urls: ["https://twitter.com/ylecun/status/6"],
+      isHot: false,
+      sentiment: "positive" as const,
+      aiAnalysis: {
+        chineseSummary: "Yann LeCun 宣布 Llama 4 在部分基准测试中超越 GPT-4，开源模型取得重大突破。",
+        keyPoints: ["提及模型: Llama 4, GPT-4", "开源生态进展"],
+        importance: "high",
+        category: "模型发布"
+      }
+    },
+  ];
+
   // 初始化趋势总结
   trendSummaryStore = {
     date: new Date().toISOString().split("T")[0],
@@ -698,20 +835,54 @@ export const db = {
     findAll: () => fundingStore,
   },
   tweets: {
-    findAll: (options?: { limit?: number; isHot?: boolean }) => {
+    findAll: (options?: { 
+      limit?: number; 
+      isHot?: boolean; 
+      sortBy?: "time" | "popularity";
+      category?: string;
+    }) => {
       let result = [...tweetsStore];
       
       if (options?.isHot !== undefined) {
         result = result.filter(t => t.isHot === options.isHot);
       }
       
-      result.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+      if (options?.category) {
+        result = result.filter(t => 
+          t.aiAnalysis?.category === options.category ||
+          t.hashtags.some(h => h.toLowerCase() === options.category?.toLowerCase())
+        );
+      }
+      
+      // 排序
+      if (options?.sortBy === "popularity") {
+        // 按热度排序（点赞+转发）
+        result.sort((a, b) => (b.likes + b.retweets) - (a.likes + a.retweets));
+      } else {
+        // 默认按时间倒序
+        result.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+      }
       
       const limit = options?.limit || result.length;
       return result.slice(0, limit);
     },
     findById: (id: string) => tweetsStore.find(t => t.id === id),
+    findByUsername: (username: string) => {
+      return tweetsStore.filter(t => t.author.username.toLowerCase() === username.toLowerCase())
+        .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+    },
+    findByImportance: (importance: "high" | "medium" | "low") => {
+      return tweetsStore.filter(t => t.aiAnalysis?.importance === importance)
+        .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+    },
     count: () => tweetsStore.length,
+    getStats: () => {
+      const total = tweetsStore.length;
+      const hot = tweetsStore.filter(t => t.isHot).length;
+      const highImportance = tweetsStore.filter(t => t.aiAnalysis?.importance === "high").length;
+      const withAIAnalysis = tweetsStore.filter(t => t.aiAnalysis && t.aiAnalysis.chineseSummary !== "AI 解读生成中...").length;
+      return { total, hot, highImportance, withAIAnalysis };
+    },
   },
   twitterTrends: {
     findAll: () => twitterTrendsStore.sort((a, b) => a.rank - b.rank),

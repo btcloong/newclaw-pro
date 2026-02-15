@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
-import { ArrowLeft, Clock, Eye, Share2, Bookmark, ExternalLink } from "lucide-react";
+import { db } from "@/lib/db";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { db } from "@/lib/db";
+import { Card, CardContent } from "@/components/ui/card";
+import { ArrowLeft, Clock, Eye, ExternalLink } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 
 interface NewsDetailPageProps {
@@ -18,10 +18,12 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
     notFound();
   }
 
+  const displayTitle = article.chineseTitle || article.title;
+  const displayCategory = article.aiCategory || article.category;
+
   return (
     <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
-        {/* Back Button */}
         <Link
           href="/"
           className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-6"
@@ -31,14 +33,22 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
         </Link>
 
         <div className="max-w-4xl mx-auto">
-          {/* Header */}
           <div className="mb-8">
             <div className="flex flex-wrap items-center gap-2 mb-4">
               {article.isHot && <Badge variant="destructive">热门</Badge>}
-              {article.category && <Badge variant="secondary">{article.category}</Badge>}
+              <Badge variant="secondary">{displayCategory}</Badge>
+              {article.aiScores && (
+                <div className="flex items-center gap-1 text-sm">
+                  <span className="text-yellow-500">★</span>
+                  <span>{article.aiScores.overall.toFixed(1)}</span>
+                  <span className="text-muted-foreground text-xs">
+                    (相关性{article.aiScores.relevance} 质量{article.aiScores.quality} 时效{article.aiScores.timeliness})
+                  </span>
+                </div>
+              )}
             </div>
 
-            <h1 className="text-3xl md:text-4xl font-bold mb-6">{article.title}</h1>
+            <h1 className="text-3xl md:text-4xl font-bold mb-6">{displayTitle}</h1>
 
             <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
@@ -62,61 +72,41 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
             </div>
           </div>
 
-          {/* Featured Image */}
           {article.image && (
-            <div className="relative aspect-video rounded-xl overflow-hidden mb-8">
-              <Image
-                src={article.image}
-                alt={article.title}
-                fill
-                className="object-cover"
-              />
-            </div>
+            <div 
+              className="relative aspect-video rounded-xl overflow-hidden mb-8 bg-cover bg-center"
+              style={{ backgroundImage: `url(${article.image})` }}
+            />
           )}
 
-          {/* Summary */}
-          {article.summary && (
-            <div className="p-6 rounded-xl bg-muted/50 mb-8">
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                {article.summary}
-              </p>
-            </div>
+          {article.aiSummary && (
+            <Card className="mb-8 bg-blue-50/50">
+              <CardContent className="p-6">
+                <h2 className="font-semibold mb-2">AI 摘要</h2>
+                <p className="text-muted-foreground">{article.aiSummary}</p>
+              </CardContent>
+            </Card>
           )}
 
-          {/* Content */}
+          {article.recommendation && (
+            <Card className="mb-8 bg-yellow-50/50">
+              <CardContent className="p-6">
+                <h2 className="font-semibold mb-2">推荐理由</h2>
+                <p className="text-muted-foreground">{article.recommendation}</p>
+              </CardContent>
+            </Card>
+          )}
+
           <article className="prose prose-lg max-w-none mb-8">
-            {article.content ? (
-              <div 
-                className="text-foreground leading-relaxed space-y-4"
-                dangerouslySetInnerHTML={{ __html: article.content }} 
-              />
-            ) : (
-              <div className="text-muted-foreground space-y-4">
-                <p>
-                  本文内容正在整理中。请访问原始来源获取完整信息。
-                </p>
-                {article.sourceUrl && (
-                  <a
-                    href={article.sourceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-brand-500 hover:underline"
-                  >
-                    阅读原文
-                    <ExternalLink className="w-4 h-4" />
-                  </a>
-                )}
-              </div>
-            )}
+            <p className="text-muted-foreground">{article.content || article.summary}</p>
           </article>
 
-          {/* Tags */}
-          {article.tags.length > 0 && (
+          {article.aiKeywords && article.aiKeywords.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-8">
-              {article.tags.map((tag: string) => (
+              {article.aiKeywords.map((tag: string) => (
                 <span
                   key={tag}
-                  className="px-3 py-1 rounded-full bg-muted text-sm hover:bg-accent cursor-pointer transition-colors"
+                  className="px-3 py-1 rounded-full bg-muted text-sm hover:bg-accent cursor-pointer"
                 >
                   #{tag}
                 </span>
@@ -124,16 +114,7 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
             </div>
           )}
 
-          {/* Actions */}
           <div className="flex flex-wrap items-center gap-4 pt-8 border-t">
-            <Button variant="outline" className="gap-2">
-              <Share2 className="w-4 h-4" />
-              分享
-            </Button>
-            <Button variant="outline" className="gap-2">
-              <Bookmark className="w-4 h-4" />
-              收藏
-            </Button>
             {article.sourceUrl && (
               <a
                 href={article.sourceUrl}

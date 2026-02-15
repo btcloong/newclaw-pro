@@ -10,7 +10,6 @@ const nextConfig = {
     unoptimized: true,
   },
   staticPageGenerationTimeout: 180,
-  // 禁用静态优化以避免构建问题
   output: 'standalone',
 };
 

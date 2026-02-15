@@ -1,6 +1,9 @@
 // 使用内存存储，适合 Vercel serverless 环境
 // 数据在每次部署后重置，通过 API 触发重新抓取
 
+import { AICategory, ArticleScores, AIProcessingResult } from "./ai-processor";
+
+// 扩展的新闻项接口，包含 AI 处理字段
 export interface NewsItem {
   id: string;
   title: string;
@@ -16,6 +19,24 @@ export interface NewsItem {
   isHot?: boolean;
   isFeatured?: boolean;
   viewCount?: number;
+  
+  // AI 处理字段
+  aiProcessed?: boolean;
+  aiProcessingStatus?: "pending" | "processing" | "completed" | "failed";
+  aiProcessedAt?: string;
+  aiError?: string;
+  
+  // AI 评分
+  aiScores?: ArticleScores;
+  
+  // AI 分类
+  aiCategory?: AICategory;
+  
+  // AI 生成的内容
+  chineseTitle?: string;
+  aiSummary?: string;
+  recommendation?: string;
+  aiKeywords?: string[];
 }
 
 export interface Project {
@@ -105,6 +126,17 @@ export interface TwitterTrend {
   category?: string;
 }
 
+// 趋势总结接口
+export interface DailyTrendSummary {
+  date: string;
+  summary: string;
+  keyTrends: string[];
+  notableArticles: string[];
+  categoryDistribution: Record<string, number>;
+  topKeywords: Array<{ keyword: string; count: number }>;
+  generatedAt: string;
+}
+
 // 内存存储
 let newsStore: NewsItem[] = [];
 let projectsStore: Project[] = [];
@@ -113,7 +145,9 @@ let hotTopicsStore: HotTopic[] = [];
 let fundingStore: Funding[] = [];
 let tweetsStore: Tweet[] = [];
 let twitterTrendsStore: TwitterTrend[] = [];
+let trendSummaryStore: DailyTrendSummary | null = null;
 let lastCrawlTime: string | null = null;
+let lastAIProcessingTime: string | null = null;
 
 // 真实可靠的新闻数据源 - 基于2024-2025年真实AI行业动态
 function initSampleData() {
@@ -134,6 +168,20 @@ function initSampleData() {
       isHot: true,
       isFeatured: true,
       viewCount: 125000,
+      aiProcessed: true,
+      aiProcessingStatus: "completed",
+      aiProcessedAt: new Date().toISOString(),
+      aiScores: {
+        relevance: 10,
+        quality: 9,
+        timeliness: 9,
+        overall: 9.3,
+      },
+      aiCategory: "AI/ML",
+      chineseTitle: "OpenAI o3 推理模型突破：接近人类水平的抽象推理",
+      aiSummary: "OpenAI发布o3推理模型，在ARC-AGI基准测试中达到87.5%准确率，标志着AI抽象推理能力的重大突破。该模型采用新的推理架构，在复杂逻辑任务上表现出色。这一进展对AGI研究具有里程碑意义，值得AI研究人员和工程师关注。",
+      recommendation: "这是2024年AI领域最重要的突破之一，展示了推理时计算扩展的威力。强烈建议阅读了解其技术细节。",
+      aiKeywords: ["OpenAI", "o3", "推理模型", "ARC-AGI"],
     },
     {
       id: "2",
@@ -148,6 +196,20 @@ function initSampleData() {
       publishedAt: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
       isHot: true,
       viewCount: 89000,
+      aiProcessed: true,
+      aiProcessingStatus: "completed",
+      aiProcessedAt: new Date().toISOString(),
+      aiScores: {
+        relevance: 9,
+        quality: 8,
+        timeliness: 9,
+        overall: 8.6,
+      },
+      aiCategory: "AI/ML",
+      chineseTitle: "Google Gemini 2.0 Flash：原生多模态AI全面升级",
+      aiSummary: "Google发布Gemini 2.0 Flash，实现原生图像生成、多语言音频输出和实时视频理解。同时推出Project Astra和Project Mariner等AI智能体项目。这标志着多模态AI进入新阶段，为下一代AI应用奠定基础。",
+      recommendation: "多模态能力是AI发展的重要方向，Gemini 2.0展示了Google在该领域的领先地位。",
+      aiKeywords: ["Google", "Gemini", "多模态", "AI Agent"],
     },
     {
       id: "3",
@@ -161,6 +223,20 @@ function initSampleData() {
       tags: ["DeepSeek", "开源模型", "MoE", "中国AI"],
       publishedAt: new Date(Date.now() - 1000 * 60 * 60 * 4).toISOString(),
       viewCount: 156000,
+      aiProcessed: true,
+      aiProcessingStatus: "completed",
+      aiProcessedAt: new Date().toISOString(),
+      aiScores: {
+        relevance: 10,
+        quality: 9,
+        timeliness: 9,
+        overall: 9.3,
+      },
+      aiCategory: "AI/ML",
+      chineseTitle: "DeepSeek V3：557万美元训练出GPT-4o级别模型",
+      aiSummary: "DeepSeek V3采用MoE架构，以仅557万美元的训练成本实现GPT-4o级别性能。这一突破证明了高效训练方法的可行性，对AI行业的成本结构产生深远影响。中国AI公司在模型效率方面展现出强大竞争力。",
+      recommendation: "这是AI训练效率的重大突破，值得所有AI从业者关注。低成本高性能模型将改变行业格局。",
+      aiKeywords: ["DeepSeek", "MoE", "训练效率", "开源模型"],
     },
     {
       id: "4",
@@ -174,6 +250,20 @@ function initSampleData() {
       tags: ["Meta", "Llama", "开源", "大模型"],
       publishedAt: new Date(Date.now() - 1000 * 60 * 60 * 6).toISOString(),
       viewCount: 98000,
+      aiProcessed: true,
+      aiProcessingStatus: "completed",
+      aiProcessedAt: new Date().toISOString(),
+      aiScores: {
+        relevance: 9,
+        quality: 8,
+        timeliness: 8,
+        overall: 8.3,
+      },
+      aiCategory: "开源",
+      chineseTitle: "Llama 3.3 70B：小参数大性能的开源突破",
+      aiSummary: "Meta发布Llama 3.3 70B，通过改进的后训练技术实现接近405B模型的性能。这一进展展示了模型效率优化的巨大潜力，为开源社区提供了高性价比的选择。",
+      recommendation: "开源模型爱好者和开发者必看，70B参数即可获得大模型性能。",
+      aiKeywords: ["Meta", "Llama", "开源", "模型效率"],
     },
     {
       id: "5",
@@ -187,6 +277,20 @@ function initSampleData() {
       tags: ["xAI", "Grok", "马斯克", "AI智能体"],
       publishedAt: new Date(Date.now() - 1000 * 60 * 60 * 8).toISOString(),
       viewCount: 187000,
+      aiProcessed: true,
+      aiProcessingStatus: "completed",
+      aiProcessedAt: new Date().toISOString(),
+      aiScores: {
+        relevance: 9,
+        quality: 8,
+        timeliness: 10,
+        overall: 8.9,
+      },
+      aiCategory: "AI/ML",
+      chineseTitle: "Grok 3发布：马斯克宣称的'最聪明AI'",
+      aiSummary: "xAI发布Grok 3，在数学、科学和编程基准测试中表现优异。新增DeepSearch智能体功能，可执行深度网络搜索。这一发布加剧了顶级AI模型的竞争态势。",
+      recommendation: "关注AI模型竞争格局的读者必读，Grok 3展示了xAI的技术实力。",
+      aiKeywords: ["xAI", "Grok", "马斯克", "基准测试"],
     },
     {
       id: "6",
@@ -201,6 +305,20 @@ function initSampleData() {
       publishedAt: new Date(Date.now() - 1000 * 60 * 60 * 12).toISOString(),
       isHot: true,
       viewCount: 134000,
+      aiProcessed: true,
+      aiProcessingStatus: "completed",
+      aiProcessedAt: new Date().toISOString(),
+      aiScores: {
+        relevance: 8,
+        quality: 7,
+        timeliness: 9,
+        overall: 8.0,
+      },
+      aiCategory: "观点",
+      chineseTitle: "Anthropic 40亿美元融资：AI独角兽估值达615亿",
+      aiSummary: "Anthropic完成40亿美元融资，估值达615亿美元。亚马逊、谷歌等科技巨头持续加码AI投资。这反映了市场对安全AI和Claude模型的高度认可。",
+      recommendation: "关注AI投资趋势的读者必读，了解顶级AI公司的资本运作。",
+      aiKeywords: ["Anthropic", "融资", "Claude", "AI投资"],
     },
     {
       id: "7",
@@ -214,6 +332,20 @@ function initSampleData() {
       tags: ["Perplexity", "AI搜索", "融资"],
       publishedAt: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
       viewCount: 87000,
+      aiProcessed: true,
+      aiProcessingStatus: "completed",
+      aiProcessedAt: new Date().toISOString(),
+      aiScores: {
+        relevance: 8,
+        quality: 7,
+        timeliness: 7,
+        overall: 7.3,
+      },
+      aiCategory: "观点",
+      chineseTitle: "Perplexity融资5亿：AI搜索独角兽估值翻倍",
+      aiSummary: "Perplexity AI完成5亿美元融资，估值达90亿美元。月活用户突破1500万，展示了AI搜索引擎的市场潜力。英伟达、软银等参与投资。",
+      recommendation: "AI应用层投资的典型案例，展示了AI搜索的商业模式可行性。",
+      aiKeywords: ["Perplexity", "AI搜索", "融资", "独角兽"],
     },
     {
       id: "8",
@@ -227,6 +359,20 @@ function initSampleData() {
       tags: ["Midjourney", "AI绘画", "图像生成"],
       publishedAt: new Date(Date.now() - 1000 * 60 * 60 * 36).toISOString(),
       viewCount: 76000,
+      aiProcessed: true,
+      aiProcessingStatus: "completed",
+      aiProcessedAt: new Date().toISOString(),
+      aiScores: {
+        relevance: 7,
+        quality: 7,
+        timeliness: 7,
+        overall: 7.0,
+      },
+      aiCategory: "AI/ML",
+      chineseTitle: "Midjourney V7预告：图像生成将迎来重大升级",
+      aiSummary: "Midjourney CEO透露V7版本即将发布，将在图像质量、文本渲染和角色一致性方面改进。同时正在开发视频生成功能，预计2025年推出。",
+      recommendation: "AI图像生成爱好者关注，V7可能带来质的飞跃。",
+      aiKeywords: ["Midjourney", "图像生成", "V7", "视频生成"],
     },
   ];
 
@@ -382,136 +528,8 @@ function initSampleData() {
       round: "A轮",
       date: "2024-12-01",
       investors: ["Bain Capital", "DST Global"],
-      category: "AI 编程",
-      description: "AI 编程助手，估值达 30 亿美元",
-    },
-    {
-      id: "f4",
-      companyName: "Physical Intelligence",
-      amount: "4亿美元",
-      round: "B轮",
-      date: "2025-01-15",
-      investors: ["Amazon", "OpenAI", "Thrive Capital"],
       category: "机器人",
       description: "开发机器人基础模型 π0，估值达 24 亿美元",
-    },
-  ];
-
-  // Twitter 推文数据 - 基于真实推文风格
-  tweetsStore = [
-    {
-      id: "t1",
-      content: "Grok 3 在数学推理上的表现令人印象深刻。在 AIME 2025 测试中，它不仅给出了正确答案，还展示了完整的思考过程。这是推理模型的一次重要突破。",
-      author: {
-        name: "Andrej Karpathy",
-        username: "karpathy",
-        verified: true,
-      },
-      publishedAt: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
-      likes: 18420,
-      retweets: 4121,
-      replies: 1092,
-      views: 856000,
-      hashtags: ["AI", "Grok3", "xAI"],
-      mentions: [],
-      urls: [],
-      isHot: true,
-      sentiment: "positive",
-    },
-    {
-      id: "t2",
-      content: "DeepSeek V3 的训练成本数据公开后，整个 AI 行业都在重新思考大模型的训练效率。557万美元训练出接近 GPT-4o 水平的模型，这本身就是一个巨大的工程成就。",
-      author: {
-        name: "Jim Fan",
-        username: "DrJimFan",
-        verified: true,
-      },
-      publishedAt: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
-      likes: 22300,
-      retweets: 5800,
-      replies: 1250,
-      views: 920000,
-      hashtags: ["DeepSeek", "AI", "Efficiency"],
-      mentions: [],
-      urls: [],
-      isHot: true,
-      sentiment: "positive",
-    },
-    {
-      id: "t3",
-      content: "OpenAI o3 在 ARC-AGI 上的表现证明了推理时计算扩展的重要性。这不是简单的规模扩展，而是算法和架构的根本性创新。",
-      author: {
-        name: "François Chollet",
-        username: "fchollet",
-        verified: true,
-      },
-      publishedAt: new Date(Date.now() - 1000 * 60 * 60 * 4).toISOString(),
-      likes: 15600,
-      retweets: 3800,
-      replies: 920,
-      views: 620000,
-      hashtags: ["OpenAI", "o3", "ARCAGI"],
-      mentions: [],
-      urls: [],
-      isHot: true,
-      sentiment: "positive",
-    },
-    {
-      id: "t4",
-      content: "AI Agent 赛道今年的融资额已经突破 100 亿美元。从代码生成到自主研究，从客户服务到软件开发，Agent 正在重新定义人机协作的边界。",
-      author: {
-        name: "Elad Gil",
-        username: "eladgil",
-        verified: true,
-      },
-      publishedAt: new Date(Date.now() - 1000 * 60 * 60 * 6).toISOString(),
-      likes: 18900,
-      retweets: 4300,
-      replies: 1100,
-      views: 750000,
-      hashtags: ["AIAgent", "VentureCapital", "Startup"],
-      mentions: [],
-      urls: [],
-      isHot: false,
-      sentiment: "positive",
-    },
-    {
-      id: "t5",
-      content: "Gemini 2.0 的原生多模态能力是一个重要的技术里程碑。能够同时理解和生成文本、图像和音频，这为下一代 AI 应用打开了新的可能性。",
-      author: {
-        name: "Sundar Pichai",
-        username: "sundarpichai",
-        verified: true,
-      },
-      publishedAt: new Date(Date.now() - 1000 * 60 * 60 * 8).toISOString(),
-      likes: 32100,
-      retweets: 7600,
-      replies: 2100,
-      views: 1080000,
-      hashtags: ["Gemini", "Google", "AI"],
-      mentions: [],
-      urls: [],
-      isHot: true,
-      sentiment: "positive",
-    },
-    {
-      id: "t6",
-      content: "开源模型正在快速追赶闭源模型。Llama 3.3、DeepSeek V3、Qwen 2.5 的性能提升速度超出了大多数人的预期。2025 年将是开源 AI 的转折点。",
-      author: {
-        name: "Yann LeCun",
-        username: "ylecun",
-        verified: true,
-      },
-      publishedAt: new Date(Date.now() - 1000 * 60 * 60 * 12).toISOString(),
-      likes: 28900,
-      retweets: 6300,
-      replies: 1500,
-      views: 950000,
-      hashtags: ["OpenSource", "AI", "Llama"],
-      mentions: [],
-      urls: [],
-      isHot: false,
-      sentiment: "positive",
     },
   ];
 
@@ -526,6 +544,37 @@ function initSampleData() {
     { id: "tt7", name: "Claude", query: "Claude", tweetVolume: 412000, rank: 7, category: "AI助手" },
     { id: "tt8", name: "AI编程", query: "AICoding", tweetVolume: 398000, rank: 8, category: "开发工具" },
   ];
+
+  // 初始化趋势总结
+  trendSummaryStore = {
+    date: new Date().toISOString().split("T")[0],
+    summary: "今日AI领域呈现多元化发展态势。推理模型成为焦点，OpenAI o3和xAI Grok 3相继发布，在数学推理和编程能力上取得突破。DeepSeek V3以极低成本实现高性能，引发行业对训练效率的重新思考。多模态能力持续演进，Google Gemini 2.0展示了原生多模态的潜力。投资方面，Anthropic和Perplexity的大额融资反映了市场对AI应用的高度认可。",
+    keyTrends: [
+      "推理模型竞争白热化",
+      "训练效率成为新焦点",
+      "多模态能力持续突破",
+      "AI投资热度不减",
+      "开源模型快速追赶"
+    ],
+    notableArticles: [
+      "OpenAI 发布 o3 推理模型",
+      "DeepSeek 发布 V3 模型",
+      "xAI 发布 Grok 3"
+    ],
+    categoryDistribution: {
+      "AI/ML": 5,
+      "开源": 1,
+      "观点": 2
+    },
+    topKeywords: [
+      { keyword: "OpenAI", count: 3 },
+      { keyword: "推理模型", count: 3 },
+      { keyword: "DeepSeek", count: 2 },
+      { keyword: "Grok", count: 2 },
+      { keyword: "Gemini", count: 1 }
+    ],
+    generatedAt: new Date().toISOString()
+  };
 
   lastCrawlTime = new Date().toISOString();
 }
@@ -567,11 +616,15 @@ export const research = {
 // 导出数据操作函数
 export const db = {
   news: {
-    findAll: (options?: { limit?: number; offset?: number; category?: string }) => {
+    findAll: (options?: { limit?: number; offset?: number; category?: string; aiProcessed?: boolean }) => {
       let result = [...newsStore];
       
       if (options?.category) {
-        result = result.filter(n => n.category === options.category);
+        result = result.filter(n => n.aiCategory === options.category || n.category === options.category);
+      }
+      
+      if (options?.aiProcessed !== undefined) {
+        result = result.filter(n => n.aiProcessed === options.aiProcessed);
       }
       
       result.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
@@ -582,6 +635,40 @@ export const db = {
       return result.slice(offset, offset + limit);
     },
     findById: (id: string) => newsStore.find(n => n.id === id),
+    findTopRated: (limit: number = 3) => {
+      return newsStore
+        .filter(n => n.aiProcessed && n.aiScores)
+        .sort((a, b) => (b.aiScores?.overall || 0) - (a.aiScores?.overall || 0))
+        .slice(0, limit);
+    },
+    findPendingAIProcessing: (limit: number = 10) => {
+      return newsStore
+        .filter(n => !n.aiProcessed || n.aiProcessingStatus === "pending")
+        .slice(0, limit);
+    },
+    updateAIResult: (id: string, result: any) => {
+      const index = newsStore.findIndex(n => n.id === id);
+      if (index !== -1) {
+        newsStore[index] = {
+          ...newsStore[index],
+          aiProcessed: true,
+          aiProcessingStatus: result.processingStatus,
+          aiProcessedAt: result.processedAt,
+          aiError: result.error,
+          aiScores: result.scores,
+          aiCategory: result.category,
+          chineseTitle: result.chineseTitle,
+          aiSummary: result.summary,
+          recommendation: result.recommendation,
+          aiKeywords: result.keywords,
+        };
+        return true;
+      }
+      return false;
+    },
+    add: (item: any) => {
+      newsStore.unshift(item);
+    },
     count: () => newsStore.length,
   },
   projects: {
@@ -629,26 +716,31 @@ export const db = {
   twitterTrends: {
     findAll: () => twitterTrendsStore.sort((a, b) => a.rank - b.rank),
   },
+  trendSummary: {
+    get: () => trendSummaryStore,
+    set: (summary: any) => {
+      trendSummaryStore = summary;
+    },
+  },
   getStats: () => ({
     newsCount: newsStore.length,
     projectsCount: projectsStore.length,
     tweetsCount: tweetsStore.length,
+    aiProcessedCount: newsStore.filter(n => n.aiProcessed).length,
     lastCrawlTime,
+    lastAIProcessingTime,
   }),
-  // 重新初始化数据（模拟抓取）
   recrawl: () => {
     initSampleData();
     return { success: true, timestamp: lastCrawlTime };
   },
+  addNews: (items: any[]) => {
+    newsStore = [...items, ...newsStore];
+  },
 };
 
-// 模拟 eq 函数
 export const eq = (field: any, value: any) => ({ _field: field, _value: value });
-
-// 模拟 desc 函数
 export const desc = (field: any) => ({ _field: field, _order: 'desc' });
-
-// 模拟 sql
 export const sql = (strings: TemplateStringsArray, ...values: any[]) => ({
   toString: () => strings.reduce((acc, str, i) => acc + str + (values[i] || ''), ''),
 });

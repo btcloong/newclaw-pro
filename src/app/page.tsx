@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { db } from "@/lib/db";
+import { formatNumber, formatDate } from "@/lib/utils";
 import { 
   TrendingUp, 
   Clock, 
@@ -13,36 +15,36 @@ import {
   Heart,
   Repeat2,
   Hash,
-  Send
+  Star,
+  BarChart3,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { db } from "@/lib/db";
-import { formatNumber, formatDate } from "@/lib/utils";
 
 export default async function HomePage() {
-  // 从数据库获取数据
-  const news = await db.news.findAll({ limit: 5 });
+  const news = await db.news.findAll({ limit: 10 });
+  const topArticles = await db.news.findTopRated(3);
   const projects = await db.projects.findAll({ limit: 4 });
   const hotTopics = await db.hotTopics.findAll();
   const tweets = await db.tweets.findAll({ limit: 3 });
   const twitterTrends = await db.twitterTrends.findAll();
+  const trendSummary = await db.trendSummary.get();
   const stats = await db.getStats();
 
-  const featuredNews = news[0];
-  const newsList = news.slice(1);
+  const newsList = news.slice(3);
 
   return (
     <div className="min-h-screen">
       {/* Stats */}
       <section className="border-b bg-muted/30">
         <div className="container mx-auto px-4 py-6">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
             {[
               { title: "今日新闻", value: stats.newsCount.toString(), icon: Zap },
               { title: "热门项目", value: stats.projectsCount.toString(), icon: Target },
               { title: "推特动态", value: stats.tweetsCount.toString(), icon: Twitter },
+              { title: "AI 处理", value: stats.aiProcessedCount.toString(), icon: Sparkles },
               { title: "创意灵感", value: "234", icon: Lightbulb },
               { title: "融资动态", value: "12", icon: TrendingUp },
             ].map((stat) => (
@@ -74,19 +76,27 @@ export default async function HomePage() {
                   backgroundImage: `url('https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1920&q=80')`,
                 }}
               >
-                {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
                 
-                {/* Content */}
                 <div className="absolute inset-0 flex flex-col justify-center px-8 md:px-12">
                   <div className="max-w-xl">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Badge className="bg-brand-500 text-white">
+                        <Sparkles className="w-3 h-3 mr-1" />
+                        AI 驱动
+                      </Badge>
+                      <Badge variant="outline" className="text-white border-white/30">
+                        双语聚合
+                      </Badge>
+                    </div>
+                    
                     <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight">
                       New Claw
                       <br />
-                      <span className="text-brand-400">New World</span>
+                      <span className="text-brand-400">AI Daily</span>
                     </h1>
                     <p className="text-white/80 text-sm md:text-base mb-6">
-                      探索 AI 的无限可能，发现下一个改变世界的机会
+                      智能聚合全球 90+ 顶级技术博客，AI 评分筛选，中文摘要，让优质内容触手可及
                     </p>
                     <div className="flex gap-3">
                       <Link href="http://t.me/newclaw" target="_blank" rel="noopener noreferrer">
@@ -105,27 +115,102 @@ export default async function HomePage() {
               </div>
             </Card>
 
-            {/* Featured News */}
-            {featuredNews && (
-              <Card className="overflow-hidden">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-2 mb-3">
-                    {featuredNews.isHot && <Badge variant="destructive">热门</Badge>}
-                    <Badge variant="secondary">{featuredNews.category}</Badge>
-                  </div>
-                  <Link href={`/news/${featuredNews.id}`}>
-                    <h2 className="text-2xl font-bold mb-3 hover:text-brand-500 transition-colors">{featuredNews.title}</h2>
-                  </Link>
-                  <p className="text-muted-foreground mb-4">{featuredNews.summary}</p>
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                    <span>{featuredNews.source}</span>
-                    <span>{featuredNews.viewCount?.toLocaleString()} 阅读</span>
+            {/* 今日必读 Top 3 */}
+            {topArticles.length > 0 && (
+              <section>
+                <div className="flex items-center gap-2 mb-4">
+                  <Star className="w-5 h-5 text-yellow-500" />
+                  <h2 className="text-xl font-bold">今日必读</h2>
+                  <Badge variant="secondary" className="ml-2">AI 精选</Badge>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {topArticles.map((article, index) => (
+                    <Card key={article.id} className="overflow-hidden">
+                      <div className="relative aspect-video">
+                        {article.image ? (
+                          <div 
+                            className="absolute inset-0 bg-cover bg-center"
+                            style={{ backgroundImage: `url(${article.image})` }}
+                          />
+                        ) : (
+                          <div className="absolute inset-0 bg-gradient-to-br from-brand-500/20 to-brand-700/20" />
+                        )}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                        
+                        <div className="absolute top-3 left-3">
+                          <div className="flex items-center gap-1.5 bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-2 py-1 rounded text-xs font-bold">
+                            <TrendingUp className="w-3 h-3" />
+                            <span>TOP {index + 1}</span>
+                          </div>
+                        </div>
+                        
+                        <div className="absolute bottom-0 left-0 right-0 p-4">
+                          <Link href={`/news/${article.id}`}>
+                            <h3 className="text-lg font-bold text-white line-clamp-2 hover:text-brand-300">
+                              {article.chineseTitle || article.title}
+                            </h3>
+                          </Link>
+                          <div className="flex items-center gap-2 mt-2">
+                            <Badge className="bg-white/20 text-white border-0 text-xs">
+                              {article.aiCategory || article.category}
+                            </Badge>
+                            {article.aiScores && (
+                              <span className="text-xs text-yellow-400">★ {article.aiScores.overall.toFixed(1)}</span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <CardContent className="p-4">
+                        <p className="text-sm text-muted-foreground line-clamp-3">
+                          {article.aiSummary || article.summary}
+                        </p>
+                        
+                        {article.recommendation && (
+                          <div className="mt-3 p-2 bg-brand-500/5 rounded text-xs text-muted-foreground">
+                            <span className="text-brand-500">推荐理由: </span>
+                            {article.recommendation}
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* 今日看点 */}
+            {trendSummary && (
+              <Card className="bg-gradient-to-br from-brand-500/5 to-brand-700/5 border-brand-500/20">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <Sparkles className="w-5 h-5 text-brand-500" />
+                    今日看点
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {trendSummary.summary}
+                  </p>
+                  
+                  <div className="flex flex-wrap gap-2">
+                    {trendSummary.keyTrends.map((trend) => (
+                      <Badge
+                        key={trend}
+                        variant="secondary"
+                        className="bg-brand-500/10 text-brand-700"
+                      >
+                        <TrendingUp className="w-3 h-3 mr-1" />
+                        {trend}
+                      </Badge>
+                    ))}
                   </div>
                 </CardContent>
               </Card>
             )}
 
-            {/* News List */}
+            {/* 最新资讯 */}
             <section>
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
@@ -140,16 +225,37 @@ export default async function HomePage() {
               <div className="space-y-4">
                 {newsList.map((item) => (
                   <Link key={item.id} href={`/news/${item.id}`}>
-                    <Card className="hover:shadow-md transition-shadow cursor-pointer">
+                    <Card className="hover:shadow-md transition-shadow">
                       <CardContent className="p-4">
-                        <div className="flex items-center gap-2 mb-2">
-                          {item.isHot && <Badge variant="destructive" className="text-xs">热门</Badge>}
-                          <Badge variant="secondary" className="text-xs">{item.category}</Badge>
-                        </div>
-                        <h3 className="font-semibold mb-2">{item.title}</h3>
-                        <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                          <span>{item.source}</span>
-                          <span>{formatDate(item.publishedAt)}</span>
+                        <div className="flex items-start gap-4">
+                          {item.image && (
+                            <div 
+                              className="w-24 h-24 flex-shrink-0 rounded-lg bg-cover bg-center"
+                              style={{ backgroundImage: `url(${item.image})` }}
+                            />
+                          )}
+                          
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-2">
+                              {item.isHot && <Badge variant="destructive" className="text-xs">热门</Badge>}
+                              <Badge variant="secondary" className="text-xs">{item.aiCategory || item.category}</Badge>
+                              {item.aiScores && (
+                                <span className="text-xs text-yellow-600">★ {item.aiScores.overall.toFixed(1)}</span>
+                              )}
+                            </div>
+                            
+                            <h3 className="font-semibold mb-1 hover:text-brand-500">
+                              {item.chineseTitle || item.title}
+                            </h3>
+                            <p className="text-sm text-muted-foreground line-clamp-2">
+                              {item.aiSummary || item.summary}
+                            </p>
+                            <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
+                              <span>{item.source}</span>
+                              <span>•</span>
+                              <span>{formatDate(item.publishedAt)}</span>
+                            </div>
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
@@ -158,7 +264,7 @@ export default async function HomePage() {
               </div>
             </section>
 
-            {/* Projects */}
+            {/* 新项目发现 */}
             <section>
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
@@ -170,16 +276,11 @@ export default async function HomePage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {projects.map((project) => (
                   <Link key={project.id} href={`/project/${project.id}`}>
-                    <Card className="hover:shadow-md transition-shadow cursor-pointer">
+                    <Card className="hover:shadow-md transition-shadow">
                       <CardContent className="p-4">
                         <div className="flex items-start justify-between mb-2">
                           <h3 className="font-semibold">{project.name}</h3>
-                          <Link 
-                            href={project.url}
-                            className="text-muted-foreground hover:text-brand-500"
-                          >
-                            <ExternalLink className="w-4 h-4" />
-                          </Link>
+                          <ExternalLink className="w-4 h-4 text-muted-foreground" />
                         </div>
                         <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{project.description}</p>
                         <div className="flex items-center gap-2">
@@ -214,9 +315,9 @@ export default async function HomePage() {
                         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center flex-shrink-0">
                           <span className="text-white font-bold text-sm">{tweet.author.name.charAt(0)}</span>
                         </div>
-                        <div className="flex-1 min-w-0">
+                        <div className="flex-1">
                           <div className="flex items-center gap-1.5">
-                            <span className="font-semibold truncate">{tweet.author.name}</span>
+                            <span className="font-semibold">{tweet.author.name}</span>
                             {tweet.author.verified && <span className="text-blue-500 text-xs">✓</span>}
                           </div>
                           <div className="text-sm text-muted-foreground">
@@ -224,20 +325,11 @@ export default async function HomePage() {
                           </div>
                         </div>
                       </div>
-                      <p className="text-sm text-foreground mb-3 line-clamp-3">{tweet.content}</p>
+                      <p className="text-sm mb-3">{tweet.content}</p>
                       <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-1">
-                          <MessageCircle className="w-4 h-4" />
-                          <span>{formatNumber(tweet.replies)}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Repeat2 className="w-4 h-4" />
-                          <span>{formatNumber(tweet.retweets)}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Heart className="w-4 h-4" />
-                          <span>{formatNumber(tweet.likes)}</span>
-                        </div>
+                        <span className="flex items-center gap-1"><MessageCircle className="w-4 h-4" /> {formatNumber(tweet.replies)}</span>
+                        <span className="flex items-center gap-1"><Repeat2 className="w-4 h-4" /> {formatNumber(tweet.retweets)}</span>
+                        <span className="flex items-center gap-1"><Heart className="w-4 h-4" /> {formatNumber(tweet.likes)}</span>
                       </div>
                     </CardContent>
                   </Card>
@@ -310,7 +402,7 @@ export default async function HomePage() {
               <CardContent className="p-5">
                 <h3 className="font-bold mb-2">订阅 AI 日报</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  每日精选 AI 行业重要资讯
+                  每日精选 AI 行业重要资讯，AI 评分筛选，直达核心内容
                 </p>
                 <input
                   type="email"

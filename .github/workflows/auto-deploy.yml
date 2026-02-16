@@ -10,12 +10,23 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+    - name: Fix permissions (as root)
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: root
+        password: ${{ secrets.SERVER_PASSWORD }}
+        script: |
+          chown -R admin:admin /home/admin/newclaw-pro
+          rm -rf /home/admin/newclaw-pro/.next
+          echo "✓ Permissions fixed and .next cleaned"
+    
     - name: Deploy to Alibaba Cloud
       uses: appleboy/ssh-action@v1.0.0
       with:
-        host: 47.236.188.95
+        host: ${{ secrets.SERVER_HOST }}
         username: admin
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        password: ${{ secrets.SERVER_PASSWORD }}
         script: |
           export PATH="/home/admin/.nvm/versions/node/v20.0.0/bin:/usr/local/bin:$PATH"
           cd /home/admin/newclaw-pro

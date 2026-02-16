@@ -36,15 +36,23 @@ jobs:
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.SERVER_HOST }}
-        username: ${{ secrets.SERVER_USER }}
+        username: root
         password: ${{ secrets.SERVER_PASSWORD }}
         script: |
+          # 检查并创建 admin 用户目录结构
+          if [ ! -d "/home/admin" ]; then
+            useradd -m admin 2>/dev/null || true
+            mkdir -p /home/admin
+            chown admin:admin /home/admin
+          fi
+          
           # 如果目录不存在或是空的，重新克隆
           if [ ! -d "/home/admin/newclaw-pro/.git" ]; then
             echo "Directory not a git repo, recreating..."
             rm -rf /home/admin/newclaw-pro
             cd /home/admin
             git clone https://github.com/btcloong/newclaw-pro.git
+            chown -R admin:admin /home/admin/newclaw-pro
           fi
           
           cd /home/admin/newclaw-pro

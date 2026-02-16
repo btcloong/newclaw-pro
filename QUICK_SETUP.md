@@ -1,5 +1,7 @@
 # ⚡ 快速配置 GitHub Secrets
 
+> **重要更新**: 服务器使用 **root** 用户登录，密码 `*A5+Vw+2fv6WjdT`
+
 ## 推荐方法：网页界面（5分钟完成）
 
 ### 步骤 1: 打开 Secrets 页面
@@ -26,7 +28,7 @@
 
 #### Secret 4: SERVER_USER
 - **Name**: `SERVER_USER`
-- **Value**: `admin`
+- **Value**: `root` ⚠️ **注意：是 root，不是 admin**
 - 点击 "Add secret"
 
 #### Secret 5: SERVER_PASSWORD
@@ -44,9 +46,9 @@
 
 ### 步骤 5: 测试自动采集
 1. 访问: https://github.com/btcloong/newclaw-pro/actions
-2. 点击 "Auto Crawl RSS Feeds"
-3. 点击右侧 "Run workflow" → "Run workflow"
-4. 等待运行完成（约 2-5 分钟）
+2. 点击 "Auto Deploy to Server"
+3. 点击 "Run workflow"
+4. 等待运行完成（绿色 ✓）
 5. 查看日志确认成功
 
 ---
@@ -63,7 +65,7 @@ gh auth login
 echo "AIzaSyAic3PWhq8eWyEKr_V41FqbJ_0MC_ZImAs" | gh secret set GEMINI_API_KEY -R btcloong/newclaw-pro
 echo "newclaw_secret_key_2026" | gh secret set API_KEY -R btcloong/newclaw-pro
 echo "47.236.188.95" | gh secret set SERVER_HOST -R btcloong/newclaw-pro
-echo "admin" | gh secret set SERVER_USER -R btcloong/newclaw-pro
+echo "root" | gh secret set SERVER_USER -R btcloong/newclaw-pro  # ⚠️ root 用户
 echo "*A5+Vw+2fv6WjdT" | gh secret set SERVER_PASSWORD -R btcloong/newclaw-pro
 
 # 验证
@@ -94,6 +96,9 @@ https://github.com/btcloong/newclaw-pro/actions
 
 ## 故障排查
 
+### 问题：部署失败，提示 "Permission denied"
+**解决**: 检查 SERVER_USER 是否为 `root`，不是 `admin`
+
 ### 问题：工作流显示 "This workflow has no runs yet"
 **解决**: 等待定时触发，或手动点击 "Run workflow"
 
@@ -105,12 +110,6 @@ https://github.com/btcloong/newclaw-pro/actions
 1. 检查 GEMINI_API_KEY 是否有效
 2. 查看 Actions 日志中的详细错误
 3. 确认 RSS 源是否可访问
-
-### 问题：部署失败
-**解决**: 
-1. 检查 SERVER_HOST, SERVER_USER, SERVER_PASSWORD 是否正确
-2. 确认服务器 SSH 服务正常运行
-3. 检查服务器磁盘空间
 
 ---
 

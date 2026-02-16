@@ -15,7 +15,7 @@
 3. [ ] 添加 Secret: `GEMINI_API_KEY` = `AIzaSyAic3PWhq8eWyEKr_V41FqbJ_0MC_ZImAs`
 4. [ ] 添加 Secret: `API_KEY` = `newclaw_secret_key_2026`
 5. [ ] 添加 Secret: `SERVER_HOST` = `47.236.188.95`
-6. [ ] 添加 Secret: `SERVER_USER` = `admin`
+6. [ ] 添加 Secret: `SERVER_USER` = `root` ⚠️ **重要：是 root，不是 admin**
 7. [ ] 添加 Secret: `SERVER_PASSWORD` = `*A5+Vw+2fv6WjdT`
 8. [ ] 页面显示 5 个 Secrets
 
@@ -28,7 +28,7 @@
 echo "AIzaSyAic3PWhq8eWyEKr_V41FqbJ_0MC_ZImAs" | gh secret set GEMINI_API_KEY -R btcloong/newclaw-pro
 echo "newclaw_secret_key_2026" | gh secret set API_KEY -R btcloong/newclaw-pro
 echo "47.236.188.95" | gh secret set SERVER_HOST -R btcloong/newclaw-pro
-echo "admin" | gh secret set SERVER_USER -R btcloong/newclaw-pro
+echo "root" | gh secret set SERVER_USER -R btcloong/newclaw-pro  # ⚠️ root 用户
 echo "*A5+Vw+2fv6WjdT" | gh secret set SERVER_PASSWORD -R btcloong/newclaw-pro
 ```
 4. [ ] 验证: `gh secret list -R btcloong/newclaw-pro`

@@ -1,102 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
-import { crawlAllRSS, crawlByPriority, crawlAuto, processPendingArticles, getCrawlerStats, initCrawler } from "@/lib/crawler-new";
-import { generateTrendSummary } from "@/lib/ai-processor";
-import { loadNews, saveTrendSummary } from "@/lib/file-db";
+import { 
+  crawlAllRSS, 
+  crawlByPriority, 
+  crawlAuto, 
+  processPendingArticles,
+  initCrawler,
+  getCrawlerStats 
+} from "@/lib/crawler-new";
 
-// 初始化爬虫
-let initialized = false;
-async function ensureInitialized() {
-  if (!initialized) {
-    await initCrawler();
-    initialized = true;
+// 验证 API Key
+function validateApiKey(request: NextRequest): boolean {
+  const apiKey = request.headers.get("X-API-Key") || request.headers.get("x-api-key");
+  const expectedKey = process.env.API_KEY;
+  
+  if (!expectedKey) {
+    console.warn("[API] API_KEY not set in environment");
+    return false;
   }
-}
-
-// POST /api/crawl - 触发爬虫
-export async function POST(request: NextRequest) {
-  try {
-    await ensureInitialized();
-    
-    const body = await request.json().catch(() => ({}));
-    const { 
-      type = 'auto', // 'auto' | 'full' | 'high' | 'medium' | 'low'
-      processAI = true, 
-      generateTrends = true 
-    } = body;
-
-    console.log(`[API] Crawl request: type=${type}`);
-
-    let crawlResults;
-    
-    switch (type) {
-      case 'full':
-        crawlResults = await crawlAllRSS();
-        break;
-      case 'high':
-      case 'medium':
-      case 'low':
-        crawlResults = await crawlByPriority(type);
-        break;
-      case 'auto':
-      default:
-        crawlResults = await crawlAuto();
-        break;
-    }
-
-    // AI 处理
-    let aiResults = null;
-    if (processAI) {
-      console.log("[API] Processing AI...");
-      aiResults = await processPendingArticles(10);
-    }
-
-    // 生成趋势总结
-    let trendSummary = null;
-    if (generateTrends) {
-      console.log("[API] Generating trend summary...");
-      const processedArticles = (await loadNews())
-        .filter(n => n.aiProcessed)
-        .slice(0, 20);
-        
-      const articlesForSummary = processedArticles.map(a => ({
-        title: a.chineseTitle || a.title,
-        summary: a.aiSummary || a.summary,
-        category: a.aiCategory || a.category,
-        keywords: a.aiKeywords || a.tags,
-        scores: a.aiScores || { relevance: 5, quality: 5, timeliness: 5, overall: 5 },
-      }));
-      
-      if (articlesForSummary.length > 0) {
-        trendSummary = await generateTrendSummary(articlesForSummary);
-        await saveTrendSummary(trendSummary);
-      }
-    }
-
-    return NextResponse.json({
-      success: true,
-      timestamp: new Date().toISOString(),
-      results: {
-        crawl: crawlResults,
-        ai: aiResults,
-        trends: trendSummary,
-      },
-    });
-  } catch (error) {
-    console.error("Crawl API error:", error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: error instanceof Error ? error.message : "Unknown error",
-      },
-      { status: 500 }
-    );
-  }
+  
+  return apiKey === expectedKey;
 }
 
 // GET /api/crawl - 获取爬虫状态
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    await ensureInitialized();
+    await initCrawler();
     const stats = await getCrawlerStats();
     
     return NextResponse.json({
@@ -104,12 +32,70 @@ export async function GET() {
       stats,
     });
   } catch (error) {
-    console.error("Crawl stats API error:", error);
+    console.error("[API] Crawl stats error:", error);
     return NextResponse.json(
-      {
-        success: false,
-        error: error instanceof Error ? error.message : "Unknown error",
-      },
+      { success: false, error: "Failed to get crawl stats" },
+      { status: 500 }
+    );
+  }
+}
+
+// POST /api/crawl - 触发爬虫
+export async function POST(request: NextRequest) {
+  try {
+    // 验证 API Key
+    if (!validateApiKey(request)) {
+      return NextResponse.json(
+        { success: false, error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    // 解析请求体
+    const body = await request.json().catch(() => ({}));
+    const { type = "auto", limit = 10 } = body;
+
+    console.log(`[API] Crawl request: type=${type}, limit=${limit}`);
+
+    await initCrawler();
+
+    let result;
+
+    switch (type) {
+      case "full":
+        result = await crawlAllRSS();
+        break;
+      case "high":
+        result = await crawlByPriority("high");
+        break;
+      case "medium":
+        result = await crawlByPriority("medium");
+        break;
+      case "low":
+        result = await crawlByPriority("low");
+        break;
+      case "ai":
+        result = await processPendingArticles(limit);
+        break;
+      case "auto":
+      default:
+        result = await crawlAuto();
+        // 自动处理 AI
+        if (result.high?.crawled || result.medium?.crawled) {
+          await processPendingArticles(5);
+        }
+        break;
+    }
+
+    return NextResponse.json({
+      success: true,
+      type,
+      result,
+    });
+  } catch (error) {
+    console.error("[API] Crawl error:", error);
+    return NextResponse.json(
+      { success: false, error: "Crawl failed" },
       { status: 500 }
     );
   }

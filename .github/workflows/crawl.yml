@@ -1,12 +1,14 @@
-name: Auto Crawl (Incremental)
+name: Auto Crawl RSS Feeds
 
 on:
   schedule:
     # 每30分钟运行一次
     - cron: '*/30 * * * *'
+    # 每天凌晨2点全量抓取
+    - cron: '0 2 * * *'
   workflow_dispatch:
     inputs:
-      type:
+      crawl_type:
         description: 'Crawl type'
         required: true
         default: 'auto'
@@ -14,41 +16,111 @@ on:
         options:
           - auto
           - full
-          - high
-          - medium
-          - low
+          - high_priority
+          - process_ai
+
+env:
+  NODE_VERSION: '20'
 
 jobs:
   crawl:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Setup environment
+      run: |
+        echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" > .env.local
+        echo "API_KEY=${{ secrets.API_KEY }}" >> .env.local
+    
+    - name: Run crawler
+      run: |
+        CRAWL_TYPE="${{ github.event.inputs.crawl_type || 'auto' }}"
         
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-          
-      - name: Install dependencies
-        run: npm ci
-        
-      - name: Run crawler
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          DATA_DIR: ${{ github.workspace }}/data
-        run: |
-          curl -X POST ${{ secrets.VERCEL_URL }}/api/crawl \
-            -H "Content-Type: application/json" \
-            -d "{\"type\":\"${{ github.event.inputs.type || 'auto' }}\",\"processAI\":true,\"generateTrends\":true}" \
-            --max-time 300 || echo "Crawl triggered"
-          
-      - name: Upload data artifacts
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: crawl-data
-          path: data/
-          retention-days: 7
+        if [ "$CRAWL_TYPE" = "full" ]; then
+          echo "Running FULL crawl..."
+          npx ts-node -e "
+            import { crawlAllRSS } from './src/lib/crawler-new';
+            import { initCrawler } from './src/lib/crawler-new';
+            async function main() {
+              await initCrawler();
+              const result = await crawlAllRSS();
+              console.log('Crawl result:', JSON.stringify(result, null, 2));
+              process.exit(result.success ? 0 : 1);
+            }
+            main();
+          "
+        elif [ "$CRAWL_TYPE" = "high_priority" ]; then
+          echo "Running HIGH PRIORITY crawl..."
+          npx ts-node -e "
+            import { crawlByPriority } from './src/lib/crawler-new';
+            import { initCrawler } from './src/lib/crawler-new';
+            async function main() {
+              await initCrawler();
+              const result = await crawlByPriority('high');
+              console.log('Crawl result:', JSON.stringify(result, null, 2));
+              process.exit(result.success ? 0 : 1);
+            }
+            main();
+          "
+        elif [ "$CRAWL_TYPE" = "process_ai" ]; then
+          echo "Running AI processing..."
+          npx ts-node -e "
+            import { processPendingArticles } from './src/lib/crawler-new';
+            import { initCrawler } from './src/lib/crawler-new';
+            async function main() {
+              await initCrawler();
+              const result = await processPendingArticles(10);
+              console.log('AI processing result:', JSON.stringify(result, null, 2));
+              process.exit(0);
+            }
+            main();
+          "
+        else
+          echo "Running AUTO crawl..."
+          npx ts-node -e "
+            import { crawlAuto, processPendingArticles } from './src/lib/crawler-new';
+            import { initCrawler } from './src/lib/crawler-new';
+            async function main() {
+              await initCrawler();
+              
+              // 自动抓取
+              const crawlResult = await crawlAuto();
+              console.log('Auto crawl result:', JSON.stringify(crawlResult, null, 2));
+              
+              // 处理 AI
+              const aiResult = await processPendingArticles(5);
+              console.log('AI processing result:', JSON.stringify(aiResult, null, 2));
+              
+              process.exit(0);
+            }
+            main();
+          "
+        fi
+    
+    - name: Upload crawl results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: crawl-results
+        path: |
+          data/
+          !data/**/*.log
+        retention-days: 7
+    
+    - name: Notify on failure
+      if: failure()
+      run: |
+        echo "::error::Crawl failed! Check logs for details."
+        exit 1

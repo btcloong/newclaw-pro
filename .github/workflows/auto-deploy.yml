@@ -26,7 +26,9 @@ jobs:
           echo 'API_KEY=${{ secrets.API_KEY }}' >> .env.local
           npm run build
           pm2 delete newclaw-pro 2>/dev/null || true
-          pm2 start "npm start" --name newclaw-pro
+          sleep 2
+          pm2 start npm --name newclaw-pro -- start
           pm2 save
-          echo "Deployment completed!"
+          sleep 3
+          curl -s http://localhost:3000 > /dev/null && echo "✓ App running" || echo "✗ App failed"
           pm2 status

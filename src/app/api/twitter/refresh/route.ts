@@ -5,11 +5,17 @@ import { forceRefreshTwitter } from "@/lib/twitter-crawler";
 export async function POST() {
   try {
     const result = await forceRefreshTwitter();
+    
     return NextResponse.json(result);
   } catch (error) {
-    console.error("Refresh Error:", error);
+    console.error("Twitter refresh API error:", error);
     return NextResponse.json(
-      { success: false, error: "Refresh failed" },
+      { 
+        success: false, 
+        error: "Failed to refresh tweets",
+        tweetsCount: 0,
+        timestamp: new Date().toISOString()
+      },
       { status: 500 }
     );
   }

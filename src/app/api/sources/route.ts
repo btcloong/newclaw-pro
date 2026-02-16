@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getSourcesStats, ALL_RSS_SOURCES, getSourcesByPriority, getSourcesByType } from "../../../../lib/rss-sources";
+import { getSourcesStats, ALL_RSS_SOURCES, getSourcesByPriority, getSourcesByType } from "@/lib/rss-sources";
 
 export async function GET() {
   try {

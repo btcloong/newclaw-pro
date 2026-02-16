@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { crawlAllRSS, crawlByPriority, crawlAuto, processPendingArticles, getCrawlerStats, initCrawler } from "../../../../lib/crawler-new";
-import { generateTrendSummary } from "../../../../lib/ai-processor";
-import { loadNews, saveTrendSummary } from "../../../../lib/file-db";
+import { crawlAllRSS, crawlByPriority, crawlAuto, processPendingArticles, getCrawlerStats, initCrawler } from "@/lib/crawler-new";
+import { generateTrendSummary } from "@/lib/ai-processor";
+import { loadNews, saveTrendSummary } from "@/lib/file-db";
 
 // 初始化爬虫
 let initialized = false;

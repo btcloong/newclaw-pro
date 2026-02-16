@@ -1,0 +1,32 @@
+name: Auto Deploy to Server
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Deploy to Alibaba Cloud
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: 47.236.188.95
+        username: admin
+        password: ${{ secrets.SERVER_PASSWORD }}
+        script: |
+          export PATH="$HOME/.nvm/versions/node/v20.0.0/bin:$PATH"
+          cd /home/admin/newclaw-pro
+          git fetch origin
+          git reset --hard origin/main
+          npm install
+          echo 'GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}' > .env.local
+          echo 'API_KEY=${{ secrets.API_KEY }}' >> .env.local
+          npm run build
+          pm2 delete newclaw-pro 2>/dev/null || true
+          pm2 start "npm start" --name newclaw-pro
+          pm2 save
+          echo "Deployment completed!"
+          pm2 status

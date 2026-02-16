@@ -23,7 +23,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default async function HomePage() {
-  const news = await db.news.findAll({ limit: 10 });
+  const news = await db.news.findAll({ limit: 20 });
   const topArticles = await db.news.findTopRated(3);
   const projects = await db.projects.findAll({ limit: 4 });
   const hotTopics = await db.hotTopics.findAll();

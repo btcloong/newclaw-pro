@@ -37,6 +37,11 @@ export interface NewsItem {
   aiSummary?: string;
   recommendation?: string;
   aiKeywords?: string[];
+  
+  // 前世今生背景信息
+  background?: string;
+  history?: string[];
+  relatedNews?: string[];
 }
 
 export interface Project {

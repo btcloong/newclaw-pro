@@ -1,0 +1,54 @@
+name: Daily Full Crawl
+
+on:
+  schedule:
+    # 每天凌晨3点运行
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  full-crawl:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Run full crawler
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          DATA_DIR: ${{ github.workspace }}/data
+        run: |
+          curl -X POST ${{ secrets.VERCEL_URL }}/api/crawl \
+            -H "Content-Type: application/json" \
+            -d '{"type":"full","processAI":true,"generateTrends":true}' \
+            --max-time 600 || echo "Full crawl triggered"
+          
+      - name: Wait for processing
+        run: sleep 60
+        
+      - name: Process pending AI articles
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          curl -X POST ${{ secrets.VERCEL_URL }}/api/crawl \
+            -H "Content-Type: application/json" \
+            -d '{"type":"auto","processAI":true,"generateTrends":true}' \
+            --max-time 300 || echo "AI processing triggered"
+          
+      - name: Upload data artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: daily-crawl-data
+          path: data/
+          retention-days: 30

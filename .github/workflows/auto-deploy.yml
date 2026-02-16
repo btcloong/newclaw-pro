@@ -14,39 +14,19 @@ jobs:
       uses: appleboy/ssh-action@v1.0.0
       with:
         host: 47.236.188.95
-        username: root
+        username: ${{ secrets.SERVER_USER }}
         password: ${{ secrets.SERVER_PASSWORD }}
         script: |
-          # 检查并创建 admin 用户目录结构
-          if [ ! -d "/home/admin" ]; then
-            useradd -m admin 2>/dev/null || true
-            mkdir -p /home/admin
-            chown admin:admin /home/admin
-          fi
-          
-          # 确保目录存在
-          if [ ! -d "/home/admin/newclaw-pro" ]; then
-            cd /home/admin
-            git clone https://github.com/btcloong/newclaw-pro.git
-            chown -R admin:admin /home/admin/newclaw-pro
-          fi
-          
+          export PATH="/home/admin/.nvm/versions/node/v20.0.0/bin:/usr/local/bin:$PATH"
           cd /home/admin/newclaw-pro
-          
-          # 切换到 admin 用户执行后续操作
-          su - admin -c "
-            export PATH=\"/home/admin/.nvm/versions/node/v20.0.0/bin:/usr/local/bin:\$PATH\"
-            cd /home/admin/newclaw-pro
-            git fetch origin
-            git reset --hard origin/main
-            npm install
-            echo 'GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}' > .env.local
-            echo 'API_KEY=${{ secrets.API_KEY }}' >> .env.local
-            npm run build
-            pm2 delete newclaw-pro 2>/dev/null || true
-            pm2 start 'npm start' --name newclaw-pro
-            pm2 save
-          "
-          
+          git fetch origin
+          git reset --hard origin/main
+          npm install
+          echo 'GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}' > .env.local
+          echo 'API_KEY=${{ secrets.API_KEY }}' >> .env.local
+          npm run build
+          pm2 delete newclaw-pro 2>/dev/null || true
+          pm2 start "npm start" --name newclaw-pro
+          pm2 save
           echo "Deployment completed!"
           pm2 status

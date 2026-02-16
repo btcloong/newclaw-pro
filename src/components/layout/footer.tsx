@@ -99,7 +99,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-          <p>© 2026 NewClaw Pro. All rights reserved.</p>
+          <p>© 2026 NewClaw. All rights reserved.</p>
           <div className="flex items-center gap-4">
             <Link href="/privacy" className="hover:text-foreground transition-colors">隐私政策</Link>
             <Link href="/terms" className="hover:text-foreground transition-colors">服务条款</Link>

@@ -356,6 +356,11 @@ export const db = {
   },
 };
 
+// 确保数据已初始化
+if (newsStore.length === 0) {
+  initSampleData();
+}
+
 export const eq = (field: any, value: any) => ({ _field: field, _value: value });
 export const desc = (field: any) => ({ _field: field, _order: 'desc' });
 export const sql = (strings: TemplateStringsArray, ...values: any[]) => ({

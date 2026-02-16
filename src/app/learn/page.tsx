@@ -8,168 +8,82 @@ import {
   Brain, 
   Cpu, 
   Bot, 
-  Database,
+  Sparkles,
   ExternalLink,
   ChevronRight,
   Play,
   GraduationCap,
-  Lightbulb,
-  Target
+  Target,
+  Zap,
+  Layers,
+  Database,
+  Search,
+  MessageSquare,
+  Wrench,
+  Users,
+  ArrowRight,
+  CheckCircle2,
+  Clock,
+  Star
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Progress } from "@/components/ui/progress";
 
-// 概念数据
-const concepts = [
-  {
-    category: "基础概念",
-    icon: BookOpen,
-    items: [
-      { name: "机器学习", desc: "监督/无监督/强化学习", level: "入门" },
-      { name: "深度学习", desc: "神经网络、CNN、RNN、Transformer", level: "入门" },
-      { name: "大语言模型", desc: "GPT、Claude、Llama架构", level: "中级" },
-      { name: "生成式AI", desc: "文本/图像/音频/视频生成", level: "中级" },
-    ]
-  },
-  {
-    category: "进阶技术",
-    icon: Cpu,
-    items: [
-      { name: "模型优化", desc: "量化、蒸馏、剪枝、LoRA", level: "高级" },
-      { name: "RAG", desc: "检索增强生成、向量数据库", level: "中级" },
-      { name: "AI Agent", desc: "ReAct、工具使用、多Agent协作", level: "高级" },
-      { name: "多模态", desc: "视觉-语言模型、跨模态理解", level: "高级" },
-    ]
-  },
-  {
-    category: "开发工具",
-    icon: Code,
-    items: [
-      { name: "PyTorch/TensorFlow", desc: "深度学习框架", level: "中级" },
-      { name: "Transformers", desc: "Hugging Face模型库", level: "中级" },
-      { name: "LangChain", desc: "LLM应用开发框架", level: "中级" },
-      { name: "LlamaIndex", desc: "RAG和数据处理", level: "中级" },
-    ]
-  }
-];
+// ==================== 主流程一：小白学 Agent ====================
 
-// 课程资源
-const courses = [
-  {
-    title: "机器学习 - 吴恩达",
-    platform: "Coursera",
-    level: "入门",
-    link: "https://www.coursera.org/learn/machine-learning",
-    description: "最经典的机器学习入门课程"
-  },
-  {
-    title: "Fast.ai 深度学习",
-    platform: "fast.ai",
-    level: "入门",
-    link: "https://www.fast.ai/",
-    description: "实战导向的深度学习课程"
-  },
-  {
-    title: "Hugging Face NLP",
-    platform: "Hugging Face",
-    level: "中级",
-    link: "https://huggingface.co/course",
-    description: "Transformer模型和NLP实战"
-  },
-  {
-    title: "CS224N NLP",
-    platform: "Stanford",
-    level: "高级",
-    link: "https://web.stanford.edu/class/cs224n/",
-    description: "斯坦福自然语言处理课程"
-  },
-  {
-    title: "LangChain 官方教程",
-    platform: "LangChain",
-    level: "中级",
-    link: "https://python.langchain.com/docs/get_started/quickstart",
-    description: "LLM应用开发完整指南"
-  },
-  {
-    title: "OpenAI Cookbook",
-    platform: "OpenAI",
-    level: "中级",
-    link: "https://cookbook.openai.com/",
-    description: "API使用和最佳实践"
-  }
-];
-
-// 实战项目
-const projects = [
-  {
-    title: "智能客服系统",
-    difficulty: "⭐⭐",
-    tech: ["RAG", "LangChain", "Vector DB"],
-    description: "基于文档的问答系统，支持企业知识库"
-  },
-  {
-    title: "代码生成助手",
-    difficulty: "⭐⭐⭐",
-    tech: ["Agent", "Code Interpreter", "GPT-4"],
-    description: "自动编程助手，能理解和生成代码"
-  },
-  {
-    title: "研报生成器",
-    difficulty: "⭐⭐⭐",
-    tech: ["Multi-Agent", "CrewAI", "Web Search"],
-    description: "自动收集数据并生成研究报告"
-  },
-  {
-    title: "个人知识库",
-    difficulty: "⭐⭐",
-    tech: ["RAG", "Embedding", "Chroma"],
-    description: "管理个人笔记，支持语义搜索"
-  },
-  {
-    title: "模型微调",
-    difficulty: "⭐⭐⭐⭐",
-    tech: ["LoRA", "QLoRA", "PEFT"],
-    description: "使用LoRA微调大模型适应特定任务"
-  },
-  {
-    title: "多Agent协作",
-    difficulty: "⭐⭐⭐⭐",
-    tech: ["AutoGen", "CrewAI", "Tool Use"],
-    description: "构建多个Agent协作完成复杂任务"
-  }
-];
-
-// 上手代码示例
-const codeExamples = [
-  {
-    title: "使用 Ollama 本地运行模型",
-    language: "bash",
-    code: `# 安装 Ollama
-# macOS/Linux: curl -fsSL https://ollama.com/install.sh | sh
+const agentLearningPath = {
+  title: "小白学 Agent",
+  subtitle: "从零开始，7天掌握 AI Agent 开发",
+  description: "不需要深度学习背景，跟着动手做，快速上手 AI Agent 开发",
+  totalHours: 20,
+  levels: [
+    {
+      level: "第1-2天",
+      title: "Agent 基础概念",
+      hours: 4,
+      icon: BookOpen,
+      content: [
+        { title: "什么是 AI Agent", desc: "理解 Agent 的本质：感知-思考-行动循环", done: false },
+        { title: "LLM 基础", desc: "了解大语言模型如何作为 Agent 的大脑", done: false },
+        { title: "工具调用 (Tool Use)", desc: "学习如何让 Agent 使用外部工具", done: false },
+        { title: "动手实验", desc: "使用 Ollama 本地运行第一个模型", done: false },
+      ],
+      project: "🎯 完成：本地运行 Llama3.2 并对话",
+      codeExample: `# 安装 Ollama
+# curl -fsSL https://ollama.com/install.sh | sh
 
 # 拉取模型
 ollama pull llama3.2
-ollama pull qwen2.5
 
-# 运行模型
+# 运行
 ollama run llama3.2
 
 # API 调用
 curl http://localhost:11434/api/generate -d '{
   "model": "llama3.2",
-  "prompt": "解释什么是AI Agent"
+  "prompt": "你好，请介绍一下自己"
 }'`
-  },
-  {
-    title: "LangChain 基础 Agent",
-    language: "python",
-    code: `from langchain.agents import initialize_agent, Tool
-from langchain_openai import ChatOpenAI
+    },
+    {
+      level: "第3-4天",
+      title: "LangChain 实战",
+      hours: 6,
+      icon: Layers,
+      content: [
+        { title: "LangChain 核心概念", desc: "Chain、Prompt、Model、Output Parser", done: false },
+        { title: "构建第一个 Agent", desc: "使用 LangChain 创建简单 Agent", done: false },
+        { title: "添加工具", desc: "集成搜索、计算器等工具", done: false },
+        { title: "记忆系统", desc: "让 Agent 记住对话历史", done: false },
+      ],
+      project: "🎯 完成：会搜索和计算的智能助手",
+      codeExample: `from langchain.agents import initialize_agent, Tool
 from langchain.tools import DuckDuckGoSearchRun
+from langchain_openai import ChatOpenAI
 
-# 定义工具
+# 创建工具
 search = DuckDuckGoSearchRun()
 tools = [
     Tool(name="Search", func=search.run, 
@@ -185,26 +99,150 @@ agent = initialize_agent(
 )
 
 # 运行
-result = agent.run("今天AI有什么重大新闻？")`
-  },
-  {
-    title: "LoRA 微调模型",
-    language: "python",
-    code: `from transformers import AutoModelForCausalLM
+result = agent.run("今天北京的天气怎么样？")`
+    },
+    {
+      level: "第5-6天",
+      title: "RAG 知识增强",
+      hours: 6,
+      icon: Database,
+      content: [
+        { title: "Embedding 原理", desc: "文本如何变成向量", done: false },
+        { title: "向量数据库", desc: "使用 Chroma 存储和检索", done: false },
+        { title: "文档处理", desc: "加载、切分、索引文档", done: false },
+        { title: "构建知识库", desc: "让 Agent 基于私有数据回答", done: false },
+      ],
+      project: "🎯 完成：基于私有文档的智能问答系统",
+      codeExample: `from langchain import OpenAI, VectorDBQA
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.vectorstores import Chroma
+from langchain.document_loaders import TextLoader
+
+# 加载文档
+loader = TextLoader("my_docs.txt")
+docs = loader.load()
+
+# 创建向量库
+embeddings = OpenAIEmbeddings()
+vectordb = Chroma.from_documents(docs, embeddings)
+
+# 创建 QA 系统
+qa = VectorDBQA.from_chain_type(
+    llm=OpenAI(),
+    chain_type="stuff",
+    vectorstore=vectordb
+)
+
+# 提问
+answer = qa.run("公司的年假政策是什么？")`
+    },
+    {
+      level: "第7天",
+      title: "Multi-Agent 系统",
+      hours: 4,
+      icon: Users,
+      content: [
+        { title: "多 Agent 架构", desc: "理解多 Agent 协作模式", done: false },
+        { title: "CrewAI 框架", desc: "快速构建 Agent 团队", done: false },
+        { title: "任务分配", desc: "让不同 Agent 负责不同任务", done: false },
+        { title: "项目实战", desc: "构建研报生成团队", done: false },
+      ],
+      project: "🎯 完成：多 Agent 协作的研报生成器",
+      codeExample: `from crewai import Agent, Task, Crew
+
+# 定义 Agent
+researcher = Agent(
+    role="研究员",
+    goal="收集AI领域最新资讯",
+    backstory="资深AI研究员",
+    verbose=True
+)
+
+writer = Agent(
+    role="作家",
+    goal="撰写技术文章",
+    backstory="技术写作专家",
+    verbose=True
+)
+
+# 定义任务和团队
+crew = Crew(
+    agents=[researcher, writer],
+    tasks=[research_task, write_task],
+    process=Process.sequential
+)
+
+# 执行
+result = crew.kickoff()`
+    }
+  ]
+};
+
+// ==================== 主流程二：AI 模型定制化 ====================
+
+const modelCustomizationPath = {
+  title: "AI 模型定制化",
+  subtitle: "从使用模型到拥有专属模型",
+  description: "掌握模型微调、量化、部署，打造属于你的 AI 模型",
+  totalHours: 30,
+  levels: [
+    {
+      level: "阶段一",
+      title: "本地部署大模型",
+      hours: 4,
+      icon: Cpu,
+      content: [
+        { title: "Ollama 入门", desc: "最简单的方式本地运行模型", done: false },
+        { title: "vLLM 部署", desc: "高性能模型服务", done: false },
+        { title: "模型量化", desc: "GGUF 格式和量化级别", done: false },
+        { title: "API 封装", desc: "提供 OpenAI 兼容接口", done: false },
+      ],
+      project: "🎯 完成：本地部署 Qwen2.5-7B 并提供 API 服务",
+      codeExample: `# 使用 vLLM 部署
+pip install vllm
+
+# 启动服务
+python -m vllm.entrypoints.openai.api_server \\
+  --model "Qwen/Qwen2.5-7B-Instruct" \\
+  --tensor-parallel-size 1 \\
+  --max-model-len 8192
+
+# API 调用
+curl http://localhost:8000/v1/chat/completions \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "model": "Qwen/Qwen2.5-7B-Instruct",
+    "messages": [{"role": "user", "content": "Hello!"}]
+  }'`
+    },
+    {
+      level: "阶段二",
+      title: "LoRA 高效微调",
+      hours: 10,
+      icon: Target,
+      content: [
+        { title: "微调原理", desc: "理解 LoRA 和全参数微调的区别", done: false },
+        { title: "数据准备", desc: "构建高质量的微调数据集", done: false },
+        { title: "LoRA 配置", desc: "rank、alpha、target_modules", done: false },
+        { title: "QLoRA 实践", desc: "在消费级 GPU 上微调大模型", done: false },
+      ],
+      project: "🎯 完成：使用 LoRA 微调一个领域专用模型",
+      codeExample: `from transformers import AutoModelForCausalLM
 from peft import LoraConfig, get_peft_model
+from trl import SFTTrainer
 
 # 加载基础模型
 model = AutoModelForCausalLM.from_pretrained(
-    "meta-llama/Llama-2-7b-hf",
+    "Qwen/Qwen2.5-7B",
     torch_dtype="auto",
     device_map="auto"
 )
 
 # 配置 LoRA
 lora_config = LoraConfig(
-    r=16,                    # LoRA rank
-    lora_alpha=32,           # 缩放参数
-    target_modules=["q_proj", "v_proj"],
+    r=16,              # LoRA rank
+    lora_alpha=32,     # 缩放参数
+    target_modules=["q_proj", "v_proj", "k_proj", "o_proj"],
     lora_dropout=0.05,
     bias="none",
     task_type="CAUSAL_LM"
@@ -212,86 +250,126 @@ lora_config = LoraConfig(
 
 # 应用 LoRA
 model = get_peft_model(model, lora_config)
+
+# 查看可训练参数
 model.print_trainable_parameters()
+# 输出: trainable params: 20M || all params: 7B || trainable%: 0.28
 
-# 开始训练...`
-  },
-  {
-    title: "RAG 检索增强",
-    language: "python",
-    code: `from langchain import OpenAI, VectorDBQA
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.vectorstores import Chroma
-from langchain.document_loaders import TextLoader
+# 开始训练
+trainer = SFTTrainer(
+    model=model,
+    train_dataset=dataset,
+    max_seq_length=512,
+    args=TrainingArguments(
+        output_dir="./lora_output",
+        num_train_epochs=3,
+        per_device_train_batch_size=4,
+        learning_rate=2e-4,
+    )
+)
+trainer.train()`
+    },
+    {
+      level: "阶段三",
+      title: "模型优化与导出",
+      hours: 8,
+      icon: Zap,
+      content: [
+        { title: "模型合并", desc: "将 LoRA 权重合并到基础模型", done: false },
+        { title: "量化导出", desc: "GPTQ、AWQ、GGUF 格式转换", done: false },
+        { title: "推理优化", desc: "使用 vLLM、TensorRT 加速", done: false },
+        { title: "模型评估", desc: "测试微调效果", done: false },
+      ],
+      project: "🎯 完成：导出优化后的模型并部署",
+      codeExample: `# 合并 LoRA 权重
+from peft import PeftModel
 
-# 加载文档
-loader = TextLoader("docs.txt")
-docs = loader.load()
+# 加载基础模型和 LoRA
+model = AutoModelForCausalLM.from_pretrained("base_model")
+model = PeftModel.from_pretrained(model, "lora_adapter")
 
-# 创建向量数据库
-embeddings = OpenAIEmbeddings()
-vectordb = Chroma.from_documents(docs, embeddings)
+# 合并权重
+merged_model = model.merge_and_unload()
 
-# 创建 QA 链
-qa = VectorDBQA.from_chain_type(
-    llm=OpenAI(),
-    chain_type="stuff",
-    vectorstore=vectordb
+# 保存完整模型
+merged_model.save_pretrained("./merged_model")
+
+# 转换为 GGUF (使用 llama.cpp)
+python convert_hf_to_gguf.py ./merged_model \\
+  --outfile model.gguf \\
+  --outtype q4_k_m`
+    },
+    {
+      level: "阶段四",
+      title: "高级定制技术",
+      hours: 8,
+      icon: Sparkles,
+      content: [
+        { title: "多模态微调", desc: "视觉-语言模型定制", done: false },
+        { title: "RLHF 训练", desc: "基于人类反馈的强化学习", done: false },
+        { title: "DPO 训练", desc: "直接偏好优化", done: false },
+        { title: "模型融合", desc: "MergeKit 模型合并", done: false },
+      ],
+      project: "🎯 完成：使用 DPO 优化模型输出质量",
+      codeExample: `# DPO 训练示例
+from trl import DPOTrainer
+from peft import LoraConfig
+
+dpo_config = {
+    "beta": 0.1,  # DPO 温度参数
+    "loss_type": "sigmoid"
+}
+
+trainer = DPOTrainer(
+    model=model,
+    ref_model=ref_model,  # 参考模型
+    args=training_args,
+    train_dataset=dpo_dataset,  # 包含 chosen/rejected 的数据
+    tokenizer=tokenizer,
+    peft_config=lora_config,
 )
 
-# 查询
-answer = qa.run("什么是我们的退货政策？")`
-  }
+trainer.train()`
+    }
+  ]
+};
+
+// 推荐工具
+const recommendedTools = [
+  { name: "Ollama", desc: "本地运行大模型最简单方式", category: "部署", link: "https://ollama.com" },
+  { name: "LangChain", desc: "LLM 应用开发框架", category: "开发", link: "https://langchain.com" },
+  { name: "Hugging Face", desc: "模型和数据集仓库", category: "资源", link: "https://huggingface.co" },
+  { name: "Unsloth", desc: "2倍速微调，显存减少70%", category: "微调", link: "https://unsloth.ai" },
+  { name: "LLaMA-Factory", desc: "一站式模型微调框架", category: "微调", link: "https://github.com/hiyouga/LLaMA-Factory" },
+  { name: "vLLM", desc: "高吞吐大模型推理引擎", category: "部署", link: "https://vllm.ai" },
 ];
 
-// 学习路径
-const learningPaths = [
+// 常见问题
+const faqs = [
   {
-    title: "AI 应用开发者",
-    duration: "4-6 周",
-    steps: [
-      "学习 Python 基础",
-      "理解 LLM 原理和 API 使用",
-      "掌握 LangChain/LlamaIndex",
-      "开发 RAG 应用",
-      "构建第一个 Agent"
-    ]
+    q: "没有深度学习基础，能学 Agent 开发吗？",
+    a: "完全可以！Agent 开发更侧重于工程能力，你只需要会调用 API 和使用框架。本教程从最简单的 Ollama 开始，不需要理解 Transformer 原理。"
   },
   {
-    title: "模型定制工程师",
-    duration: "6-8 周",
-    steps: [
-      "学习深度学习和 Transformer",
-      "掌握 PyTorch/TensorFlow",
-      "学习 LoRA/QLoRA 微调",
-      "模型量化与部署",
-      "构建专属模型"
-    ]
+    q: "微调模型需要什么硬件？",
+    a: "7B 模型用 LoRA 微调，16GB 显存即可（如 RTX 4060 Ti）。使用 QLoRA 甚至 8GB 显存也能微调。也可以租用云 GPU（如 AutoDL、Vast.ai）。"
   },
   {
-    title: "AI Agent 专家",
-    duration: "8-10 周",
-    steps: [
-      "深入理解 Agent 架构",
-      "掌握 ReAct/Plan-and-Solve",
-      "开发复杂工具链",
-      "多 Agent 协作系统",
-      "自主任务规划"
-    ]
-  }
+    q: "Agent 和 RAG 有什么区别？",
+    a: "RAG 是 Agent 的一种能力。Agent 是能自主决策的系统，RAG 是其中一种工具（检索工具）。Agent 可以调用 RAG、搜索引擎、代码执行等多种工具。"
+  },
+  {
+    q: "微调后的模型可以商用吗？",
+    a: "取决于基础模型的许可证。Llama 3、Qwen 2.5 允许商用，但需遵守相应协议。自己微调后的模型通常可以商用。"
+  },
 ];
 
 export default function LearnPage() {
-  const [selectedCode, setSelectedCode] = useState(0);
+  const [activeTab, setActiveTab] = useState("agent");
+  const [expandedLevel, setExpandedLevel] = useState<number | null>(0);
+  const [progress, setProgress] = useState(0);
 
-  const getLevelColor = (level: string) => {
-    switch (level) {
-      case "入门": return "bg-green-100 text-green-700";
-      case "中级": return "bg-blue-100 text-blue-700";
-      case "高级": return "bg-purple-100 text-purple-700";
-      default: return "bg-gray-100 text-gray-700";
-    }
-  };
+  const currentPath = activeTab === "agent" ? agentLearningPath : modelCustomizationPath;
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
@@ -308,18 +386,29 @@ export default function LearnPage() {
                 <span className="text-xl font-medium">NewClaw Learning Hub</span>
               </div>
               <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                AI 学习模块
+                AI 实战学习
               </h1>
               <p className="text-xl text-white/90 mb-8">
-                从概念到实战，系统掌握 AI 核心技能
+                两大核心路径：小白学 Agent + AI 模型定制化
               </p>
               <div className="flex flex-wrap justify-center gap-4">
-                <Button size="lg" variant="secondary" className="gap-2">
-                  <Play className="w-4 h-4" />
-                  开始学习
+                <Button 
+                  size="lg" 
+                  variant={activeTab === "agent" ? "default" : "secondary"}
+                  className="gap-2 bg-white text-purple-600 hover:bg-gray-100"
+                  onClick={() => setActiveTab("agent")}
+                >
+                  <Bot className="w-4 h-4" />
+                  小白学 Agent
                 </Button>
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                  查看实战项目
+                <Button 
+                  size="lg" 
+                  variant={activeTab === "model" ? "default" : "secondary"}
+                  className="gap-2 bg-white text-blue-600 hover:bg-gray-100"
+                  onClick={() => setActiveTab("model")}
+                >
+                  <Cpu className="w-4 h-4" />
+                  模型定制化
                 </Button>
               </div>
             </motion.div>
@@ -329,247 +418,220 @@ export default function LearnPage() {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-12">
-        <Tabs defaultValue="concepts" className="max-w-6xl mx-auto">
-          <TabsList className="grid w-full grid-cols-4 mb-8">
-            <TabsTrigger value="concepts" className="gap-2">
-              <BookOpen className="w-4 h-4" /> 核心概念
-            </TabsTrigger>
-            <TabsTrigger value="courses" className="gap-2">
-              <Lightbulb className="w-4 h-4" /> 学习资源
-            </TabsTrigger>
-            <TabsTrigger value="code" className="gap-2">
-              <Code className="w-4 h-4" /> 上手代码
-            </TabsTrigger>
-            <TabsTrigger value="projects" className="gap-2">
-              <Target className="w-4 h-4" /> 实战项目
-            </TabsTrigger>
-          </TabsList>
-
-          {/* 核心概念 */}
-          <TabsContent value="concepts">
-            <div className="grid md:grid-cols-3 gap-6">
-              {concepts.map((cat, idx) => (
-                <Card key={idx} className="h-full">
-                  <CardHeader>
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <cat.icon className="w-5 h-5 text-blue-600" />
-                      </div>
-                      <CardTitle className="text-lg">{cat.category}</CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      {cat.items.map((item, i) => (
-                        <div key={i} className="p-3 bg-gray-50 rounded-lg">
-                          <div className="flex items-center justify-between mb-1">
-                            <span className="font-medium">{item.name}</span>
-                            <Badge className={getLevelColor(item.level)} variant="secondary">
-                              {item.level}
-                            </Badge>
-                          </div>
-                          <p className="text-sm text-gray-600">{item.desc}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+        <div className="max-w-5xl mx-auto">
+          {/* Path Header */}
+          <div className="mb-8">
+            <div className="flex items-center gap-3 mb-2">
+              {activeTab === "agent" ? <Bot className="w-8 h-8 text-purple-600" /> : <Cpu className="w-8 h-8 text-blue-600" />}
+              <h1 className="text-3xl font-bold">{currentPath.title}</h1>
             </div>
-
-            {/* 学习路径 */}
-            <div className="mt-8">
-              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                <Brain className="w-6 h-6 text-purple-600" />
-                推荐学习路径
-              </h2>
-              <div className="grid md:grid-cols-3 gap-6">
-                {learningPaths.map((path, idx) => (
-                  <Card key={idx} className="border-l-4 border-l-purple-500">
-                    <CardHeader>
-                      <CardTitle className="text-lg">{path.title}</CardTitle>
-                      <p className="text-sm text-gray-500">预计时间: {path.duration}</p>
-                    </CardHeader>
-                    <CardContent>
-                      <ol className="space-y-2">
-                        {path.steps.map((step, i) => (
-                          <li key={i} className="flex items-start gap-2 text-sm">
-                            <span className="w-5 h-5 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center text-xs flex-shrink-0">
-                              {i + 1}
-                            </span>
-                            {step}
-                          </li>
-                        ))}
-                      </ol>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+            <p className="text-xl text-gray-600 mb-2">{currentPath.subtitle}</p>
+            <p className="text-gray-500">{currentPath.description}</p>
+            <div className="flex items-center gap-4 mt-4">
+              <Badge variant="secondary" className="gap-1">
+                <Clock className="w-3 h-3" />
+                预计 {currentPath.totalHours} 小时
+              </Badge>
+              <Badge variant="secondary" className="gap-1">
+                <Layers className="w-3 h-3" />
+                {currentPath.levels.length} 个阶段
+              </Badge>
             </div>
-          </TabsContent>
+          </div>
 
-          {/* 学习资源 */}
-          <TabsContent value="courses">
-            <div className="grid md:grid-cols-2 gap-4">
-              {courses.map((course, idx) => (
-                <Card key={idx} className="hover:shadow-md transition-shadow">
-                  <CardContent className="p-5">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <h3 className="font-semibold">{course.title}</h3>
-                          <Badge className={getLevelColor(course.level)}>
-                            {course.level}
-                          </Badge>
-                        </div>
-                        <p className="text-sm text-gray-600 mb-2">{course.description}</p>
-                        <div className="flex items-center gap-2 text-sm text-gray-500">
-                          <span className="font-medium">{course.platform}</span>
-                        </div>
-                      </div>
-                      <a 
-                        href={course.link} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-700"
-                      >
-                        <ExternalLink className="w-5 h-5" />
-                      </a>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+          {/* Progress */}
+          <div className="mb-8 p-4 bg-white rounded-lg border">
+            <div className="flex items-center justify-between mb-2">
+              <span className="font-medium">学习进度</span>
+              <span className="text-sm text-gray-500">{progress}%</span>
             </div>
+            <Progress value={progress} className="h-2" />
+          </div>
 
-            {/* 必读论文 */}
-            <div className="mt-8">
-              <h2 className="text-2xl font-bold mb-4">必读论文</h2>
-              <div className="bg-white rounded-lg border p-6">
-                <div className="grid md:grid-cols-2 gap-4">
-                  {[
-                    { name: "Attention Is All You Need", year: "2017", desc: "Transformer架构" },
-                    { name: "GPT-3", year: "2020", desc: "大模型里程碑" },
-                    { name: "InstructGPT", year: "2022", desc: "RLHF训练" },
-                    { name: "LLaMA", year: "2023", desc: "开源大模型" },
-                    { name: "ReAct", year: "2023", desc: "Agent架构" },
-                    { name: "RAG", year: "2020", desc: "检索增强生成" },
-                  ].map((paper, idx) => (
-                    <div key={idx} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                      <div className="w-8 h-8 bg-blue-100 text-blue-600 rounded flex items-center justify-center text-sm font-bold">
-                        {paper.year.slice(-2)}
+          {/* Learning Levels */}
+          <div className="space-y-4">
+            {currentPath.levels.map((level, idx) => (
+              <Card 
+                key={idx} 
+                className={`overflow-hidden transition-all ${
+                  expandedLevel === idx ? "ring-2 ring-purple-500" : ""
+                }`}
+              >
+                <CardHeader 
+                  className="cursor-pointer hover:bg-gray-50"
+                  onClick={() => setExpandedLevel(expandedLevel === idx ? null : idx)}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
+                        activeTab === "agent" ? "bg-purple-100 text-purple-600" : "bg-blue-100 text-blue-600"
+                      }`}>
+                        <level.icon className="w-6 h-6" />
                       </div>
                       <div>
-                        <div className="font-medium">{paper.name}</div>
-                        <div className="text-sm text-gray-500">{paper.desc}</div>
+                        <div className="flex items-center gap-2">
+                          <Badge variant="outline">{level.level}</Badge>
+                          <span className="text-sm text-gray-500">{level.hours} 小时</span>
+                        </div>
+                        <CardTitle className="text-lg mt-1">{level.title}</CardTitle>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </TabsContent>
-
-          {/* 上手代码 */}
-          <TabsContent value="code">
-            <div className="grid lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-1 space-y-2">
-                {codeExamples.map((example, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setSelectedCode(idx)}
-                    className={`w-full text-left p-4 rounded-lg transition-colors ${
-                      selectedCode === idx 
-                        ? "bg-blue-50 border-blue-200 border" 
-                        : "bg-white border hover:bg-gray-50"
-                    }`}
+                    <ChevronRight className={`w-5 h-5 text-gray-400 transition-transform ${
+                      expandedLevel === idx ? "rotate-90" : ""
+                    }`} />
+                  </div>
+                </CardHeader>
+                
+                {expandedLevel === idx && (
+                  <CardContent className="border-t bg-gray-50/50"
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium">{example.title}</span>
-                      <ChevronRight className={`w-4 h-4 transition-transform ${
-                        selectedCode === idx ? "rotate-90" : ""
-                      }`} />
+                    <div className="grid md:grid-cols-2 gap-6">
+                      {/* 学习内容 */}
+                      <div>
+                        <h4 className="font-medium mb-3 flex items-center gap-2">
+                          <BookOpen className="w-4 h-4" /> 学习内容
+                        </h4>
+                        <div className="space-y-2">
+                          {level.content.map((item, i) => (
+                            <div key={i} className="flex items-start gap-3 p-3 bg-white rounded-lg"
+                            >
+                              <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                                item.done ? "bg-green-500 text-white" : "bg-gray-200"
+                              }`}>
+                                {item.done ? <CheckCircle2 className="w-3 h-3" /> : <span className="text-xs">{i+1}</span>}
+                              </div>
+                              <div>
+                                <div className="font-medium text-sm">{item.title}</div>
+                                <div className="text-xs text-gray-500">{item.desc}</div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                          <div className="flex items-center gap-2 text-sm">
+                            <Target className="w-4 h-4 text-yellow-600" />
+                            <span className="font-medium text-yellow-800">{level.project}</span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* 代码示例 */}
+                      <div>
+                        <h4 className="font-medium mb-3 flex items-center gap-2">
+                          <Code className="w-4 h-4" /> 核心代码
+                        </h4>
+                        <div className="bg-gray-900 rounded-lg overflow-hidden">
+                          <div className="flex items-center justify-between px-4 py-2 bg-gray-800">
+                            <span className="text-xs text-gray-400">示例代码</span>
+                            <Button size="sm" variant="ghost" className="h-6 text-xs">
+                              复制
+                            </Button>
+                          </div>
+                          <pre className="p-4 overflow-x-auto text-sm text-gray-100">
+                            <code>{level.codeExample}</code>
+                          </pre>
+                        </div>
+                        <Button 
+                          className="w-full mt-3 gap-2" 
+                          variant="outline"
+                        >
+                          <Play className="w-4 h-4" />
+                          开始实践
+                        </Button>
+                      </div>
                     </div>
-                    <Badge variant="secondary" className="mt-2">
-                      {example.language}
-                    </Badge>
-                  </button>
-                ))}
-              </div>
-              <div className="lg:col-span-2">
-                <Card className="bg-gray-900 text-gray-100">
-                  <CardHeader className="border-b border-gray-800">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-400">
-                        {codeExamples[selectedCode].title}
-                      </span>
-                      <Badge variant="secondary" className="bg-gray-800">
-                        {codeExamples[selectedCode].language}
-                      </Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="p-0">
-                    <pre className="p-4 overflow-x-auto text-sm">
-                      <code>{codeExamples[selectedCode].code}</code>
-                    </pre>
                   </CardContent>
-                </Card>
-                <div className="mt-4 p-4 bg-blue-50 rounded-lg">
-                  <h4 className="font-medium mb-2 flex items-center gap-2">
-                    <Lightbulb className="w-4 h-4 text-blue-600" />
-                    提示
-                  </h4>
-                  <p className="text-sm text-gray-600">
-                    复制代码到本地运行前，请确保已安装必要的依赖包。
-                    建议先创建虚拟环境，避免依赖冲突。
-                  </p>
-                </div>
-              </div>
-            </div>
-          </TabsContent>
+                )}
+              </Card>
+            ))}
+          </div>
 
-          {/* 实战项目 */}
-          <TabsContent value="projects">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {projects.map((project, idx) => (
-                <Card key={idx} className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-center justify-between mb-2">
-                      <Badge variant="outline">{project.difficulty}</Badge>
-                      <Bot className="w-5 h-5 text-gray-400" />
-                    </div>
-                    <CardTitle className="text-lg">{project.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 text-sm mb-4">{project.description}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {project.tech.map((t, i) => (
-                        <Badge key={i} variant="secondary" className="text-xs">
-                          {t}
-                        </Badge>
-                      ))}
-                    </div>
+          {/* Tools Section */}
+          <div className="mt-12">
+            <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+              <Wrench className="w-6 h-6" />
+              推荐工具
+            </h2>
+            <div className="grid md:grid-cols-3 gap-4">
+              {recommendedTools.map((tool, idx) => (
+                <a
+                  key={idx}
+                  href={tool.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block"
+                >
+                  <Card className="hover:shadow-md transition-shadow h-full"
+                  >
+                    <CardContent className="p-4"
+                    >
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="font-semibold">{tool.name}</span>
+                            <Badge variant="secondary" className="text-xs">{tool.category}</Badge>
+                          </div>
+                          <p className="text-sm text-gray-600 mt-1">{tool.desc}</p>
+                        </div>
+                        <ExternalLink className="w-4 h-4 text-gray-400" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* FAQ Section */}
+          <div className="mt-12">
+            <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+              <MessageSquare className="w-6 h-6" />
+              常见问题
+            </h2>
+            <div className="space-y-4">
+              {faqs.map((faq, idx) => (
+                <Card key={idx}>
+                  <CardContent className="p-5">
+                    <h3 className="font-medium mb-2 flex items-center gap-2">
+                      <span className="w-6 h-6 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center text-sm">Q</span>
+                      {faq.q}
+                    </h3>
+                    <p className="text-gray-600 text-sm pl-8">{faq.a}</p>
                   </CardContent>
                 </Card>
               ))}
             </div>
+          </div>
 
-            {/* 快速开始 */}
-            <div className="mt-8 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl p-8 text-white">
-              <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                <div>
-                  <h2 className="text-2xl font-bold mb-2">准备好开始了吗？</h2>
-                  <p className="text-white/90">
-                    选择一个项目，跟着教程一步步实现你的第一个 AI 应用
-                  </p>
-                </div>
-                <Button size="lg" variant="secondary" className="gap-2">
-                  <Code className="w-4 h-4" />
-                  查看完整教程
-                </Button>
-              </div>
+          {/* CTA */}
+          <div className="mt-12 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl p-8 text-white text-center"
+          >
+            <h2 className="text-2xl font-bold mb-4">准备好开始了吗？</h2>
+            <p className="text-white/90 mb-6">
+              选择一条路径，跟着教程动手实践，7-14天掌握 AI 开发技能
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Button 
+                size="lg" 
+                variant="secondary"
+                className="gap-2"
+                onClick={() => { setActiveTab("agent"); setExpandedLevel(0); }}
+              >
+                <Bot className="w-4 h-4" />
+                从 Agent 开始
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline"
+                className="border-white text-white hover:bg-white/10"
+                onClick={() => { setActiveTab("model"); setExpandedLevel(0); }}
+              >
+                <Cpu className="w-4 h-4" />
+                模型定制化
+              </Button>
             </div>
-          </TabsContent>
-        </Tabs>
+          </div>
+        </div>
       </div>
     </div>
   );

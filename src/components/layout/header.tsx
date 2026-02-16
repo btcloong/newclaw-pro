@@ -15,7 +15,8 @@ import {
   Lightbulb,
   Newspaper,
   Twitter,
-  Send
+  Send,
+  GraduationCap
 } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { cn } from "../../lib/utils";
@@ -26,6 +27,7 @@ const navItems = [
   { href: "/twitter", label: "推特", icon: Twitter },
   { href: "/research", label: "投研", icon: Sparkles },
   { href: "/incubator", label: "孵化", icon: Lightbulb },
+  { href: "/learn", label: "学习", icon: GraduationCap },
 ];
 
 export function Header() {

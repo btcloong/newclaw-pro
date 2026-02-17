@@ -48,66 +48,19 @@ jobs:
       run: |
         CRAWL_TYPE="${{ github.event.inputs.crawl_type || 'auto' }}"
         
+        # Map workflow inputs to CLI commands
         if [ "$CRAWL_TYPE" = "full" ]; then
-          echo "Running FULL crawl..."
-          npx ts-node -e "
-            import { crawlAllRSS } from './src/lib/crawler-new';
-            import { initCrawler } from './src/lib/crawler-new';
-            async function main() {
-              await initCrawler();
-              const result = await crawlAllRSS();
-              console.log('Crawl result:', JSON.stringify(result, null, 2));
-              process.exit(result.success ? 0 : 1);
-            }
-            main();
-          "
+          CLI_CMD="full"
         elif [ "$CRAWL_TYPE" = "high_priority" ]; then
-          echo "Running HIGH PRIORITY crawl..."
-          npx ts-node -e "
-            import { crawlByPriority } from './src/lib/crawler-new';
-            import { initCrawler } from './src/lib/crawler-new';
-            async function main() {
-              await initCrawler();
-              const result = await crawlByPriority('high');
-              console.log('Crawl result:', JSON.stringify(result, null, 2));
-              process.exit(result.success ? 0 : 1);
-            }
-            main();
-          "
+          CLI_CMD="high"
         elif [ "$CRAWL_TYPE" = "process_ai" ]; then
-          echo "Running AI processing..."
-          npx ts-node -e "
-            import { processPendingArticles } from './src/lib/crawler-new';
-            import { initCrawler } from './src/lib/crawler-new';
-            async function main() {
-              await initCrawler();
-              const result = await processPendingArticles(10);
-              console.log('AI processing result:', JSON.stringify(result, null, 2));
-              process.exit(0);
-            }
-            main();
-          "
+          CLI_CMD="ai 10"
         else
-          echo "Running AUTO crawl..."
-          npx ts-node -e "
-            import { crawlAuto, processPendingArticles } from './src/lib/crawler-new';
-            import { initCrawler } from './src/lib/crawler-new';
-            async function main() {
-              await initCrawler();
-              
-              // 自动抓取
-              const crawlResult = await crawlAuto();
-              console.log('Auto crawl result:', JSON.stringify(crawlResult, null, 2));
-              
-              // 处理 AI
-              const aiResult = await processPendingArticles(5);
-              console.log('AI processing result:', JSON.stringify(aiResult, null, 2));
-              
-              process.exit(0);
-            }
-            main();
-          "
+          CLI_CMD="auto"
         fi
+        
+        echo "Running: npx tsx src/lib/crawler-cli.ts $CLI_CMD"
+        npx tsx src/lib/crawler-cli.ts $CLI_CMD
     
     - name: Upload crawl results
       if: always()

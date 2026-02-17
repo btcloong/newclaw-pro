@@ -16,6 +16,7 @@ const nextConfig = {
     unoptimized: true,
   },
   staticPageGenerationTimeout: 180,
+  output: 'standalone',
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,

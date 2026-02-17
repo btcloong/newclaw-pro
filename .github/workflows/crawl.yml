@@ -119,6 +119,19 @@ jobs:
           !data/**/*.log
         retention-days: 7
     
+    - name: Sync to Vercel
+      if: success()
+      env:
+        VERCEL_URL: ${{ secrets.VERCEL_URL }}
+        API_KEY: ${{ secrets.API_KEY }}
+      run: |
+        echo "Syncing crawl results to Vercel..."
+        curl -X POST "$VERCEL_URL/api/crawl" \
+          -H "Content-Type: application/json" \
+          -H "X-API-Key: $API_KEY" \
+          -d '{"type":"auto","limit":10}' \
+          --max-time 300 || echo "Vercel sync triggered"
+    
     - name: Notify on failure
       if: failure()
       run: |

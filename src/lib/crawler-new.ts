@@ -18,8 +18,8 @@ import {
   updateSourceState,
   isUrlSeen,
   markUrlAsSeen,
-  initFileDb,
-} from "./file-db";
+  initStorage,
+} from "./storage-adapter";
 
 // 爬虫配置
 const CRAWLER_CONFIG = {
@@ -453,6 +453,6 @@ export async function getCrawlerStats() {
 
 // 初始化
 export async function initCrawler(): Promise<void> {
-  await initFileDb();
+  await initStorage();
   console.log('[Crawler] Initialized');
 }

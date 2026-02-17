@@ -26,12 +26,16 @@ jobs:
       - name: Run full crawler
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          API_KEY: ${{ secrets.API_KEY }}
           DATA_DIR: ${{ github.workspace }}/data
+          VERCEL_URL: ${{ secrets.VERCEL_URL }}
         run: |
-          curl -X POST ${{ secrets.VERCEL_URL }}/api/crawl \
+          echo "Triggering full crawl on $VERCEL_URL..."
+          curl -X POST "$VERCEL_URL/api/crawl" \
             -H "Content-Type: application/json" \
-            -d '{"type":"full","processAI":true,"generateTrends":true}' \
-            --max-time 600 || echo "Full crawl triggered"
+            -H "X-API-Key: $API_KEY" \
+            -d '{"type":"full","limit":50}' \
+            --max-time 600 || echo "Full crawl triggered via API"
           
       - name: Wait for processing
         run: sleep 60
@@ -39,11 +43,15 @@ jobs:
       - name: Process pending AI articles
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          API_KEY: ${{ secrets.API_KEY }}
+          VERCEL_URL: ${{ secrets.VERCEL_URL }}
         run: |
-          curl -X POST ${{ secrets.VERCEL_URL }}/api/crawl \
+          echo "Processing AI articles on $VERCEL_URL..."
+          curl -X POST "$VERCEL_URL/api/crawl" \
             -H "Content-Type: application/json" \
-            -d '{"type":"auto","processAI":true,"generateTrends":true}' \
-            --max-time 300 || echo "AI processing triggered"
+            -H "X-API-Key: $API_KEY" \
+            -d '{"type":"ai","limit":20}' \
+            --max-time 300 || echo "AI processing triggered via API"
           
       - name: Upload data artifacts
         uses: actions/upload-artifact@v4

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Twitter, 
@@ -16,10 +16,10 @@ import {
   Sparkles,
   Flame,
   CheckCircle2,
-  AlertCircle,
   Zap,
   ChevronDown,
   ChevronUp,
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -80,6 +80,8 @@ interface TweetStats {
   totalRetweets: number;
   lastUpdate: string | null;
 }
+
+const ITEMS_PER_PAGE = 20;
 
 // 格式化数字
 function formatNumber(num: number): string {
@@ -340,14 +342,19 @@ export default function TwitterPage() {
   const [sortBy, setSortBy] = useState<"time" | "popularity">("time");
   const [filterImportance, setFilterImportance] = useState<"all" | "high" | "medium" | "low">("all");
   const [expandedTweets, setExpandedTweets] = useState<Set<string>>(new Set());
+  
+  // 分页相关状态
+  const [displayCount, setDisplayCount] = useState(ITEMS_PER_PAGE);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
 
   // 获取数据
   const fetchData = async (force = false) => {
     try {
       if (force) setRefreshing(true);
       
-      // 获取推文
-      const tweetsRes = await fetch(`/api/twitter?sortBy=${sortBy}&limit=50`);
+      // 获取推文 - 获取更多数据以支持分页
+      const tweetsRes = await fetch(`/api/twitter?sortBy=${sortBy}&limit=100`);
       const tweetsData = await tweetsRes.json();
       
       // 获取趋势
@@ -377,6 +384,7 @@ export default function TwitterPage() {
       const data = await res.json();
       if (data.success) {
         await fetchData(true);
+        setDisplayCount(ITEMS_PER_PAGE);
       }
     } catch (error) {
       console.error("Failed to refresh:", error);
@@ -399,10 +407,54 @@ export default function TwitterPage() {
   };
 
   // 过滤推文
-  const filteredTweets = tweets.filter(tweet => {
-    if (filterImportance === "all") return true;
-    return tweet.aiAnalysis?.importance === filterImportance;
-  });
+  const filteredTweets = useMemo(() => {
+    return tweets.filter(tweet => {
+      if (filterImportance === "all") return true;
+      return tweet.aiAnalysis?.importance === filterImportance;
+    });
+  }, [tweets, filterImportance]);
+
+  // 当前显示的推文
+  const displayedTweets = useMemo(() => {
+    return filteredTweets.slice(0, displayCount);
+  }, [filteredTweets, displayCount]);
+
+  // 是否还有更多数据
+  const hasMore = displayCount < filteredTweets.length;
+
+  // 重置显示数量当筛选条件改变时
+  useEffect(() => {
+    setDisplayCount(ITEMS_PER_PAGE);
+  }, [filterImportance, sortBy]);
+
+  // 加载更多
+  const loadMore = useCallback(() => {
+    if (isLoadingMore || !hasMore) return;
+    
+    setIsLoadingMore(true);
+    setTimeout(() => {
+      setDisplayCount(prev => prev + ITEMS_PER_PAGE);
+      setIsLoadingMore(false);
+    }, 300);
+  }, [isLoadingMore, hasMore]);
+
+  // 无限滚动监听
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !isLoadingMore) {
+          loadMore();
+        }
+      },
+      { threshold: 0.1, rootMargin: "100px" }
+    );
+
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [hasMore, isLoadingMore, loadMore]);
 
   // 初始加载
   useEffect(() => {
@@ -507,15 +559,43 @@ export default function TwitterPage() {
             {/* 推文列表 */}
             <div className="space-y-4">
               <AnimatePresence mode="popLayout">
-                {filteredTweets.length > 0 ? (
-                  filteredTweets.map((tweet) => (
-                    <TweetCard
-                      key={tweet.id}
-                      tweet={tweet}
-                      expanded={expandedTweets.has(tweet.id)}
-                      onToggle={() => toggleExpanded(tweet.id)}
-                    />
-                  ))
+                {displayedTweets.length > 0 ? (
+                  <>
+                    {displayedTweets.map((tweet) => (
+                      <TweetCard
+                        key={tweet.id}
+                        tweet={tweet}
+                        expanded={expandedTweets.has(tweet.id)}
+                        onToggle={() => toggleExpanded(tweet.id)}
+                      />
+                    ))}
+
+                    {/* 加载更多区域 */}
+                    <div ref={loadMoreRef} className="py-4">
+                      {isLoadingMore && (
+                        <div className="flex items-center justify-center gap-2 text-gray-500">
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          <span>加载中...</span>
+                        </div>
+                      )}
+                      
+                      {!isLoadingMore && hasMore && (
+                        <Button 
+                          variant="outline" 
+                          className="w-full"
+                          onClick={loadMore}
+                        >
+                          加载更多 ({filteredTweets.length - displayCount} 条)
+                        </Button>
+                      )}
+                      
+                      {!hasMore && displayedTweets.length > 0 && (
+                        <p className="text-center text-sm text-gray-500 py-4">
+                          已显示全部 {filteredTweets.length} 条推文
+                        </p>
+                      )}
+                    </div>
+                  </>
                 ) : (
                   <motion.div
                     initial={{ opacity: 0 }}

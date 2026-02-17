@@ -10,36 +10,25 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Deploy as root
+    - name: Deploy to Alibaba Cloud
       uses: appleboy/ssh-action@v1.0.0
       with:
         host: ${{ secrets.SERVER_HOST }}
-        username: root
-        password: ${{ secrets.SERVER_PASSWORD }}
+        username: admin
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          # Setup environment
           export PATH="/home/admin/.nvm/versions/node/v20.0.0/bin:/usr/local/bin:$PATH"
-          
-          # Fix permissions
-          chown -R admin:admin /home/admin/newclaw-pro
-          rm -rf /home/admin/newclaw-pro/.next
-          
-          # Deploy as admin user using su
-          su - admin -c '
-            export PATH="/home/admin/.nvm/versions/node/v20.0.0/bin:/usr/local/bin:$PATH"
-            cd /home/admin/newclaw-pro
-            git fetch origin
-            git reset --hard origin/main
-            npm install
-            echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" > .env.local
-            echo "API_KEY=${{ secrets.API_KEY }}" >> .env.local
-            npm run build
-            pm2 delete newclaw-pro 2>/dev/null || true
-            sleep 2
-            pm2 start npm --name newclaw-pro -- start
-            pm2 save
-          '
-          
+          cd /home/admin/newclaw-pro
+          git fetch origin
+          git reset --hard origin/main
+          npm install
+          echo 'GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}' > .env.local
+          echo 'API_KEY=${{ secrets.API_KEY }}' >> .env.local
+          npm run build
+          pm2 delete newclaw-pro 2>/dev/null || true
+          sleep 2
+          pm2 start npm --name newclaw-pro -- start
+          pm2 save
           sleep 3
           curl -s http://localhost:3000 > /dev/null && echo "✓ App running" || echo "✗ App failed"
-          su - admin -c "pm2 status"
+          pm2 status

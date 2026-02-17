@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { 
   BookOpen, Bot, Cpu, ChevronDown, GraduationCap, Clock, Star,
-  Brain, FileText, Wrench, Rocket, CheckCircle2, ExternalLink
+  Brain, FileText, Wrench, Rocket, CheckCircle2, ExternalLink, Code
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";

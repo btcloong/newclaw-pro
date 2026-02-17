@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSearchSuggestions } from "@/lib/search";
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 // GET /api/search/suggestions?q=keyword
 export async function GET(request: NextRequest) {
   try {

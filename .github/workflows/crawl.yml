@@ -84,6 +84,33 @@ jobs:
           -H "X-API-Key: $API_KEY" \
           -d '{"type":"auto","limit":10}' \
           --max-time 300 || echo "Vercel sync triggered"
+
+    - name: Sync to Alibaba Cloud Server
+      if: success()
+      env:
+        SERVER_HOST: ${{ secrets.SERVER_HOST }}
+        SERVER_USER: ${{ secrets.SERVER_USER }}
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      run: |
+        echo "Syncing crawl results to Alibaba Cloud server..."
+        
+        # Setup SSH
+        mkdir -p ~/.ssh
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+        chmod 600 ~/.ssh/deploy_key
+        ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts 2>/dev/null
+        
+        # Sync data directory to server
+        rsync -avz --delete \
+          -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
+          ./data/ $SERVER_USER@$SERVER_HOST:/home/admin/newclaw-pro/data/
+        
+        echo "Data synced successfully"
+        
+        # Trigger server to reload data (optional - restart pm2)
+        ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no \
+          $SERVER_USER@$SERVER_HOST \
+          "cd /home/admin/newclaw-pro && pm2 reload newclaw-pro || echo 'PM2 reload skipped'"
     
     - name: Notify on failure
       if: failure()

@@ -2,7 +2,6 @@
 // 数据在每次部署后重置，通过 API 触发重新抓取
 
 import { AICategory, ArticleScores, AIProcessingResult } from "./ai-processor";
-import { loadNews, loadProjects, loadResearch, loadHotTopics, loadFunding, loadTweets, loadTwitterTrends, loadTrendSummary } from "./file-db";
 
 // 判断是否在 Vercel 环境
 const isVercel = process.env.VERCEL === "1" || process.env.VERCEL_ENV !== undefined;
@@ -957,48 +956,48 @@ function initSampleData() {
   lastCrawlTime = new Date().toISOString();
 }
 
-// 异步初始化数据
-async function initData() {
-  if (isVercel) {
-    // Vercel 环境使用模拟数据
-    console.log("[DB] Vercel environment - using sample data");
-    initSampleData();
-  } else {
-    // 服务器环境从文件加载数据
-    console.log("[DB] Server environment - loading from file");
-    try {
-      const [news, projects, research, hotTopics, funding, tweets, twitterTrends, trendSummary] = await Promise.all([
-        loadNews(),
-        loadProjects(),
-        loadResearch(),
-        loadHotTopics(),
-        loadFunding(),
-        loadTweets(),
-        loadTwitterTrends(),
-        loadTrendSummary(),
-      ]);
-      
-      if (news.length > 0) {
-        newsStore = news;
-        console.log(`[DB] Loaded ${news.length} news items`);
-      } else {
-        console.log("[DB] No news data found, using sample data");
-        initSampleData();
+// 同步初始化数据（避免服务器启动问题）
+function initData() {
+  // 先加载模拟数据作为默认值
+  initSampleData();
+  
+  // 服务器环境下尝试从文件加载（延迟执行，避免循环依赖）
+  if (!isVercel) {
+    console.log("[DB] Server environment - will attempt to load from file");
+    // 使用 setTimeout 延迟加载，避免循环依赖问题
+    setTimeout(async () => {
+      try {
+        // 动态导入避免循环依赖
+        const fileDb = await import("./file-db");
+        const [news, projects, research, hotTopics, funding, tweets, twitterTrends, trendSummary] = await Promise.all([
+          fileDb.loadNews(),
+          fileDb.loadProjects(),
+          fileDb.loadResearch(),
+          fileDb.loadHotTopics(),
+          fileDb.loadFunding(),
+          fileDb.loadTweets(),
+          fileDb.loadTwitterTrends(),
+          fileDb.loadTrendSummary(),
+        ]);
+        
+        if (news.length > 0) {
+          newsStore = news;
+          console.log(`[DB] Loaded ${news.length} news items from file`);
+        }
+        
+        if (projects.length > 0) projectsStore = projects;
+        if (research.length > 0) researchStore = research;
+        if (hotTopics.length > 0) hotTopicsStore = hotTopics;
+        if (funding.length > 0) fundingStore = funding;
+        if (tweets.length > 0) tweetsStore = tweets;
+        if (twitterTrends.length > 0) twitterTrendsStore = twitterTrends;
+        if (trendSummary) trendSummaryStore = trendSummary;
+        
+      } catch (error) {
+        console.error("[DB] Failed to load from file:", error);
+        console.log("[DB] Using sample data");
       }
-      
-      if (projects.length > 0) projectsStore = projects;
-      if (research.length > 0) researchStore = research;
-      if (hotTopics.length > 0) hotTopicsStore = hotTopics;
-      if (funding.length > 0) fundingStore = funding;
-      if (tweets.length > 0) tweetsStore = tweets;
-      if (twitterTrends.length > 0) twitterTrendsStore = twitterTrends;
-      if (trendSummary) trendSummaryStore = trendSummary;
-      
-    } catch (error) {
-      console.error("[DB] Failed to load from file:", error);
-      console.log("[DB] Falling back to sample data");
-      initSampleData();
-    }
+    }, 100);
   }
 }
 

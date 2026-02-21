@@ -21,12 +21,25 @@ export interface RSSSource {
 
 // ============ 英文权威源 - AI 公司官方博客 (50+) ============
 
+// RSSHub 实例列表
+const RSSHUB_INSTANCES = [
+  "https://rsshub.rssforever.com",
+  "https://rsshub.freedit.eu",
+  "https://rsshub.pseudoyu.com",
+];
+
+// 获取 RSSHub URL
+function getRsshubUrl(path: string): string {
+  const instance = RSSHUB_INSTANCES[Math.floor(Math.random() * RSSHUB_INSTANCES.length)];
+  return `${instance}${path}`;
+}
+
 // 大模型公司官方博客 - 高频更新
 export const AI_COMPANY_BLOGS: RSSSource[] = [
   {
     id: "openai-blog",
     name: "OpenAI Blog",
-    xmlUrl: "https://openai.com/blog/rss.xml",
+    xmlUrl: getRsshubUrl("/openai/blog"),
     htmlUrl: "https://openai.com/blog",
     language: "en",
     category: "大模型",
@@ -48,7 +61,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
   {
     id: "anthropic-news",
     name: "Anthropic News",
-    xmlUrl: "https://www.anthropic.com/rss.xml",
+    xmlUrl: getRsshubUrl("/anthropic/news"),
     htmlUrl: "https://www.anthropic.com/news",
     language: "en",
     category: "大模型",
@@ -70,7 +83,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
   {
     id: "google-ai-blog",
     name: "Google AI Blog",
-    xmlUrl: "https://ai.googleblog.com/feeds/posts/default",
+    xmlUrl: getRsshubUrl("/google/ai/blog"),
     htmlUrl: "https://ai.googleblog.com",
     language: "en",
     category: "大模型",
@@ -81,7 +94,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
   {
     id: "deepmind-blog",
     name: "DeepMind Blog",
-    xmlUrl: "https://deepmind.google/blog/rss.xml",
+    xmlUrl: getRsshubUrl("/google/deepmind/blog"),
     htmlUrl: "https://deepmind.google/blog",
     language: "en",
     category: "研究",
@@ -92,7 +105,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
   {
     id: "meta-ai-blog",
     name: "Meta AI Blog",
-    xmlUrl: "https://ai.meta.com/blog/rss/",
+    xmlUrl: getRsshubUrl("/meta/ai/blog"),
     htmlUrl: "https://ai.meta.com/blog",
     language: "en",
     category: "开源模型",
@@ -114,7 +127,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
   {
     id: "mistral-blog",
     name: "Mistral AI Blog",
-    xmlUrl: "https://mistral.ai/news/rss.xml",
+    xmlUrl: getRsshubUrl("/mistral/blog"),
     htmlUrl: "https://mistral.ai/news",
     language: "en",
     category: "开源模型",
@@ -125,7 +138,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
   {
     id: "cohere-blog",
     name: "Cohere Blog",
-    xmlUrl: "https://cohere.com/blog/rss.xml",
+    xmlUrl: getRsshubUrl("/cohere/blog"),
     htmlUrl: "https://cohere.com/blog",
     language: "en",
     category: "大模型",
@@ -147,7 +160,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
   {
     id: "stability-blog",
     name: "Stability AI Blog",
-    xmlUrl: "https://stability.ai/blog/rss.xml",
+    xmlUrl: getRsshubUrl("/stability/blog"),
     htmlUrl: "https://stability.ai/blog",
     language: "en",
     category: "多模态",
@@ -158,7 +171,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
   {
     id: "nvidia-blog",
     name: "NVIDIA AI Blog",
-    xmlUrl: "https://blogs.nvidia.com/blog/ai/feed/",
+    xmlUrl: getRsshubUrl("/nvidia/blog"),
     htmlUrl: "https://blogs.nvidia.com/blog/ai",
     language: "en",
     category: "AI芯片",
@@ -169,7 +182,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
   {
     id: "microsoft-ai-blog",
     name: "Microsoft AI Blog",
-    xmlUrl: "https://blogs.microsoft.com/ai/feed/",
+    xmlUrl: getRsshubUrl("/microsoft/ai/blog"),
     htmlUrl: "https://blogs.microsoft.com/ai",
     language: "en",
     category: "大模型",

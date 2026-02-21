@@ -12,6 +12,11 @@ import {
   getCrawlerStats 
 } from "./crawler-new";
 
+import {
+  crawlTwitter,
+  initTwitterCrawler,
+} from "./twitter-crawler-new";
+
 async function main() {
   const command = process.argv[2] || "auto";
   
@@ -21,6 +26,7 @@ async function main() {
   try {
     // 初始化
     await initCrawler();
+    await initTwitterCrawler();
     
     switch (command) {
       case "full":
@@ -60,6 +66,12 @@ async function main() {
         console.log("[Crawler] Stats:", JSON.stringify(stats, null, 2));
         process.exit(0);
         
+      case "twitter":
+        console.log("[Crawler] Running Twitter crawl...");
+        const twitterResult = await crawlTwitter({ maxAccounts: 15 });
+        console.log("[Crawler] Twitter crawl completed:", JSON.stringify(twitterResult, null, 2));
+        process.exit(twitterResult.success ? 0 : 1);
+        
       case "auto":
       default:
         console.log("[Crawler] Running AUTO crawl...");
@@ -72,6 +84,11 @@ async function main() {
           const aiResult = await processPendingArticles(5);
           console.log("[Crawler] AI processing completed:", JSON.stringify(aiResult, null, 2));
         }
+        
+        // 同时抓取 Twitter
+        console.log("[Crawler] Running Twitter crawl...");
+        const twitterAutoResult = await crawlTwitter({ maxAccounts: 10 });
+        console.log("[Crawler] Twitter crawl completed:", JSON.stringify(twitterAutoResult, null, 2));
         
         process.exit(0);
     }

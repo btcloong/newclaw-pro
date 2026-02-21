@@ -18,6 +18,7 @@ on:
           - full
           - high_priority
           - process_ai
+          - twitter
 
 env:
   NODE_VERSION: '20'
@@ -55,12 +56,15 @@ jobs:
           CLI_CMD="high"
         elif [ "$CRAWL_TYPE" = "process_ai" ]; then
           CLI_CMD="ai 10"
+        elif [ "$CRAWL_TYPE" = "twitter" ]; then
+          CLI_CMD="twitter"
         else
           CLI_CMD="auto"
         fi
         
         echo "Running: npx tsx src/lib/crawler-cli.ts $CLI_CMD"
         npx tsx src/lib/crawler-cli.ts $CLI_CMD
+      timeout-minutes: 15
     
     - name: Upload crawl results
       if: always()

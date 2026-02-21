@@ -2,6 +2,10 @@
 // 数据在每次部署后重置，通过 API 触发重新抓取
 
 import { AICategory, ArticleScores, AIProcessingResult } from "./ai-processor";
+import { loadNews, loadProjects, loadResearch, loadHotTopics, loadFunding, loadTweets, loadTwitterTrends, loadTrendSummary } from "./file-db";
+
+// 判断是否在 Vercel 环境
+const isVercel = process.env.VERCEL === "1" || process.env.VERCEL_ENV !== undefined;
 
 // 扩展的新闻项接口，包含 AI 处理字段
 export interface NewsItem {
@@ -953,8 +957,53 @@ function initSampleData() {
   lastCrawlTime = new Date().toISOString();
 }
 
-// 确保数据已初始化
-initSampleData();
+// 异步初始化数据
+async function initData() {
+  if (isVercel) {
+    // Vercel 环境使用模拟数据
+    console.log("[DB] Vercel environment - using sample data");
+    initSampleData();
+  } else {
+    // 服务器环境从文件加载数据
+    console.log("[DB] Server environment - loading from file");
+    try {
+      const [news, projects, research, hotTopics, funding, tweets, twitterTrends, trendSummary] = await Promise.all([
+        loadNews(),
+        loadProjects(),
+        loadResearch(),
+        loadHotTopics(),
+        loadFunding(),
+        loadTweets(),
+        loadTwitterTrends(),
+        loadTrendSummary(),
+      ]);
+      
+      if (news.length > 0) {
+        newsStore = news;
+        console.log(`[DB] Loaded ${news.length} news items`);
+      } else {
+        console.log("[DB] No news data found, using sample data");
+        initSampleData();
+      }
+      
+      if (projects.length > 0) projectsStore = projects;
+      if (research.length > 0) researchStore = research;
+      if (hotTopics.length > 0) hotTopicsStore = hotTopics;
+      if (funding.length > 0) fundingStore = funding;
+      if (tweets.length > 0) tweetsStore = tweets;
+      if (twitterTrends.length > 0) twitterTrendsStore = twitterTrends;
+      if (trendSummary) trendSummaryStore = trendSummary;
+      
+    } catch (error) {
+      console.error("[DB] Failed to load from file:", error);
+      console.log("[DB] Falling back to sample data");
+      initSampleData();
+    }
+  }
+}
+
+// 立即执行初始化
+initData();
 
 // 模拟 Drizzle ORM 接口
 export const news = {

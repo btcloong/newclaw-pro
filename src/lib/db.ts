@@ -957,52 +957,90 @@ function initSampleData() {
 }
 
 // 同步初始化数据（避免服务器启动问题）
-function initData() {
-  // 先加载模拟数据作为默认值
-  initSampleData();
-  
-  // 服务器环境下尝试从文件加载（延迟执行，避免循环依赖）
+async function initData() {
+  // 服务器环境下优先从文件加载
   if (!isVercel) {
-    console.log("[DB] Server environment - will attempt to load from file");
-    // 使用 setTimeout 延迟加载，避免循环依赖问题
-    setTimeout(async () => {
-      try {
-        // 动态导入避免循环依赖
-        const fileDb = await import("./file-db");
-        const [news, projects, research, hotTopics, funding, tweets, twitterTrends, trendSummary] = await Promise.all([
-          fileDb.loadNews(),
-          fileDb.loadProjects(),
-          fileDb.loadResearch(),
-          fileDb.loadHotTopics(),
-          fileDb.loadFunding(),
-          fileDb.loadTweets(),
-          fileDb.loadTwitterTrends(),
-          fileDb.loadTrendSummary(),
-        ]);
-        
-        if (news.length > 0) {
-          newsStore = news;
-          console.log(`[DB] Loaded ${news.length} news items from file`);
-        }
-        
-        if (projects.length > 0) projectsStore = projects;
-        if (research.length > 0) researchStore = research;
-        if (hotTopics.length > 0) hotTopicsStore = hotTopics;
-        if (funding.length > 0) fundingStore = funding;
-        if (tweets.length > 0) tweetsStore = tweets;
-        if (twitterTrends.length > 0) twitterTrendsStore = twitterTrends;
-        if (trendSummary) trendSummaryStore = trendSummary;
-        
-      } catch (error) {
-        console.error("[DB] Failed to load from file:", error);
-        console.log("[DB] Using sample data");
+    console.log("[DB] Server environment - attempting to load from file...");
+    try {
+      // 动态导入避免循环依赖
+      const fileDb = await import("./file-db");
+      const [news, projects, research, hotTopics, funding, tweets, twitterTrends, trendSummary, crawlState] = await Promise.all([
+        fileDb.loadNews(),
+        fileDb.loadProjects(),
+        fileDb.loadResearch(),
+        fileDb.loadHotTopics(),
+        fileDb.loadFunding(),
+        fileDb.loadTweets(),
+        fileDb.loadTwitterTrends(),
+        fileDb.loadTrendSummary(),
+        fileDb.loadCrawlState(),
+      ]);
+      
+      // 只有当文件中有数据时才使用文件数据，否则使用 mock 数据
+      if (news.length > 0) {
+        newsStore = news;
+        console.log(`[DB] Loaded ${news.length} news items from file`);
+      } else {
+        console.log("[DB] No news data in file, using sample data");
+        // 初始化 mock 数据
+        initSampleData();
+        return;
       }
-    }, 100);
+      
+      if (projects.length > 0) {
+        projectsStore = projects;
+        console.log(`[DB] Loaded ${projects.length} projects from file`);
+      }
+      if (research.length > 0) {
+        researchStore = research;
+        console.log(`[DB] Loaded ${research.length} research items from file`);
+      }
+      if (hotTopics.length > 0) {
+        hotTopicsStore = hotTopics;
+        console.log(`[DB] Loaded ${hotTopics.length} hot topics from file`);
+      }
+      if (funding.length > 0) {
+        fundingStore = funding;
+        console.log(`[DB] Loaded ${funding.length} funding items from file`);
+      }
+      if (tweets.length > 0) {
+        tweetsStore = tweets;
+        console.log(`[DB] Loaded ${tweets.length} tweets from file`);
+      }
+      if (twitterTrends.length > 0) {
+        twitterTrendsStore = twitterTrends;
+        console.log(`[DB] Loaded ${twitterTrends.length} twitter trends from file`);
+      }
+      if (trendSummary) {
+        trendSummaryStore = trendSummary;
+        console.log(`[DB] Loaded trend summary from file`);
+      }
+      
+      // 更新爬虫时间
+      if (crawlState.lastCrawlTime) {
+        lastCrawlTime = crawlState.lastCrawlTime;
+        console.log(`[DB] Last crawl time: ${lastCrawlTime}`);
+      }
+      if (crawlState.lastAIProcessingTime) {
+        lastAIProcessingTime = crawlState.lastAIProcessingTime;
+      }
+      
+      console.log("[DB] File data loaded successfully");
+      return; // 成功加载文件数据，跳过 mock 数据
+      
+    } catch (error) {
+      console.error("[DB] Failed to load from file:", error);
+      console.log("[DB] Falling back to sample data");
+    }
   }
+  
+  // Vercel 环境或文件加载失败时使用 mock 数据
+  initSampleData();
+  console.log("[DB] Initialized with sample data");
 }
 
-// 立即执行初始化
-initData();
+// 执行初始化（异步）
+const initPromise = initData();
 
 // 模拟 Drizzle ORM 接口
 export const news = {

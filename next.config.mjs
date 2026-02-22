@@ -17,6 +17,11 @@ const nextConfig = {
   },
   staticPageGenerationTimeout: 180,
   output: 'standalone',
+  // 内存优化配置
+  experimental: {
+    // 禁用一些内存密集型功能
+    optimizePackageImports: false,
+  },
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,

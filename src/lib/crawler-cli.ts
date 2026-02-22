@@ -85,10 +85,14 @@ async function main() {
           console.log("[Crawler] AI processing completed:", JSON.stringify(aiResult, null, 2));
         }
         
-        // 同时抓取 Twitter
-        console.log("[Crawler] Running Twitter crawl...");
-        const twitterAutoResult = await crawlTwitter({ maxAccounts: 10 });
-        console.log("[Crawler] Twitter crawl completed:", JSON.stringify(twitterAutoResult, null, 2));
+        // 同时抓取 Twitter (失败不影响整体流程)
+        try {
+          console.log("[Crawler] Running Twitter crawl...");
+          const twitterAutoResult = await crawlTwitter({ maxAccounts: 10 });
+          console.log("[Crawler] Twitter crawl completed:", JSON.stringify(twitterAutoResult, null, 2));
+        } catch (twitterError) {
+          console.warn("[Crawler] Twitter crawl failed (non-critical):", twitterError);
+        }
         
         process.exit(0);
     }

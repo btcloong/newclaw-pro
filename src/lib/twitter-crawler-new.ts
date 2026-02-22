@@ -116,6 +116,11 @@ async function fetchUserTimeline(
   username: string,
   maxRetries: number = 2
 ): Promise<Partial<Tweet>[]> {
+  // 暂时禁用 FxTwitter API，使用备用方案
+  console.log(`⏭️ Skipping FxTwitter API for ${username}, using fallback`);
+  return [];
+  
+  /*
   for (let i = 0; i < maxRetries; i++) {
     try {
       const url = `${FXTWITTER_API}/${username}`;
@@ -182,6 +187,7 @@ async function fetchUserTimeline(
     }
   }
   return [];
+  */
 }
 
 // 使用 x-tweet-fetcher Python 脚本获取推文（备用方案）

@@ -16,6 +16,7 @@ git fetch origin main
 git reset --hard origin/main
 
 echo "📦 Installing dependencies..."
+rm -rf node_modules/.cache
 npm ci
 
 echo "🔨 Building project..."

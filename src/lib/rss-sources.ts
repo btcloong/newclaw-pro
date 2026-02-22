@@ -867,6 +867,99 @@ export const CHINESE_TECH_COMPANIES: RSSSource[] = [
   },
 ];
 
+// ============ Twitter 账号源 (通过 RSSHub) ============
+
+export const TWITTER_RSS_SOURCES: RSSSource[] = [
+  {
+    id: "twitter-openai",
+    name: "OpenAI Twitter",
+    xmlUrl: getRsshubUrl("/twitter/user/OpenAI"),
+    htmlUrl: "https://twitter.com/OpenAI",
+    language: "en",
+    category: "官方机构",
+    priority: "high",
+    type: "social",
+    isActive: true,
+  },
+  {
+    id: "twitter-anthropic",
+    name: "Anthropic Twitter",
+    xmlUrl: getRsshubUrl("/twitter/user/AnthropicAI"),
+    htmlUrl: "https://twitter.com/AnthropicAI",
+    language: "en",
+    category: "官方机构",
+    priority: "high",
+    type: "social",
+    isActive: true,
+  },
+  {
+    id: "twitter-deepmind",
+    name: "DeepMind Twitter",
+    xmlUrl: getRsshubUrl("/twitter/user/GoogleDeepMind"),
+    htmlUrl: "https://twitter.com/GoogleDeepMind",
+    language: "en",
+    category: "官方机构",
+    priority: "high",
+    type: "social",
+    isActive: true,
+  },
+  {
+    id: "twitter-metaai",
+    name: "Meta AI Twitter",
+    xmlUrl: getRsshubUrl("/twitter/user/MetaAI"),
+    htmlUrl: "https://twitter.com/MetaAI",
+    language: "en",
+    category: "官方机构",
+    priority: "high",
+    type: "social",
+    isActive: true,
+  },
+  {
+    id: "twitter-xai",
+    name: "xAI Twitter",
+    xmlUrl: getRsshubUrl("/twitter/user/xAI"),
+    htmlUrl: "https://twitter.com/xAI",
+    language: "en",
+    category: "官方机构",
+    priority: "high",
+    type: "social",
+    isActive: true,
+  },
+  {
+    id: "twitter-karpathy",
+    name: "Andrej Karpathy",
+    xmlUrl: getRsshubUrl("/twitter/user/karpathy"),
+    htmlUrl: "https://twitter.com/karpathy",
+    language: "en",
+    category: "AI研究者",
+    priority: "high",
+    type: "social",
+    isActive: true,
+  },
+  {
+    id: "twitter-ylecun",
+    name: "Yann LeCun",
+    xmlUrl: getRsshubUrl("/twitter/user/ylecun"),
+    htmlUrl: "https://twitter.com/ylecun",
+    language: "en",
+    category: "AI研究者",
+    priority: "high",
+    type: "social",
+    isActive: true,
+  },
+  {
+    id: "twitter-sama",
+    name: "Sam Altman",
+    xmlUrl: getRsshubUrl("/twitter/user/sama"),
+    htmlUrl: "https://twitter.com/sama",
+    language: "en",
+    category: "AI研究者",
+    priority: "high",
+    type: "social",
+    isActive: true,
+  },
+];
+
 // ============ Reddit AI 社区板块 (12+) ============
 
 export const REDDIT_AI_SOURCES: RSSSource[] = [
@@ -1481,6 +1574,8 @@ export const ALL_RSS_SOURCES: RSSSource[] = [
   ...COMMUNITY_SOURCES,
   ...ADDITIONAL_ENGLISH_SOURCES,
   ...ADDITIONAL_CHINESE_SOURCES,
+  ...REDDIT_AI_SOURCES,
+  ...TWITTER_RSS_SOURCES,
 ];
 
 // 统计信息

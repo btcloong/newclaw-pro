@@ -19,7 +19,7 @@ git fetch origin main
 git reset --hard origin/main
 
 echo "📦 Installing dependencies..."
-rm -rf node_modules package-lock.json
+rm -rf node_modules package-lock.json 2>/dev/null || true
 npm install
 
 echo "🔨 Building project..."

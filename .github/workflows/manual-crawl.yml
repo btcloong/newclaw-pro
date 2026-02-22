@@ -1,0 +1,98 @@
+name: Manual Data Crawl
+
+on:
+  workflow_dispatch:
+    inputs:
+      crawl_type:
+        description: 'Crawl type'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - auto
+          - full
+          - high_priority
+          - process_ai
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Setup environment
+      run: |
+        echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" > .env.local
+        echo "API_KEY=${{ secrets.API_KEY }}" >> .env.local
+    
+    - name: Run crawler
+      run: |
+        CRAWL_TYPE="${{ github.event.inputs.crawl_type || 'full' }}"
+        
+        if [ "$CRAWL_TYPE" = "full" ]; then
+          CLI_CMD="full"
+        elif [ "$CRAWL_TYPE" = "high_priority" ]; then
+          CLI_CMD="high"
+        elif [ "$CRAWL_TYPE" = "process_ai" ]; then
+          CLI_CMD="ai 50"
+        else
+          CLI_CMD="auto"
+        fi
+        
+        echo "Running: npx tsx src/lib/crawler-cli.ts $CLI_CMD"
+        npx tsx src/lib/crawler-cli.ts $CLI_CMD
+      timeout-minutes: 30
+    
+    - name: Upload crawl results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: crawl-results
+        path: |
+          data/
+          !data/**/*.log
+        retention-days: 7
+    
+    - name: Sync to Alibaba Cloud Server
+      if: success()
+      env:
+        SERVER_HOST: ${{ secrets.SERVER_HOST }}
+        SERVER_USER: ${{ secrets.SERVER_USER }}
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      run: |
+        echo "Syncing crawl results to Alibaba Cloud server..."
+        
+        mkdir -p ~/.ssh
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+        chmod 600 ~/.ssh/deploy_key
+        ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts 2>/dev/null
+        
+        rsync -avz --delete \
+          -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
+          ./data/ $SERVER_USER@$SERVER_HOST:/home/admin/newclaw-pro/data/
+        
+        echo "Data synced successfully"
+        
+        ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no \
+          $SERVER_USER@$SERVER_HOST \
+          "cd /home/admin/newclaw-pro && pm2 reload newclaw-pro || echo 'PM2 reload skipped'"
+    
+    - name: Notify on failure
+      if: failure()
+      run: |
+        echo "::error::Crawl failed! Check logs for details."
+        exit 1

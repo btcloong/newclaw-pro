@@ -12,6 +12,9 @@ echo "🚀 Starting deployment..."
 cd /home/admin/newclaw-pro
 
 echo "📥 Pulling latest code..."
+git remote prune origin
+git fetch origin main
+rm -rf .git/refs/remotes/origin/main
 git fetch origin main
 git reset --hard origin/main
 

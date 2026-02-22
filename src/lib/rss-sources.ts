@@ -199,7 +199,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "云服务",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "ai2-blog",
@@ -210,7 +210,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "研究",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "baidu-research",
@@ -221,7 +221,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "研究",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "alibaba-damo",
@@ -232,7 +232,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "研究",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "perplexity-blog",
@@ -243,7 +243,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI搜索",
     priority: "high",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "cursor-blog",
@@ -254,7 +254,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI编程",
     priority: "high",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "replicate-blog",
@@ -265,7 +265,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI模型托管",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "groq-blog",
@@ -276,7 +276,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI芯片",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "fireworks-ai-blog",
@@ -287,7 +287,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI推理",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "together-ai-blog",
@@ -298,7 +298,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI推理",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "anyscale-blog",
@@ -309,7 +309,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI基础设施",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "baseten-blog",
@@ -320,7 +320,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "MLOps",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "modal-blog",
@@ -331,7 +331,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI基础设施",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "runpod-blog",
@@ -342,7 +342,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI基础设施",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "deepinfra-blog",
@@ -353,7 +353,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI推理",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "octoai-blog",
@@ -364,7 +364,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI推理",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "predibase-blog",
@@ -375,7 +375,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "LLM微调",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "arize-blog",
@@ -386,7 +386,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI可观测性",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "langfuse-blog",
@@ -397,7 +397,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "LLM可观测性",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "braintrust-blog",
@@ -408,7 +408,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI评估",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "humanloop-blog",
@@ -419,7 +419,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "LLM开发平台",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "openpipe-blog",
@@ -430,7 +430,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "LLM微调",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "lastmile-ai-blog",
@@ -441,7 +441,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI工程",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "promptlayer-blog",
@@ -452,7 +452,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "Prompt工程",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "traceloop-blog",
@@ -463,7 +463,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "LLM可观测性",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "helicone-blog",
@@ -474,7 +474,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "LLM可观测性",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "portkey-blog",
@@ -485,7 +485,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI网关",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "lunary-blog",
@@ -496,7 +496,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "LLM可观测性",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "context-ai-blog",
@@ -507,7 +507,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI分析",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "parea-blog",
@@ -518,7 +518,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI评估",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "weaviate-blog",
@@ -529,7 +529,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "向量数据库",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "pinecone-blog",
@@ -540,7 +540,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "向量数据库",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "chroma-blog",
@@ -551,7 +551,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "向量数据库",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "qdrant-blog",
@@ -562,7 +562,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "向量数据库",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "milvus-blog",
@@ -573,7 +573,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "向量数据库",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "pgvector-blog",
@@ -584,7 +584,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "向量数据库",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "autogen-blog",
@@ -595,7 +595,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI Agent",
     priority: "high",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "crewai-blog",
@@ -606,7 +606,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI Agent",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "dify-blog",
@@ -617,7 +617,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "LLM应用开发",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "langflow-blog",
@@ -628,7 +628,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI工作流",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "flowise-blog",
@@ -639,7 +639,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI工作流",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "n8n-blog",
@@ -650,7 +650,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "自动化",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "make-blog",
@@ -661,7 +661,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "自动化",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "zapier-blog",
@@ -672,7 +672,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "自动化",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "vapi-blog",
@@ -683,7 +683,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "Voice AI",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "retell-blog",
@@ -694,7 +694,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "Voice AI",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "bland-blog",
@@ -705,7 +705,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "Voice AI",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "elevenlabs-blog",
@@ -716,7 +716,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "Voice AI",
     priority: "high",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "deepgram-blog",
@@ -727,7 +727,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "Voice AI",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "assemblyai-blog",
@@ -738,7 +738,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "Voice AI",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "playht-blog",
@@ -749,7 +749,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "Voice AI",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "cartesia-blog",
@@ -760,7 +760,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "Voice AI",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "hume-ai-blog",
@@ -771,7 +771,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "情感AI",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "synthesia-blog",
@@ -782,7 +782,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI视频",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "heygen-blog",
@@ -793,7 +793,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI视频",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "runway-blog",
@@ -804,7 +804,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI视频",
     priority: "high",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "pika-blog",
@@ -815,7 +815,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI视频",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "luma-ai-blog",
@@ -826,7 +826,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "3D AI",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "leonardo-ai-blog",
@@ -837,7 +837,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI绘画",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "ideogram-blog",
@@ -848,7 +848,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI绘画",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "krea-blog",
@@ -859,7 +859,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI绘画",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "freepik-blog",
@@ -870,7 +870,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI绘画",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "clipdrop-blog",
@@ -881,7 +881,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI绘画",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "photoroom-blog",
@@ -892,7 +892,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI图像",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "remove-bg-blog",
@@ -903,7 +903,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI图像",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "jan-ai-blog",
@@ -914,7 +914,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "本地LLM",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "ollama-blog",
@@ -925,7 +925,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "本地LLM",
     priority: "high",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "lm-studio-blog",
@@ -936,7 +936,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "本地LLM",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "gpt4all-blog",
@@ -947,7 +947,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "本地LLM",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "llamacpp-blog",
@@ -958,7 +958,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "本地LLM",
     priority: "high",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "koboldcpp-blog",
@@ -969,7 +969,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "本地LLM",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "text-generation-webui-blog",
@@ -980,7 +980,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "本地LLM",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "comfyui-blog",
@@ -991,7 +991,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI绘画",
     priority: "high",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "invoke-ai-blog",
@@ -1002,7 +1002,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI绘画",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "automatic1111-blog",
@@ -1013,7 +1013,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI绘画",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "fooocus-blog",
@@ -1024,7 +1024,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI绘画",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "midjourney-blog",
@@ -1035,7 +1035,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI绘画",
     priority: "high",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "openrouter-blog",
@@ -1046,7 +1046,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI模型聚合",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "unify-blog",
@@ -1057,7 +1057,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI基础设施",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "fallacious-blog",
@@ -1068,7 +1068,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI推理",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "sf-compute-blog",
@@ -1079,7 +1079,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI算力",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "lambda-blog",
@@ -1090,7 +1090,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI算力",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "coreweave-blog",
@@ -1101,7 +1101,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI算力",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "vast-ai-blog",
@@ -1112,7 +1112,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI算力",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "shadeform-blog",
@@ -1123,7 +1123,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI算力",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "tensorwave-blog",
@@ -1134,7 +1134,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI算力",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "fal-ai-blog",
@@ -1145,7 +1145,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI模型托管",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "banana-dev-blog",
@@ -1156,7 +1156,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI模型托管",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "cerebrium-blog",
@@ -1167,7 +1167,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI基础设施",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "bentoml-blog",
@@ -1178,7 +1178,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI服务化",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "triton-blog",
@@ -1189,7 +1189,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI编译器",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
 ];
 
@@ -1204,7 +1204,7 @@ export const ENGLISH_TECH_MEDIA: RSSSource[] = [
     category: "科技新闻",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "the-verge-ai",
@@ -1215,7 +1215,7 @@ export const ENGLISH_TECH_MEDIA: RSSSource[] = [
     category: "科技新闻",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "wired-ai",
@@ -1226,7 +1226,7 @@ export const ENGLISH_TECH_MEDIA: RSSSource[] = [
     category: "科技新闻",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "mit-tech-review",
@@ -1237,7 +1237,7 @@ export const ENGLISH_TECH_MEDIA: RSSSource[] = [
     category: "科技新闻",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "venturebeat-ai",
@@ -1248,7 +1248,7 @@ export const ENGLISH_TECH_MEDIA: RSSSource[] = [
     category: "科技新闻",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "ai-news",
@@ -1259,7 +1259,7 @@ export const ENGLISH_TECH_MEDIA: RSSSource[] = [
     category: "科技新闻",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "analytics-india",
@@ -1270,7 +1270,7 @@ export const ENGLISH_TECH_MEDIA: RSSSource[] = [
     category: "科技新闻",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "synced-review",
@@ -1281,7 +1281,7 @@ export const ENGLISH_TECH_MEDIA: RSSSource[] = [
     category: "科技新闻",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "towards-data-science",
@@ -1292,7 +1292,7 @@ export const ENGLISH_TECH_MEDIA: RSSSource[] = [
     category: "技术博客",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "arxiv-blog",
@@ -1303,7 +1303,7 @@ export const ENGLISH_TECH_MEDIA: RSSSource[] = [
     category: "学术",
     priority: "medium",
     type: "academic",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "import-ai",
@@ -1314,7 +1314,7 @@ export const ENGLISH_TECH_MEDIA: RSSSource[] = [
     category: "AI通讯",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "the-batch",
@@ -1325,7 +1325,7 @@ export const ENGLISH_TECH_MEDIA: RSSSource[] = [
     category: "AI通讯",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "last-week-ai",
@@ -1336,7 +1336,7 @@ export const ENGLISH_TECH_MEDIA: RSSSource[] = [
     category: "AI通讯",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
 ];
 
@@ -1351,7 +1351,7 @@ export const ACADEMIC_SOURCES: RSSSource[] = [
     category: "研究",
     priority: "low",
     type: "academic",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "stanford-hai",
@@ -1362,7 +1362,7 @@ export const ACADEMIC_SOURCES: RSSSource[] = [
     category: "研究",
     priority: "low",
     type: "academic",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "mit-csail",
@@ -1373,7 +1373,7 @@ export const ACADEMIC_SOURCES: RSSSource[] = [
     category: "研究",
     priority: "low",
     type: "academic",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "cmu-ai",
@@ -1384,7 +1384,7 @@ export const ACADEMIC_SOURCES: RSSSource[] = [
     category: "研究",
     priority: "low",
     type: "academic",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "papers-with-code",
@@ -1395,7 +1395,7 @@ export const ACADEMIC_SOURCES: RSSSource[] = [
     category: "研究",
     priority: "low",
     type: "academic",
-    isActive: true,
+    isActive: false,
   },
 ];
 
@@ -1432,7 +1432,7 @@ export const HN_TOP_BLOGS: RSSSource[] = [
     category: "技术博客",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "gwern",
@@ -1443,7 +1443,7 @@ export const HN_TOP_BLOGS: RSSSource[] = [
     category: "研究",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "krebs-security",
@@ -1454,7 +1454,7 @@ export const HN_TOP_BLOGS: RSSSource[] = [
     category: "安全",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "antirez",
@@ -1465,7 +1465,7 @@ export const HN_TOP_BLOGS: RSSSource[] = [
     category: "技术博客",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "daring-fireball",
@@ -1476,7 +1476,7 @@ export const HN_TOP_BLOGS: RSSSource[] = [
     category: "科技新闻",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "troy-hunt",
@@ -1487,7 +1487,7 @@ export const HN_TOP_BLOGS: RSSSource[] = [
     category: "安全",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "mitchell-hashimoto",
@@ -1498,7 +1498,7 @@ export const HN_TOP_BLOGS: RSSSource[] = [
     category: "技术博客",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "matklad",
@@ -1509,7 +1509,7 @@ export const HN_TOP_BLOGS: RSSSource[] = [
     category: "技术博客",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "gary-marcus",
@@ -1520,7 +1520,7 @@ export const HN_TOP_BLOGS: RSSSource[] = [
     category: "观点",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "max-woolf",
@@ -1531,7 +1531,7 @@ export const HN_TOP_BLOGS: RSSSource[] = [
     category: "技术博客",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "george-hotz",
@@ -1542,7 +1542,7 @@ export const HN_TOP_BLOGS: RSSSource[] = [
     category: "技术博客",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "jim-nielsen",
@@ -1553,7 +1553,7 @@ export const HN_TOP_BLOGS: RSSSource[] = [
     category: "技术博客",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "geoffrey-litt",
@@ -1564,7 +1564,7 @@ export const HN_TOP_BLOGS: RSSSource[] = [
     category: "技术博客",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
 ];
 
@@ -1603,7 +1603,7 @@ export const CHINESE_AI_MEDIA: RSSSource[] = [
     category: "AI媒体",
     priority: "high",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "ainews",
@@ -1614,7 +1614,7 @@ export const CHINESE_AI_MEDIA: RSSSource[] = [
     category: "AI媒体",
     priority: "high",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "infoq-cn",
@@ -1625,7 +1625,7 @@ export const CHINESE_AI_MEDIA: RSSSource[] = [
     category: "技术媒体",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "oschina",
@@ -1636,7 +1636,7 @@ export const CHINESE_AI_MEDIA: RSSSource[] = [
     category: "开源社区",
     priority: "medium",
     type: "community",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "csdn-ai",
@@ -1647,7 +1647,7 @@ export const CHINESE_AI_MEDIA: RSSSource[] = [
     category: "技术博客",
     priority: "low",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "36kr",
@@ -1658,7 +1658,7 @@ export const CHINESE_AI_MEDIA: RSSSource[] = [
     category: "科技新闻",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "huxiu",
@@ -1669,7 +1669,7 @@ export const CHINESE_AI_MEDIA: RSSSource[] = [
     category: "科技新闻",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "pingwest",
@@ -1680,7 +1680,7 @@ export const CHINESE_AI_MEDIA: RSSSource[] = [
     category: "科技新闻",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "solidot",
@@ -1691,7 +1691,7 @@ export const CHINESE_AI_MEDIA: RSSSource[] = [
     category: "科技新闻",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
 ];
 
@@ -1706,7 +1706,7 @@ export const CHINESE_DEV_BLOGS: RSSSource[] = [
     category: "技术博客",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "zhangxinxu",
@@ -1717,7 +1717,7 @@ export const CHINESE_DEV_BLOGS: RSSSource[] = [
     category: "技术博客",
     priority: "low",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "coolshell",
@@ -1728,7 +1728,7 @@ export const CHINESE_DEV_BLOGS: RSSSource[] = [
     category: "技术博客",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "juejin",
@@ -1739,7 +1739,7 @@ export const CHINESE_DEV_BLOGS: RSSSource[] = [
     category: "技术社区",
     priority: "low",
     type: "community",
-    isActive: true,
+    isActive: false,
   },
 ];
 
@@ -1754,7 +1754,7 @@ export const CHINESE_TECH_COMPANIES: RSSSource[] = [
     category: "研究",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "alibaba-tech",
@@ -1765,7 +1765,7 @@ export const CHINESE_TECH_COMPANIES: RSSSource[] = [
     category: "技术博客",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "baidu-research-zh",
@@ -1776,7 +1776,7 @@ export const CHINESE_TECH_COMPANIES: RSSSource[] = [
     category: "研究",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "bytedance-tech",
@@ -1787,7 +1787,7 @@ export const CHINESE_TECH_COMPANIES: RSSSource[] = [
     category: "技术博客",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "baai",
@@ -1798,7 +1798,7 @@ export const CHINESE_TECH_COMPANIES: RSSSource[] = [
     category: "研究",
     priority: "medium",
     type: "academic",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "tsinghua-air",
@@ -1809,7 +1809,7 @@ export const CHINESE_TECH_COMPANIES: RSSSource[] = [
     category: "研究",
     priority: "low",
     type: "academic",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "pku-ai",
@@ -1820,7 +1820,7 @@ export const CHINESE_TECH_COMPANIES: RSSSource[] = [
     category: "研究",
     priority: "low",
     type: "academic",
-    isActive: true,
+    isActive: false,
   },
 ];
 
@@ -1836,7 +1836,7 @@ export const TWITTER_RSS_SOURCES: RSSSource[] = [
     category: "官方机构",
     priority: "high",
     type: "social",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "twitter-anthropic",
@@ -1847,7 +1847,7 @@ export const TWITTER_RSS_SOURCES: RSSSource[] = [
     category: "官方机构",
     priority: "high",
     type: "social",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "twitter-deepmind",
@@ -1858,7 +1858,7 @@ export const TWITTER_RSS_SOURCES: RSSSource[] = [
     category: "官方机构",
     priority: "high",
     type: "social",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "twitter-metaai",
@@ -1869,7 +1869,7 @@ export const TWITTER_RSS_SOURCES: RSSSource[] = [
     category: "官方机构",
     priority: "high",
     type: "social",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "twitter-xai",
@@ -1880,7 +1880,7 @@ export const TWITTER_RSS_SOURCES: RSSSource[] = [
     category: "官方机构",
     priority: "high",
     type: "social",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "twitter-karpathy",
@@ -1891,7 +1891,7 @@ export const TWITTER_RSS_SOURCES: RSSSource[] = [
     category: "AI研究者",
     priority: "high",
     type: "social",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "twitter-ylecun",
@@ -1902,7 +1902,7 @@ export const TWITTER_RSS_SOURCES: RSSSource[] = [
     category: "AI研究者",
     priority: "high",
     type: "social",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "twitter-sama",
@@ -1913,7 +1913,7 @@ export const TWITTER_RSS_SOURCES: RSSSource[] = [
     category: "AI研究者",
     priority: "high",
     type: "social",
-    isActive: true,
+    isActive: false,
   },
 ];
 
@@ -1929,7 +1929,7 @@ export const REDDIT_AI_SOURCES: RSSSource[] = [
     category: "AI研究",
     priority: "high",
     type: "community",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "reddit-artificial",
@@ -1940,7 +1940,7 @@ export const REDDIT_AI_SOURCES: RSSSource[] = [
     category: "AI资讯",
     priority: "high",
     type: "community",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "reddit-singularity",
@@ -1951,7 +1951,7 @@ export const REDDIT_AI_SOURCES: RSSSource[] = [
     category: "AI趋势",
     priority: "medium",
     type: "community",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "reddit-localllama",
@@ -1962,7 +1962,7 @@ export const REDDIT_AI_SOURCES: RSSSource[] = [
     category: "开源模型",
     priority: "high",
     type: "community",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "reddit-chatgpt",
@@ -1973,7 +1973,7 @@ export const REDDIT_AI_SOURCES: RSSSource[] = [
     category: "ChatGPT",
     priority: "medium",
     type: "community",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "reddit-claudeai",
@@ -1984,7 +1984,7 @@ export const REDDIT_AI_SOURCES: RSSSource[] = [
     category: "Claude",
     priority: "medium",
     type: "community",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "reddit-openai",
@@ -1995,7 +1995,7 @@ export const REDDIT_AI_SOURCES: RSSSource[] = [
     category: "OpenAI",
     priority: "medium",
     type: "community",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "reddit-stablediffusion",
@@ -2006,7 +2006,7 @@ export const REDDIT_AI_SOURCES: RSSSource[] = [
     category: "AI绘画",
     priority: "medium",
     type: "community",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "reddit-midjourney",
@@ -2017,7 +2017,7 @@ export const REDDIT_AI_SOURCES: RSSSource[] = [
     category: "AI绘画",
     priority: "medium",
     type: "community",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "reddit-aivideo",
@@ -2028,7 +2028,7 @@ export const REDDIT_AI_SOURCES: RSSSource[] = [
     category: "AI视频",
     priority: "medium",
     type: "community",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "reddit-aiprogramming",
@@ -2039,7 +2039,7 @@ export const REDDIT_AI_SOURCES: RSSSource[] = [
     category: "AI编程",
     priority: "medium",
     type: "community",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "reddit-aiweirdness",
@@ -2050,7 +2050,7 @@ export const REDDIT_AI_SOURCES: RSSSource[] = [
     category: "AI趣闻",
     priority: "low",
     type: "community",
-    isActive: true,
+    isActive: false,
   },
 ];
 
@@ -2066,7 +2066,7 @@ export const COMMUNITY_SOURCES: RSSSource[] = [
     category: "社区",
     priority: "medium",
     type: "community",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "github-trending",
@@ -2077,7 +2077,7 @@ export const COMMUNITY_SOURCES: RSSSource[] = [
     category: "开源",
     priority: "low",
     type: "community",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "product-hunt-ai",
@@ -2088,7 +2088,7 @@ export const COMMUNITY_SOURCES: RSSSource[] = [
     category: "产品",
     priority: "low",
     type: "community",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "lobsters-ai",
@@ -2099,7 +2099,7 @@ export const COMMUNITY_SOURCES: RSSSource[] = [
     category: "社区",
     priority: "low",
     type: "community",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "hackernews",
@@ -2110,7 +2110,7 @@ export const COMMUNITY_SOURCES: RSSSource[] = [
     category: "社区",
     priority: "medium",
     type: "community",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "slashdot-ai",
@@ -2121,7 +2121,7 @@ export const COMMUNITY_SOURCES: RSSSource[] = [
     category: "社区",
     priority: "low",
     type: "community",
-    isActive: true,
+    isActive: false,
   },
 ];
 
@@ -2136,7 +2136,7 @@ export const ADDITIONAL_ENGLISH_SOURCES: RSSSource[] = [
     category: "科技新闻",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "venturebeat",
@@ -2147,7 +2147,7 @@ export const ADDITIONAL_ENGLISH_SOURCES: RSSSource[] = [
     category: "科技新闻",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "fastml",
@@ -2158,7 +2158,7 @@ export const ADDITIONAL_ENGLISH_SOURCES: RSSSource[] = [
     category: "技术博客",
     priority: "low",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "distill",
@@ -2169,7 +2169,7 @@ export const ADDITIONAL_ENGLISH_SOURCES: RSSSource[] = [
     category: "研究",
     priority: "medium",
     type: "academic",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "pytorch-blog",
@@ -2180,7 +2180,7 @@ export const ADDITIONAL_ENGLISH_SOURCES: RSSSource[] = [
     category: "开源",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "tensorflow-blog",
@@ -2191,7 +2191,7 @@ export const ADDITIONAL_ENGLISH_SOURCES: RSSSource[] = [
     category: "开源",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "jax-blog",
@@ -2202,7 +2202,7 @@ export const ADDITIONAL_ENGLISH_SOURCES: RSSSource[] = [
     category: "开源",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "hugging-face-papers",
@@ -2213,7 +2213,7 @@ export const ADDITIONAL_ENGLISH_SOURCES: RSSSource[] = [
     category: "研究",
     priority: "high",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "eleutherai-blog",
@@ -2224,7 +2224,7 @@ export const ADDITIONAL_ENGLISH_SOURCES: RSSSource[] = [
     category: "开源",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "scale-ai-blog",
@@ -2235,7 +2235,7 @@ export const ADDITIONAL_ENGLISH_SOURCES: RSSSource[] = [
     category: "AI数据",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "weaviate-blog",
@@ -2246,7 +2246,7 @@ export const ADDITIONAL_ENGLISH_SOURCES: RSSSource[] = [
     category: "向量数据库",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "pinecone-blog",
@@ -2257,7 +2257,7 @@ export const ADDITIONAL_ENGLISH_SOURCES: RSSSource[] = [
     category: "向量数据库",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "langchain-blog",
@@ -2268,7 +2268,7 @@ export const ADDITIONAL_ENGLISH_SOURCES: RSSSource[] = [
     category: "AI框架",
     priority: "high",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "llamaindex-blog",
@@ -2279,7 +2279,7 @@ export const ADDITIONAL_ENGLISH_SOURCES: RSSSource[] = [
     category: "AI框架",
     priority: "high",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "weights-biases",
@@ -2290,7 +2290,7 @@ export const ADDITIONAL_ENGLISH_SOURCES: RSSSource[] = [
     category: "MLOps",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "neptune-ai",
@@ -2301,7 +2301,7 @@ export const ADDITIONAL_ENGLISH_SOURCES: RSSSource[] = [
     category: "MLOps",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "arize-ai",
@@ -2312,7 +2312,7 @@ export const ADDITIONAL_ENGLISH_SOURCES: RSSSource[] = [
     category: "MLOps",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "fiddler-ai",
@@ -2323,7 +2323,7 @@ export const ADDITIONAL_ENGLISH_SOURCES: RSSSource[] = [
     category: "AI可解释性",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "snorkel-ai",
@@ -2334,7 +2334,7 @@ export const ADDITIONAL_ENGLISH_SOURCES: RSSSource[] = [
     category: "数据标注",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "scale-nucleus",
@@ -2345,7 +2345,7 @@ export const ADDITIONAL_ENGLISH_SOURCES: RSSSource[] = [
     category: "AI数据",
     priority: "low",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
 ];
 
@@ -2360,7 +2360,7 @@ export const ADDITIONAL_CHINESE_SOURCES: RSSSource[] = [
     category: "AI媒体",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "deeptech",
@@ -2371,7 +2371,7 @@ export const ADDITIONAL_CHINESE_SOURCES: RSSSource[] = [
     category: "科技新闻",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "ifanr",
@@ -2382,7 +2382,7 @@ export const ADDITIONAL_CHINESE_SOURCES: RSSSource[] = [
     category: "科技新闻",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "geekpark",
@@ -2393,7 +2393,7 @@ export const ADDITIONAL_CHINESE_SOURCES: RSSSource[] = [
     category: "科技新闻",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "techweb",
@@ -2404,7 +2404,7 @@ export const ADDITIONAL_CHINESE_SOURCES: RSSSource[] = [
     category: "科技新闻",
     priority: "low",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "cnbeta",
@@ -2415,7 +2415,7 @@ export const ADDITIONAL_CHINESE_SOURCES: RSSSource[] = [
     category: "科技新闻",
     priority: "low",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "segmentfault",
@@ -2426,7 +2426,7 @@ export const ADDITIONAL_CHINESE_SOURCES: RSSSource[] = [
     category: "技术社区",
     priority: "low",
     type: "community",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "v2ex",
@@ -2437,7 +2437,7 @@ export const ADDITIONAL_CHINESE_SOURCES: RSSSource[] = [
     category: "技术社区",
     priority: "low",
     type: "community",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "zhihu-ai",
@@ -2448,7 +2448,7 @@ export const ADDITIONAL_CHINESE_SOURCES: RSSSource[] = [
     category: "社区",
     priority: "low",
     type: "community",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "huawei-cloud",
@@ -2459,7 +2459,7 @@ export const ADDITIONAL_CHINESE_SOURCES: RSSSource[] = [
     category: "云服务",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "jd-ai",
@@ -2470,7 +2470,7 @@ export const ADDITIONAL_CHINESE_SOURCES: RSSSource[] = [
     category: "AI应用",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "meituan-tech",
@@ -2481,7 +2481,7 @@ export const ADDITIONAL_CHINESE_SOURCES: RSSSource[] = [
     category: "技术博客",
     priority: "medium",
     type: "official",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "netease-tech",
@@ -2492,7 +2492,7 @@ export const ADDITIONAL_CHINESE_SOURCES: RSSSource[] = [
     category: "AI媒体",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "sina-tech",
@@ -2503,7 +2503,7 @@ export const ADDITIONAL_CHINESE_SOURCES: RSSSource[] = [
     category: "科技新闻",
     priority: "low",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
   {
     id: "shenzhen-tech",
@@ -2514,7 +2514,7 @@ export const ADDITIONAL_CHINESE_SOURCES: RSSSource[] = [
     category: "硬件AI",
     priority: "low",
     type: "media",
-    isActive: true,
+    isActive: false,
   },
 ];
 

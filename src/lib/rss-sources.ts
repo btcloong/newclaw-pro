@@ -313,9 +313,6 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     type: "community",
     isActive: true,
   },
-    type: "official",
-    isActive: false, // RSSHub unstable
-  },
   {
     id: "amazon-ai-blog",
     name: "AWS AI Blog",

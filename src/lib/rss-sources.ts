@@ -67,7 +67,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "大模型",
     priority: "high",
     type: "official",
-    isActive: true,
+    isActive: false, // RSSHub unstable
   },
   {
     id: "anthropic-research",
@@ -78,7 +78,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "研究",
     priority: "high",
     type: "official",
-    isActive: true,
+    isActive: false, // RSSHub unstable
   },
   {
     id: "google-ai-blog",
@@ -89,7 +89,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "大模型",
     priority: "high",
     type: "official",
-    isActive: true,
+    isActive: false, // RSSHub unstable
   },
   {
     id: "deepmind-blog",
@@ -111,7 +111,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "开源模型",
     priority: "high",
     type: "official",
-    isActive: true,
+    isActive: false, // RSSHub unstable
   },
   {
     id: "xai-blog",
@@ -133,7 +133,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "开源模型",
     priority: "high",
     type: "official",
-    isActive: true,
+    isActive: false, // RSSHub unstable
   },
   {
     id: "cohere-blog",
@@ -144,7 +144,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "大模型",
     priority: "high",
     type: "official",
-    isActive: true,
+    isActive: false, // RSSHub unstable
   },
   {
     id: "huggingface-blog",
@@ -166,7 +166,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "多模态",
     priority: "high",
     type: "official",
-    isActive: true,
+    isActive: false, // RSSHub unstable
   },
   {
     id: "nvidia-blog",
@@ -177,7 +177,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "AI芯片",
     priority: "high",
     type: "official",
-    isActive: true,
+    isActive: false, // RSSHub unstable
   },
   {
     id: "microsoft-ai-blog",
@@ -188,7 +188,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "大模型",
     priority: "high",
     type: "official",
-    isActive: true,
+    isActive: false, // RSSHub unstable
   },
   {
     id: "amazon-ai-blog",

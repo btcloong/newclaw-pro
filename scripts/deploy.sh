@@ -16,8 +16,8 @@ git fetch origin main
 git reset --hard origin/main
 
 echo "📦 Installing dependencies..."
-rm -rf node_modules/.cache
-npm ci
+rm -rf node_modules package-lock.json
+npm install
 
 echo "🔨 Building project..."
 npm run build

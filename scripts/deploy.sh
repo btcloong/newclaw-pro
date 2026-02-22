@@ -12,7 +12,8 @@ echo "🚀 Starting deployment..."
 cd /home/admin/newclaw-pro
 
 echo "📥 Pulling latest code..."
-git pull origin main
+git fetch origin main
+git reset --hard origin/main
 
 echo "📦 Installing dependencies..."
 npm ci

@@ -219,7 +219,14 @@ function buildBatchSummaryPrompt(articles: Array<{ id: string; title: string; co
 标题:${a.title.slice(0, 100)}
 内容:${a.content.slice(0, 300)}`).join("\n");
 
-  return `为${articles.length}篇文章生成中文内容。返回JSON数组：
+  return `为${articles.length}篇文章生成中文内容。
+
+要求：
+1. chineseTitle: 将标题翻译成简洁的中文（不超过20字）
+2. summary: 用3-5句话总结文章核心内容（中文）
+3. recommendation: 用1-2句话说明为什么值得阅读（中文）
+
+必须返回有效的JSON数组格式，不要有任何其他文字：
 [{"id":"文章ID","chineseTitle":"中文标题","summary":"3-5句话摘要","recommendation":"推荐理由"}]
 
 ${articlesText}`;
@@ -301,11 +308,27 @@ export async function batchProcessArticles(
       const parsed = parseJsonResponse<Array<{ id: string; chineseTitle: string; summary: string; recommendation: string }>>(response);
       
       for (const item of parsed) {
-        summaryResults.set(item.id, {
-          chineseTitle: item.chineseTitle || batch.find(b => b.id === item.id)?.title || "",
-          summary: item.summary || "",
-          recommendation: item.recommendation || "",
-        });
+        const article = batch.find(b => b.id === item.id);
+        const chineseTitle = item.chineseTitle?.trim() || article?.title || "";
+        const summary = item.summary?.trim() || "";
+        const recommendation = item.recommendation?.trim() || "";
+        
+        // 检测无效内容（如 "..." 或过短内容）
+        const isValidSummary = summary.length > 10 && summary !== "..." && !summary.startsWith("...");
+        const isValidChineseTitle = chineseTitle.length > 0 && /[\u4e00-\u9fa5]/.test(chineseTitle);
+        
+        if (!isValidSummary || !isValidChineseTitle) {
+          console.warn(`[AI] Invalid content for ${item.id}, using fallback`);
+          // 使用降级处理
+          const fallbackSummary = article?.content?.slice(0, 200).trim() || article?.title || "";
+          summaryResults.set(item.id, {
+            chineseTitle: article?.title || "",
+            summary: fallbackSummary.length >= 200 ? fallbackSummary + "..." : fallbackSummary,
+            recommendation: `来自 ${article?.source || "未知来源"} 的技术文章`,
+          });
+        } else {
+          summaryResults.set(item.id, { chineseTitle, summary, recommendation });
+        }
       }
     } catch (error) {
       console.error(`[AI] Batch summarization error:`, error);

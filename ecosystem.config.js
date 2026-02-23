@@ -9,6 +9,7 @@ module.exports = {
     env: {
       NODE_ENV: 'production',
       PORT: 3000,
+      GEMINI_API_KEY: 'AIzaSyAic3PWhq8eWyEKr_V41FqbJ_0MC_ZImAs',
     },
     // 日志配置
     log_file: '/var/log/newclaw/combined.log',

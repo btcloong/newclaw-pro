@@ -137,7 +137,7 @@ export default async function HomePage() {
                       </div>
                     </div>
                   </div>
-                  <Link href="https://twitter.com/i/spaces" target="_blank" rel="noopener noreferrer">
+                  <Link href="http://t.me/newclaw" target="_blank" rel="noopener noreferrer">
                     <Button className="bg-white text-purple-600 hover:bg-white/90 font-semibold px-6">
                       预约参与
                     </Button>

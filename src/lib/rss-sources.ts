@@ -155,7 +155,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "开源社区",
     priority: "high",
     type: "official",
-    isActive: true,
+    isActive: false, // 307 重定向，暂时禁用
   },
   {
     id: "stability-blog",
@@ -211,7 +211,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "科技媒体",
     priority: "high",
     type: "media",
-    isActive: true,
+    isActive: false, // 不够专业，禁用
   },
   {
     id: "ars-technica-ai",
@@ -245,7 +245,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "科技媒体",
     priority: "high",
     type: "media",
-    isActive: true,
+    isActive: false, // 不够专业，禁用
   },
   {
     id: "engadget",
@@ -256,7 +256,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "科技媒体",
     priority: "high",
     type: "media",
-    isActive: true,
+    isActive: false, // 消费科技，禁用
   },
   {
     id: "zdnet",
@@ -267,7 +267,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "科技媒体",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false, // 质量低，禁用
   },
   {
     id: "cnet",
@@ -278,7 +278,7 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
     category: "科技媒体",
     priority: "medium",
     type: "media",
-    isActive: true,
+    isActive: false, // 消费科技，禁用
   },
   {
     id: "hackernews",
@@ -1689,6 +1689,94 @@ export const HN_TOP_BLOGS: RSSSource[] = [
     type: "media",
     isActive: false,
   },
+  {
+    id: "one-thing-well",
+    name: "One Thing Well",
+    xmlUrl: "https://onethingwell.org/rss",
+    htmlUrl: "https://onethingwell.org",
+    language: "en",
+    category: "工具",
+    priority: "medium",
+    type: "media",
+    isActive: true,
+  },
+  {
+    id: "andrej-karpathy-blog",
+    name: "Andrej Karpathy Blog",
+    xmlUrl: "https://karpathy.ai/blog/feed.xml",
+    htmlUrl: "https://karpathy.ai/blog",
+    language: "en",
+    category: "AI研究",
+    priority: "high",
+    type: "media",
+    isActive: true,
+  },
+  {
+    id: "lilian-weng",
+    name: "Lilian Weng",
+    xmlUrl: "https://lilianweng.github.io/index.xml",
+    htmlUrl: "https://lilianweng.github.io",
+    language: "en",
+    category: "AI研究",
+    priority: "high",
+    type: "media",
+    isActive: true,
+  },
+  {
+    id: "colah-blog",
+    name: "Colah's Blog",
+    xmlUrl: "http://colah.github.io/rss.xml",
+    htmlUrl: "http://colah.github.io",
+    language: "en",
+    category: "AI研究",
+    priority: "high",
+    type: "media",
+    isActive: true,
+  },
+  {
+    id: "distill-pub",
+    name: "Distill.pub",
+    xmlUrl: "https://distill.pub/rss.xml",
+    htmlUrl: "https://distill.pub",
+    language: "en",
+    category: "AI研究",
+    priority: "high",
+    type: "academic",
+    isActive: true,
+  },
+  {
+    id: "ai-jenius",
+    name: "AI Jenius",
+    xmlUrl: "https://aijenius.wordpress.com/feed/",
+    htmlUrl: "https://aijenius.wordpress.com",
+    language: "en",
+    category: "AI应用",
+    priority: "medium",
+    type: "media",
+    isActive: true,
+  },
+  {
+    id: "sebastian-ruder",
+    name: "Sebastian Ruder",
+    xmlUrl: "https://ruder.io/rss/",
+    htmlUrl: "https://ruder.io",
+    language: "en",
+    category: "NLP研究",
+    priority: "medium",
+    type: "academic",
+    isActive: true,
+  },
+  {
+    id: "jalammar-blog",
+    name: "Jay Alammar",
+    xmlUrl: "https://jalammar.github.io/feed.xml",
+    htmlUrl: "https://jalammar.github.io",
+    language: "en",
+    category: "AI教育",
+    priority: "high",
+    type: "media",
+    isActive: true,
+  },
 ];
 
 // ============ 中文权威源 (30+) ============
@@ -1704,7 +1792,7 @@ export const CHINESE_AI_MEDIA: RSSSource[] = [
     category: "AI媒体",
     priority: "high",
     type: "media",
-    isActive: true,
+    isActive: false, // 403 被屏蔽，禁用
   },
   {
     id: "qbitai",
@@ -1713,6 +1801,17 @@ export const CHINESE_AI_MEDIA: RSSSource[] = [
     htmlUrl: "https://www.qbitai.com",
     language: "zh",
     category: "AI媒体",
+    priority: "high",
+    type: "media",
+    isActive: true,
+  },
+  {
+    id: "ifanr-ai",
+    name: "爱范儿",
+    xmlUrl: "https://www.ifanr.com/feed",
+    htmlUrl: "https://www.ifanr.com",
+    language: "zh",
+    category: "科技媒体",
     priority: "high",
     type: "media",
     isActive: true,
@@ -1815,6 +1914,17 @@ export const CHINESE_AI_MEDIA: RSSSource[] = [
     priority: "medium",
     type: "media",
     isActive: false,
+  },
+  {
+    id: "geekpark",
+    name: "极客公园",
+    xmlUrl: "https://www.geekpark.net/rss",
+    htmlUrl: "https://www.geekpark.net",
+    language: "zh",
+    category: "科技新闻",
+    priority: "high",
+    type: "media",
+    isActive: true,
   },
 ];
 

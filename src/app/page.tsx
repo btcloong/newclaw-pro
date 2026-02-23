@@ -17,6 +17,8 @@ import {
   Hash,
   Star,
   BarChart3,
+  Calendar,
+  Mic,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -113,6 +115,35 @@ export default async function HomePage() {
                   </div>
                 </div>
               </div>
+            </Card>
+
+            {/* Twitter Space 预告 */}
+            <Card className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white overflow-hidden">
+              <CardContent className="p-6">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
+                      <Mic className="w-8 h-8 text-white" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <Twitter className="w-4 h-4" />
+                        <span className="text-sm font-medium text-white/80">Twitter Space 预告</span>
+                      </div>
+                      <h3 className="text-xl font-bold mb-1">AI 行业热点深度讨论</h3>
+                      <div className="flex items-center gap-2 text-sm text-white/80">
+                        <Calendar className="w-4 h-4" />
+                        <span>2月24日（周一）晚上 9:00</span>
+                      </div>
+                    </div>
+                  </div>
+                  <Link href="https://twitter.com/i/spaces" target="_blank" rel="noopener noreferrer">
+                    <Button className="bg-white text-purple-600 hover:bg-white/90 font-semibold px-6">
+                      预约参与
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
             </Card>
 
             {/* 今日必读 Top 3 */}

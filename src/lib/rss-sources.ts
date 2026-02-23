@@ -1,6 +1,6 @@
 /**
  * RSS 数据源配置 - 精简高质量版
- * 只保留 16 个高质量 AI 相关数据源
+ * 只保留 14 个高质量 AI 相关数据源（正式文章，非个人博客）
  */
 
 export type SourcePriority = "high" | "medium" | "low";
@@ -19,8 +19,9 @@ export interface RSSSource {
   lastCrawled?: string;
 }
 
-// ============ 高质量 AI 数据源 (16个) ============
+// ============ 高质量 AI 数据源 (14个) ============
 
+// AI 公司官方博客
 export const AI_COMPANY_BLOGS: RSSSource[] = [
   {
     id: "openai-blog",
@@ -46,40 +47,8 @@ export const AI_COMPANY_BLOGS: RSSSource[] = [
   },
 ];
 
+// AI 研究/学术机构（正式研究文章）
 export const AI_RESEARCH_BLOGS: RSSSource[] = [
-  {
-    id: "andrej-karpathy-blog",
-    name: "Andrej Karpathy Blog",
-    xmlUrl: "https://karpathy.ai/blog/feed.xml",
-    htmlUrl: "https://karpathy.ai/blog",
-    language: "en",
-    category: "AI研究",
-    priority: "high",
-    type: "media",
-    isActive: true,
-  },
-  {
-    id: "lilian-weng",
-    name: "Lilian Weng",
-    xmlUrl: "https://lilianweng.github.io/index.xml",
-    htmlUrl: "https://lilianweng.github.io",
-    language: "en",
-    category: "AI研究",
-    priority: "high",
-    type: "media",
-    isActive: true,
-  },
-  {
-    id: "colah-blog",
-    name: "Colah's Blog",
-    xmlUrl: "http://colah.github.io/rss.xml",
-    htmlUrl: "http://colah.github.io",
-    language: "en",
-    category: "AI研究",
-    priority: "high",
-    type: "media",
-    isActive: true,
-  },
   {
     id: "distill-pub",
     name: "Distill.pub",
@@ -92,29 +61,30 @@ export const AI_RESEARCH_BLOGS: RSSSource[] = [
     isActive: true,
   },
   {
-    id: "jalammar-blog",
-    name: "Jay Alammar",
-    xmlUrl: "https://jalammar.github.io/feed.xml",
-    htmlUrl: "https://jalammar.github.io",
+    id: "ai2-blog",
+    name: "Allen Institute for AI",
+    xmlUrl: "https://blog.allenai.org/feed",
+    htmlUrl: "https://blog.allenai.org",
     language: "en",
-    category: "AI教育",
+    category: "AI研究",
     priority: "high",
-    type: "media",
+    type: "academic",
     isActive: true,
   },
   {
-    id: "sebastian-ruder",
-    name: "Sebastian Ruder",
-    xmlUrl: "https://ruder.io/rss/",
-    htmlUrl: "https://ruder.io",
-    language: "en",
-    category: "NLP研究",
-    priority: "medium",
+    id: "baai",
+    name: "北京智源研究院",
+    xmlUrl: "https://www.baai.ac.cn/rss",
+    htmlUrl: "https://www.baai.ac.cn",
+    language: "zh",
+    category: "AI研究",
+    priority: "high",
     type: "academic",
     isActive: true,
   },
 ];
 
+// 专业科技媒体
 export const TECH_MEDIA: RSSSource[] = [
   {
     id: "ars-technica-ai",
@@ -128,65 +98,52 @@ export const TECH_MEDIA: RSSSource[] = [
     isActive: true,
   },
   {
-    id: "producthunt",
-    name: "Product Hunt",
-    xmlUrl: "https://www.producthunt.com/feed",
-    htmlUrl: "https://www.producthunt.com",
+    id: "mit-tech-review",
+    name: "MIT Technology Review",
+    xmlUrl: "https://www.technologyreview.com/feed/",
+    htmlUrl: "https://www.technologyreview.com",
     language: "en",
-    category: "产品发布",
-    priority: "medium",
-    type: "community",
+    category: "科技媒体",
+    priority: "high",
+    type: "media",
     isActive: true,
   },
   {
-    id: "one-thing-well",
-    name: "One Thing Well",
-    xmlUrl: "https://onethingwell.org/rss",
-    htmlUrl: "https://onethingwell.org",
+    id: "wired-ai",
+    name: "Wired AI",
+    xmlUrl: "https://www.wired.com/feed/tag/ai/latest/rss",
+    htmlUrl: "https://www.wired.com/tag/ai/",
     language: "en",
-    category: "工具",
+    category: "科技媒体",
+    priority: "high",
+    type: "media",
+    isActive: true,
+  },
+  {
+    id: "venturebeat-ai",
+    name: "VentureBeat AI",
+    xmlUrl: "https://venturebeat.com/category/ai/feed/",
+    htmlUrl: "https://venturebeat.com/category/ai/",
+    language: "en",
+    category: "AI商业",
     priority: "medium",
     type: "media",
     isActive: true,
   },
   {
-    id: "ai-jenius",
-    name: "AI Jenius",
-    xmlUrl: "https://aijenius.wordpress.com/feed/",
-    htmlUrl: "https://aijenius.wordpress.com",
+    id: "techcrunch-ai",
+    name: "TechCrunch AI",
+    xmlUrl: "https://techcrunch.com/category/artificial-intelligence/feed/",
+    htmlUrl: "https://techcrunch.com/category/artificial-intelligence/",
     language: "en",
-    category: "AI应用",
-    priority: "medium",
-    type: "media",
-    isActive: true,
-  },
-];
-
-export const PERSONAL_BLOGS: RSSSource[] = [
-  {
-    id: "paul-graham",
-    name: "Paul Graham",
-    xmlUrl: "http://www.aaronsw.com/2002/feeds/pgessays.rss",
-    htmlUrl: "https://paulgraham.com",
-    language: "en",
-    category: "观点",
-    priority: "medium",
-    type: "media",
-    isActive: true,
-  },
-  {
-    id: "simon-willison",
-    name: "Simon Willison",
-    xmlUrl: "https://simonwillison.net/atom/everything/",
-    htmlUrl: "https://simonwillison.net",
-    language: "en",
-    category: "技术博客",
+    category: "AI创业",
     priority: "medium",
     type: "media",
     isActive: true,
   },
 ];
 
+// 中文科技媒体
 export const CHINESE_MEDIA: RSSSource[] = [
   {
     id: "qbitai",
@@ -210,6 +167,17 @@ export const CHINESE_MEDIA: RSSSource[] = [
     type: "media",
     isActive: true,
   },
+  {
+    id: "jiqizhixin",
+    name: "机器之心",
+    xmlUrl: "https://www.jiqizhixin.com/rss",
+    htmlUrl: "https://www.jiqizhixin.com",
+    language: "zh",
+    category: "AI媒体",
+    priority: "high",
+    type: "media",
+    isActive: true,
+  },
 ];
 
 // ============ 合并所有源 ============
@@ -218,7 +186,6 @@ export const ALL_RSS_SOURCES: RSSSource[] = [
   ...AI_COMPANY_BLOGS,
   ...AI_RESEARCH_BLOGS,
   ...TECH_MEDIA,
-  ...PERSONAL_BLOGS,
   ...CHINESE_MEDIA,
 ];
 

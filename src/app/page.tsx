@@ -128,12 +128,12 @@ export default async function HomePage() {
                     <div>
                       <div className="flex items-center gap-2 mb-1">
                         <Twitter className="w-4 h-4" />
-                        <span className="text-sm font-medium text-white/80">Twitter Space 预告</span>
+                        <span className="text-sm font-medium text-white/80">Twitter Space</span>
                       </div>
                       <h3 className="text-xl font-bold mb-1">AI 行业热点深度讨论</h3>
                       <div className="flex items-center gap-2 text-sm text-white/80">
                         <Calendar className="w-4 h-4" />
-                        <span>2月24日（周一）晚上 9:00</span>
+                        <span>每天晚上 9:00</span>
                       </div>
                     </div>
                   </div>

@@ -150,39 +150,77 @@ export class NewsMCPClient {
     return response.json();
   }
 
-  // 获取最新新闻
-  async getLatestNews(maxResults: number = 20): Promise<NewsArticle[]> {
-    return this.request("/open/news/latest", { max_results: maxResults });
+  // 获取新闻源分类树
+  async getSources(): Promise<any> {
+    return this.request("/open/news_type");
   }
 
-  // 搜索新闻
-  async searchNews(query: string, maxResults: number = 20): Promise<NewsArticle[]> {
-    return this.request("/open/news/search", { q: query, max_results: maxResults });
+  // 搜索新闻（主要接口）
+  async searchNews(
+    options: {
+      query?: string;
+      coins?: string[];
+      engineTypes?: Record<string, string[]>;
+      hasCoin?: boolean;
+      limit?: number;
+      page?: number;
+    } = {}
+  ): Promise<any> {
+    const body: any = {
+      limit: options.limit || 20,
+      page: options.page || 1,
+    };
+    if (options.query) body.q = options.query;
+    if (options.coins) body.coins = options.coins;
+    if (options.engineTypes) body.engineTypes = options.engineTypes;
+    if (options.hasCoin) body.hasCoin = options.hasCoin;
+
+    const response = await fetch(`${this.baseUrl}/open/news_search`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${this.token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+      throw new Error(`6551 API error: ${response.status}`);
+    }
+
+    return response.json();
+  }
+
+  // 获取最新新闻（使用搜索接口）
+  async getLatestNews(maxResults: number = 20): Promise<any> {
+    return this.searchNews({ limit: maxResults });
   }
 
   // 按币种搜索
-  async searchByCoin(coin: string, maxResults: number = 20): Promise<NewsArticle[]> {
-    return this.request("/open/news/coin", { coin, max_results: maxResults });
+  async searchByCoin(coin: string, maxResults: number = 20): Promise<any> {
+    return this.searchNews({ coins: [coin], limit: maxResults });
   }
 
-  // 按来源获取
-  async getBySource(source: string, maxResults: number = 20): Promise<NewsArticle[]> {
-    return this.request("/open/news/source", { source, max_results: maxResults });
+  // 高评分新闻（需要在结果中筛选）
+  async getHighScoreNews(minScore: number = 80, maxResults: number = 20): Promise<any> {
+    const result = await this.searchNews({ limit: maxResults * 2 });
+    if (result?.data) {
+      result.data = result.data.filter((article: NewsArticle) => 
+        (article.aiRating?.score || 0) >= minScore
+      ).slice(0, maxResults);
+    }
+    return result;
   }
 
-  // 高评分新闻
-  async getHighScoreNews(minScore: number = 80, maxResults: number = 20): Promise<NewsArticle[]> {
-    return this.request("/open/news/high-score", { min_score: minScore, max_results: maxResults });
-  }
-
-  // 按交易信号筛选
-  async getBySignal(signal: "long" | "short" | "neutral", maxResults: number = 20): Promise<NewsArticle[]> {
-    return this.request("/open/news/signal", { signal, max_results: maxResults });
-  }
-
-  // 获取新闻源列表
-  async getSources(): Promise<any> {
-    return this.request("/open/news/sources");
+  // 按交易信号筛选（需要在结果中筛选）
+  async getBySignal(signal: "long" | "short" | "neutral", maxResults: number = 20): Promise<any> {
+    const result = await this.searchNews({ limit: maxResults * 2 });
+    if (result?.data) {
+      result.data = result.data.filter((article: NewsArticle) => 
+        article.aiRating?.signal === signal
+      ).slice(0, maxResults);
+    }
+    return result;
   }
 }
 

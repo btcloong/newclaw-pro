@@ -63,17 +63,14 @@ export class TwitterMCPClient {
     this.baseUrl = baseUrl;
   }
 
-  private async request(endpoint: string, params: Record<string, any> = {}) {
-    const url = new URL(`${this.baseUrl}${endpoint}`);
-    Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined) url.searchParams.append(key, String(value));
-    });
-
-    const response = await fetch(url.toString(), {
+  private async request(method: string, endpoint: string, body?: Record<string, any>) {
+    const response = await fetch(`${this.baseUrl}${endpoint}`, {
+      method,
       headers: {
         "Authorization": `Bearer ${this.token}`,
         "Content-Type": "application/json",
       },
+      body: body ? JSON.stringify(body) : undefined,
     });
 
     if (!response.ok) {
@@ -83,39 +80,133 @@ export class TwitterMCPClient {
     return response.json();
   }
 
-  // 获取用户信息
-  async getUser(username: string): Promise<TwitterUser> {
-    return this.request("/open/twitter/user", { username });
+  // AI 行业相关的 Twitter 账号列表
+  static AI_ACCOUNTS = [
+    "sama",           // Sam Altman - OpenAI CEO
+    "karpathy",       // Andrej Karpathy - AI researcher
+    "ylecun",         // Yann LeCun - Meta AI Chief
+    "jeremyhoward",   // Jeremy Howard - fast.ai
+    "hardmaru",       // Hardmaru - Google Brain
+    "bindureddy",     // Bindu Reddy - Abacus AI
+    "emostaque",      // Emad Mostaque - Stability AI
+    "DrJimFan",       // Jim Fan - NVIDIA
+    "goodside",       // Riley Goodside - Prompt engineer
+    "AndrewYNg",      // Andrew Ng - DeepLearning.AI
+    "fchollet",       // Francois Chollet - Keras
+    "gdb",            // Greg Brockman - OpenAI
+    "merettm",        // Meredith Whittaker - Signal
+    "timnitGebru",    // Timnit Gebru - DAIR
+    "rao2z",          // RAO - AI researcher
+  ];
+
+  // AI 相关关键词
+  static AI_KEYWORDS = [
+    "artificial intelligence",
+    "machine learning",
+    "deep learning",
+    "neural network",
+    "LLM",
+    "large language model",
+    "GPT",
+    "GPT-4",
+    "GPT-5",
+    "Claude",
+    "Gemini",
+    "OpenAI",
+    "Anthropic",
+    "AI model",
+    "AI research",
+    "transformer",
+    "fine-tuning",
+    "prompt engineering",
+    "AI safety",
+    "AGI",
+  ];
+
+  // 获取用户信息 (POST /open/twitter_user_info)
+  async getUser(username: string): Promise<any> {
+    const result = await this.request("POST", "/open/twitter_user_info", { username });
+    return result.data; // 6551 API returns { data: {...} }
   }
 
-  // 获取用户推文
-  async getUserTweets(username: string, maxResults: number = 20): Promise<Tweet[]> {
-    return this.request("/open/twitter/user/tweets", { username, max_results: maxResults });
+  // 获取用户推文 (POST /open/twitter_user_tweets)
+  async getUserTweets(
+    username: string, 
+    maxResults: number = 20,
+    options: {
+      product?: "Latest" | "Top";
+      includeReplies?: boolean;
+      includeRetweets?: boolean;
+    } = {}
+  ): Promise<any> {
+    const result = await this.request("POST", "/open/twitter_user_tweets", {
+      username,
+      maxResults: maxResults,
+      product: options.product || "Latest",
+      includeReplies: options.includeReplies || false,
+      includeRetweets: options.includeRetweets || false,
+    });
+    return result.data; // 6551 API returns { data: { tweets: [...] } }
   }
 
-  // 搜索推文
-  async searchTweets(query: string, maxResults: number = 20): Promise<Tweet[]> {
-    return this.request("/open/twitter/search", { q: query, max_results: maxResults });
-  }
-
-  // 高级搜索
-  async searchTweetsAdvanced(
-    query: string,
+  // 搜索推文 (POST /open/twitter_search)
+  async searchTweets(
+    keywords: string,
+    maxResults: number = 20,
     options: {
       minLikes?: number;
       minRetweets?: number;
-      startTime?: string;
-      endTime?: string;
-      maxResults?: number;
+      product?: "Top" | "Latest";
     } = {}
-  ): Promise<Tweet[]> {
-    return this.request("/open/twitter/search/advanced", {
-      q: query,
-      min_likes: options.minLikes,
-      min_retweets: options.minRetweets,
-      start_time: options.startTime,
-      end_time: options.endTime,
-      max_results: options.maxResults || 20,
+  ): Promise<any> {
+    const body: any = {
+      keywords,
+      maxResults: maxResults,
+      product: options.product || "Top",
+    };
+    if (options.minLikes) body.minLikes = options.minLikes;
+    if (options.minRetweets) body.minRetweets = options.minRetweets;
+    
+    const result = await this.request("POST", "/open/twitter_search", body);
+    return result.data; // 6551 API returns { data: { tweets: [...] } }
+  }
+
+  // 获取多个 AI 账号的推文
+  async getAITweets(maxResultsPerUser: number = 10): Promise<any[]> {
+    const allTweets: any[] = [];
+    
+    for (const username of TwitterMCPClient.AI_ACCOUNTS.slice(0, 5)) {
+      try {
+        const result = await this.getUserTweets(username, maxResultsPerUser, {
+          product: "Latest",
+          includeReplies: false,
+          includeRetweets: false,
+        });
+        if (result?.tweets) {
+          allTweets.push(...result.tweets.map((t: any) => ({
+            ...t,
+            sourceUser: username,
+            category: "AI KOL",
+          })));
+        }
+      } catch (e) {
+        console.error(`Failed to get tweets for ${username}:`, e);
+      }
+    }
+    
+    // 按时间排序
+    return allTweets.sort((a, b) => 
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+  }
+
+  // 搜索 AI 相关推文
+  async searchAITweets(maxResults: number = 20): Promise<any> {
+    // 使用多个关键词搜索
+    const keywords = TwitterMCPClient.AI_KEYWORDS.slice(0, 5).join(" OR ");
+    return this.searchTweets(keywords, maxResults, {
+      minLikes: 10,
+      product: "Top",
     });
   }
 }

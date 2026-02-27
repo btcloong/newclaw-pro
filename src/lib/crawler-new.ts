@@ -7,6 +7,7 @@ import Parser from "rss-parser";
 import { RSSSource, ALL_RSS_SOURCES, SourcePriority, getSourcesByPriority } from "./rss-sources";
 import { NewsItem } from "./db";
 import { batchProcessArticles } from "./ai-processor";
+import { enrichArticle } from "./content-enricher";
 import {
   loadNews,
   saveNews,
@@ -392,32 +393,54 @@ export async function processPendingArticles(limit: number = 10) {
   
   console.log(`[AI] Processing ${pendingArticles.length} pending articles...`);
   
-  const articlesToProcess = pendingArticles.map(article => ({
-    id: article.id,
-    title: article.title,
-    content: article.content || article.summary,
-    url: article.url,
-    source: article.source,
-    publishedAt: article.publishedAt,
-  }));
-  
-  const results = await batchProcessArticles(articlesToProcess, 3);
-  
   let successCount = 0;
-  for (const [id, result] of results) {
-    if (result.processingStatus === 'completed') {
-      await updateNewsItem(id, {
-        aiProcessed: true,
-        aiProcessingStatus: 'completed',
-        aiProcessedAt: result.processedAt,
-        aiScores: result.scores,
-        aiCategory: result.category,
-        chineseTitle: result.chineseTitle,
-        aiSummary: result.summary,
-        recommendation: result.recommendation,
-        aiKeywords: result.keywords,
+  
+  // 逐个处理，包含内容充实
+  for (const article of pendingArticles) {
+    try {
+      console.log(`[AI] Enriching article: ${article.title.slice(0, 50)}...`);
+      
+      // 1. 内容充实（获取全文+翻译）
+      const enriched = await enrichArticle({
+        id: article.id,
+        title: article.title,
+        summary: article.summary,
+        content: article.content,
+        url: article.url,
       });
-      successCount++;
+      
+      // 2. AI 评分
+      const articlesToProcess = [{
+        id: article.id,
+        title: article.title,
+        content: enriched.content,
+        url: article.url,
+        source: article.source,
+        publishedAt: article.publishedAt,
+      }];
+      
+      const results = await batchProcessArticles(articlesToProcess);
+      const result = results.get(article.id);
+      
+      if (result && result.processingStatus === 'completed') {
+        // 3. 保存所有数据
+        await updateNewsItem(article.id, {
+          content: enriched.content, // 充实的内容
+          aiProcessed: true,
+          aiProcessingStatus: 'completed',
+          aiProcessedAt: result.processedAt,
+          aiScores: result.scores,
+          aiCategory: result.category,
+          chineseTitle: enriched.chineseTitle || result.chineseTitle, // 优先使用翻译后的标题
+          aiSummary: enriched.aiSummary || result.summary, // 优先使用生成的摘要
+          recommendation: enriched.recommendation || result.recommendation,
+          aiKeywords: result.keywords,
+        });
+        successCount++;
+        console.log(`[AI] ✓ Processed: ${enriched.chineseTitle?.slice(0, 50)}...`);
+      }
+    } catch (error) {
+      console.error(`[AI] Failed to process article ${article.id}:`, error);
     }
   }
   

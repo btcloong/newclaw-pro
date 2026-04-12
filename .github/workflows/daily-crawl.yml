@@ -1,62 +1,62 @@
-name: Daily Full Crawl
+# name: Daily Full Crawl
 
-on:
-  schedule:
-    # 每天凌晨3点运行
-    - cron: '0 3 * * *'
-  workflow_dispatch:
+# on:
+#   schedule:
+#     # 每天凌晨3点运行
+#     - cron: '0 3 * * *'
+#   workflow_dispatch:
 
-jobs:
-  full-crawl:
-    runs-on: ubuntu-latest
+# jobs:
+#   full-crawl:
+#     runs-on: ubuntu-latest
     
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
         
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: '20'
+#           cache: 'npm'
           
-      - name: Install dependencies
-        run: npm ci
+#       - name: Install dependencies
+#         run: npm ci
         
-      - name: Run full crawler
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          API_KEY: ${{ secrets.API_KEY }}
-          DATA_DIR: ${{ github.workspace }}/data
-          VERCEL_URL: ${{ secrets.VERCEL_URL }}
-        run: |
-          echo "Triggering full crawl on $VERCEL_URL..."
-          curl -X POST "$VERCEL_URL/api/crawl" \
-            -H "Content-Type: application/json" \
-            -H "X-API-Key: $API_KEY" \
-            -d '{"type":"full","limit":50}' \
-            --max-time 600 || echo "Full crawl triggered via API"
+#       - name: Run full crawler
+#         env:
+#           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+#           API_KEY: ${{ secrets.API_KEY }}
+#           DATA_DIR: ${{ github.workspace }}/data
+#           VERCEL_URL: ${{ secrets.VERCEL_URL }}
+#         run: |
+#           echo "Triggering full crawl on $VERCEL_URL..."
+#           curl -X POST "$VERCEL_URL/api/crawl" \
+#             -H "Content-Type: application/json" \
+#             -H "X-API-Key: $API_KEY" \
+#             -d '{"type":"full","limit":50}' \
+#             --max-time 600 || echo "Full crawl triggered via API"
           
-      - name: Wait for processing
-        run: sleep 60
+#       - name: Wait for processing
+#         run: sleep 60
         
-      - name: Process pending AI articles
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          API_KEY: ${{ secrets.API_KEY }}
-          VERCEL_URL: ${{ secrets.VERCEL_URL }}
-        run: |
-          echo "Processing AI articles on $VERCEL_URL..."
-          curl -X POST "$VERCEL_URL/api/crawl" \
-            -H "Content-Type: application/json" \
-            -H "X-API-Key: $API_KEY" \
-            -d '{"type":"ai","limit":20}' \
-            --max-time 300 || echo "AI processing triggered via API"
+#       - name: Process pending AI articles
+#         env:
+#           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+#           API_KEY: ${{ secrets.API_KEY }}
+#           VERCEL_URL: ${{ secrets.VERCEL_URL }}
+#         run: |
+#           echo "Processing AI articles on $VERCEL_URL..."
+#           curl -X POST "$VERCEL_URL/api/crawl" \
+#             -H "Content-Type: application/json" \
+#             -H "X-API-Key: $API_KEY" \
+#             -d '{"type":"ai","limit":20}' \
+#             --max-time 300 || echo "AI processing triggered via API"
           
-      - name: Upload data artifacts
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: daily-crawl-data
-          path: data/
-          retention-days: 30
+#       - name: Upload data artifacts
+#         uses: actions/upload-artifact@v4
+#         if: always()
+#         with:
+#           name: daily-crawl-data
+#           path: data/
+#           retention-days: 30
